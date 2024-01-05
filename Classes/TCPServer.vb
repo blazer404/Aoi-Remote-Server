@@ -8,7 +8,8 @@ Public Class TCPServer
 
     Public isRunning As Boolean = False
     Private server As TcpListener = Nothing
-    Private serverThread As Thread
+    Private serverThread As Thread = Nothing
+
 
     ''' <summary>
     ''' Запуск сервера
@@ -19,6 +20,8 @@ Public Class TCPServer
             serverThread = New Thread(AddressOf StartListener)
             serverThread.Start()
             isRunning = True
+            MainForm.ServerButtom.Text = "Stop Server"
+            MainForm.ClientButton.Enabled = True
             Utils.UpdateTextBox(MainForm, MainForm.LogBox, "Server is running..." + vbNewLine + "Waiting for a connection...")
         End If
     End Sub
@@ -29,7 +32,8 @@ Public Class TCPServer
     ''' <remarks></remarks>
     Private Sub StartListener()
         Try
-            server = New TcpListener(IPAddress.Parse(Settings.GetIp), Settings.GetPort)
+            Dim settings = New Settings
+            server = New TcpListener(IPAddress.Parse(settings.GetIp()), settings.GetPort())
             server.Start()
             ' Ожидание клиентов
             While True
@@ -55,23 +59,24 @@ Public Class TCPServer
             Dim data As Byte() = New Byte(256) {}
             Dim bytesRead As Integer = stream.Read(data, 0, data.Length)
             Dim responseData As String = Encoding.UTF8.GetString(data, 0, bytesRead)
-            Utils.UpdateTextBox(MainForm, MainForm.LogBox, "Received: " + responseData)
             ' Отправка данных клиенту.
-            Dim msg As Byte() = Encoding.UTF8.GetBytes("Hello from server")
-            stream.Write(msg, 0, msg.Length)
+            Dim message As Byte() = Encoding.UTF8.GetBytes("Hello from server")
+            stream.Write(message, 0, message.Length)
             ' Закрытие соединения.
             client.Close()
         End Using
     End Sub
-
     ''' <summary>
     ''' Остановка сервера
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub CloseConnection()
         If isRunning Then
+            serverThread.Abort()
             server.Stop()
             isRunning = False
+            MainForm.ServerButtom.Text = "Start Server"
+            MainForm.ClientButton.Enabled = False
             Utils.UpdateTextBox(MainForm, MainForm.LogBox, "Server is stopped...")
         End If
     End Sub
