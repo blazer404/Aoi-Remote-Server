@@ -69,6 +69,16 @@ Public Class Settings
         My.Settings.Save()
     End Sub
 
+    ''' <summary>
+    ''' Сброс всех настроек
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub Reset()
+        My.Settings.Reset()
+        WindowsStartup.Remove()
+        Utils.UpdateTextBox(MainForm, MainForm.LogBox, "Settings is reset")
+    End Sub
+
 
     ''' <summary>
     ''' Получение IP

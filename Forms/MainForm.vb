@@ -62,9 +62,8 @@
     ''' <remarks></remarks>
     Private Sub ResetButton_Click(sender As Object, e As EventArgs) Handles ResetButton.Click
         TCPServer.CloseConnection()
-        My.Settings.Reset()
+        Settings.Reset()
         Settings.Load()
-        Utils.UpdateTextBox(Me, Me.LogBox, "Settings is reset")
     End Sub
 
 End Class
