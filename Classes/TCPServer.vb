@@ -10,7 +10,6 @@ Public Class TCPServer
     Private server As TcpListener = Nothing
     Private serverThread As Thread = Nothing
 
-
     ''' <summary>
     ''' Запуск сервера
     ''' </summary>
@@ -20,11 +19,30 @@ Public Class TCPServer
             serverThread = New Thread(AddressOf StartListener)
             serverThread.Start()
             isRunning = True
-            MainForm.ServerButtom.Text = "Stop Server"
-            MainForm.ClientButton.Enabled = True
             Utils.UpdateTextBox(MainForm, MainForm.LogBox, "Server is running..." + vbNewLine + "Waiting for a connection...")
+            MainForm.RunServerButton.Text = "Stop Server"
+            MainForm.TestClientButton.Enabled = True
             MainForm.ServerStatusLabel.Text = "Server is running"
-            MainForm.ServerStatusLabel.ForeColor = Color.LimeGreen
+            MainForm.ServerStatusLabel.ForeColor = Color.Green
+            MainForm.CloseButton.Text = My.Resources.s_Hide
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Остановка сервера
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub CloseConnection()
+        If isRunning Then
+            serverThread.Abort()
+            server.Stop()
+            isRunning = False
+            Utils.UpdateTextBox(MainForm, MainForm.LogBox, "Server is stopped...")
+            MainForm.RunServerButton.Text = "Start Server"
+            MainForm.TestClientButton.Enabled = False
+            MainForm.ServerStatusLabel.Text = "Server is stopped"
+            MainForm.ServerStatusLabel.ForeColor = Color.IndianRed
+            MainForm.CloseButton.Text = My.Resources.s_Exit
         End If
     End Sub
 
@@ -67,22 +85,6 @@ Public Class TCPServer
             ' Закрытие соединения.
             client.Close()
         End Using
-    End Sub
-    ''' <summary>
-    ''' Остановка сервера
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Sub CloseConnection()
-        If isRunning Then
-            serverThread.Abort()
-            server.Stop()
-            isRunning = False
-            MainForm.ServerButtom.Text = "Start Server"
-            MainForm.ClientButton.Enabled = False
-            Utils.UpdateTextBox(MainForm, MainForm.LogBox, "Server is stopped...")
-            MainForm.ServerStatusLabel.Text = "Server is stopped"
-            MainForm.ServerStatusLabel.ForeColor = Color.IndianRed
-        End If
     End Sub
 
 End Class

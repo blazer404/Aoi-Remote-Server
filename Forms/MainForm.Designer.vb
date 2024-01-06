@@ -24,8 +24,8 @@ Partial Class MainForm
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
-        Me.ServerButtom = New System.Windows.Forms.Button()
-        Me.ClientButton = New System.Windows.Forms.Button()
+        Me.RunServerButton = New System.Windows.Forms.Button()
+        Me.TestClientButton = New System.Windows.Forms.Button()
         Me.ClearLogButton = New System.Windows.Forms.Button()
         Me.TrayIcon = New System.Windows.Forms.NotifyIcon(Me.components)
         Me.TrayMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -66,26 +66,26 @@ Partial Class MainForm
         Me.FlowLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
-        'ServerButtom
+        'RunServerButton
         '
-        Me.ServerButtom.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer))
-        Me.ServerButtom.Location = New System.Drawing.Point(6, 162)
-        Me.ServerButtom.Name = "ServerButtom"
-        Me.ServerButtom.Size = New System.Drawing.Size(85, 23)
-        Me.ServerButtom.TabIndex = 1
-        Me.ServerButtom.Text = "Start Server"
-        Me.ServerButtom.UseVisualStyleBackColor = True
+        Me.RunServerButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer))
+        Me.RunServerButton.Location = New System.Drawing.Point(6, 162)
+        Me.RunServerButton.Name = "RunServerButton"
+        Me.RunServerButton.Size = New System.Drawing.Size(85, 23)
+        Me.RunServerButton.TabIndex = 1
+        Me.RunServerButton.Text = "Start Server"
+        Me.RunServerButton.UseVisualStyleBackColor = True
         '
-        'ClientButton
+        'TestClientButton
         '
-        Me.ClientButton.Enabled = False
-        Me.ClientButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer))
-        Me.ClientButton.Location = New System.Drawing.Point(97, 162)
-        Me.ClientButton.Name = "ClientButton"
-        Me.ClientButton.Size = New System.Drawing.Size(85, 23)
-        Me.ClientButton.TabIndex = 2
-        Me.ClientButton.Text = "Test Client"
-        Me.ClientButton.UseVisualStyleBackColor = True
+        Me.TestClientButton.Enabled = False
+        Me.TestClientButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer))
+        Me.TestClientButton.Location = New System.Drawing.Point(97, 162)
+        Me.TestClientButton.Name = "TestClientButton"
+        Me.TestClientButton.Size = New System.Drawing.Size(85, 23)
+        Me.TestClientButton.TabIndex = 2
+        Me.TestClientButton.Text = "Test Client"
+        Me.TestClientButton.UseVisualStyleBackColor = True
         '
         'ClearLogButton
         '
@@ -108,24 +108,24 @@ Partial Class MainForm
         '
         Me.TrayMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TrayMenuShowApp, Me.ToolStripMenuItem1, Me.TrayMenuExit})
         Me.TrayMenu.Name = "TrayMenu"
-        Me.TrayMenu.Size = New System.Drawing.Size(125, 54)
+        Me.TrayMenu.Size = New System.Drawing.Size(104, 54)
         '
         'TrayMenuShowApp
         '
         Me.TrayMenuShowApp.Name = "TrayMenuShowApp"
-        Me.TrayMenuShowApp.Size = New System.Drawing.Size(124, 22)
-        Me.TrayMenuShowApp.Text = "Показать"
+        Me.TrayMenuShowApp.Size = New System.Drawing.Size(103, 22)
+        Me.TrayMenuShowApp.Text = "Show"
         '
         'ToolStripMenuItem1
         '
         Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(121, 6)
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(100, 6)
         '
         'TrayMenuExit
         '
         Me.TrayMenuExit.Name = "TrayMenuExit"
-        Me.TrayMenuExit.Size = New System.Drawing.Size(124, 22)
-        Me.TrayMenuExit.Text = "Выход"
+        Me.TrayMenuExit.Size = New System.Drawing.Size(103, 22)
+        Me.TrayMenuExit.Text = "Exit"
         '
         'SaveButton
         '
@@ -145,7 +145,7 @@ Partial Class MainForm
         Me.CloseButton.Name = "CloseButton"
         Me.CloseButton.Size = New System.Drawing.Size(75, 23)
         Me.CloseButton.TabIndex = 101
-        Me.CloseButton.Text = "Close"
+        Me.CloseButton.Text = "Exit"
         Me.CloseButton.UseVisualStyleBackColor = True
         '
         'AutorunServerCheckBox
@@ -364,9 +364,9 @@ Partial Class MainForm
         'DebugTab
         '
         Me.DebugTab.Controls.Add(Me.LogBox)
-        Me.DebugTab.Controls.Add(Me.ClientButton)
+        Me.DebugTab.Controls.Add(Me.TestClientButton)
         Me.DebugTab.Controls.Add(Me.ClearLogButton)
-        Me.DebugTab.Controls.Add(Me.ServerButtom)
+        Me.DebugTab.Controls.Add(Me.RunServerButton)
         Me.DebugTab.Location = New System.Drawing.Point(4, 22)
         Me.DebugTab.Name = "DebugTab"
         Me.DebugTab.Padding = New System.Windows.Forms.Padding(3)
@@ -424,8 +424,10 @@ Partial Class MainForm
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "MainForm"
+        Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "%APP_TITLE%"
+        Me.TopMost = True
         Me.TrayMenu.ResumeLayout(False)
         Me.TabPanel.ResumeLayout(False)
         Me.ServerTab.ResumeLayout(False)
@@ -438,8 +440,8 @@ Partial Class MainForm
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents ServerButtom As System.Windows.Forms.Button
-    Friend WithEvents ClientButton As System.Windows.Forms.Button
+    Friend WithEvents RunServerButton As System.Windows.Forms.Button
+    Friend WithEvents TestClientButton As System.Windows.Forms.Button
     Friend WithEvents ClearLogButton As System.Windows.Forms.Button
     Friend WithEvents SaveButton As System.Windows.Forms.Button
     Friend WithEvents CloseButton As System.Windows.Forms.Button

@@ -10,7 +10,7 @@ Partial Public Class MainForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub ServerBtn_Click(sender As Object, e As EventArgs) Handles ServerButtom.Click
+    Private Sub RunServerButton_Click(sender As Object, e As EventArgs) Handles RunServerButton.Click
         If Not TCPServer.isRunning Then
             TCPServer.OpenConnection()
         Else
@@ -24,7 +24,7 @@ Partial Public Class MainForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub ClientBtn_Click(sender As Object, e As EventArgs) Handles ClientButton.Click
+    Private Sub TestClientButton_Click(sender As Object, e As EventArgs) Handles TestClientButton.Click
         Try
             ' Подключение к серверу.
             Dim ip = Settings.GetIp()

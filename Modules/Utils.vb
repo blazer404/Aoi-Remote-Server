@@ -1,7 +1,7 @@
 ﻿Public Module Utils
 
-    Private Delegate Sub UpdateRichTextBoxDelegate(ByVal form As Form, ByVal textBox As TextBox, ByVal text As String)
-    Private Delegate Sub ClearRichTextBoxDelegate(ByVal form As Form, ByVal textBox As TextBox)
+    Private Delegate Sub UpdateTextBoxDelegate(ByVal form As Form, ByVal textBox As TextBox, ByVal text As String)
+    Private Delegate Sub ClearTextBoxDelegate(ByVal form As Form, ByVal textBox As TextBox)
 
     ''' <summary>
     ''' Добавление строки в TextBox
@@ -12,7 +12,7 @@
     ''' <remarks></remarks>
     Public Sub UpdateTextBox(form As Form, textBox As TextBox, text As String)
         If textBox.InvokeRequired Then
-            Dim handler As New UpdateRichTextBoxDelegate(AddressOf UpdateTextBox)
+            Dim handler As New UpdateTextBoxDelegate(AddressOf UpdateTextBox)
             form.Invoke(handler, textBox, text)
         Else
             textBox.AppendText(text & vbNewLine)
@@ -29,7 +29,7 @@
     ''' <remarks></remarks>
     Public Sub ClearTextBox(form As Form, textBox As TextBox)
         If textBox.InvokeRequired Then
-            Dim handler As New ClearRichTextBoxDelegate(AddressOf ClearTextBox)
+            Dim handler As New ClearTextBoxDelegate(AddressOf ClearTextBox)
             form.Invoke(handler, textBox, "")
         Else
             textBox.Text = ""

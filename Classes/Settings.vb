@@ -2,6 +2,7 @@
 
 
 Public Class Settings
+
     Public use_ip_v6 As Boolean = False
 
     ''' <summary>
@@ -78,7 +79,6 @@ Public Class Settings
         WindowsStartup.Remove()
         Utils.UpdateTextBox(MainForm, MainForm.LogBox, "Settings is reset")
     End Sub
-
 
     ''' <summary>
     ''' Получение IP

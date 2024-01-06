@@ -53,7 +53,6 @@
         PortInput.SelectionStart = PortInput.Text.Length
     End Sub
 
-
     ''' <summary>
     ''' Генерация случайного порта
     ''' </summary>

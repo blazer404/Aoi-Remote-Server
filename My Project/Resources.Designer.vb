@@ -26,7 +26,7 @@ Namespace My.Resources
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
      Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
-    Public Module Resources
+    Friend Module Resources
         
         Private resourceMan As Global.System.Resources.ResourceManager
         
@@ -36,7 +36,7 @@ Namespace My.Resources
         '''  Возвращает кэшированный экземпляр ResourceManager, использованный этим классом.
         '''</summary>
         <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Public ReadOnly Property ResourceManager() As Global.System.Resources.ResourceManager
+        Friend ReadOnly Property ResourceManager() As Global.System.Resources.ResourceManager
             Get
                 If Object.ReferenceEquals(resourceMan, Nothing) Then
                     Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("TSRC.Resources", GetType(Resources).Assembly)
@@ -51,13 +51,40 @@ Namespace My.Resources
         '''  обращений к ресурсу с помощью этого класса ресурса со строгой типизацией.
         '''</summary>
         <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Public Property Culture() As Global.System.Globalization.CultureInfo
+        Friend Property Culture() As Global.System.Globalization.CultureInfo
             Get
                 Return resourceCulture
             End Get
             Set
                 resourceCulture = value
             End Set
+        End Property
+        
+        '''<summary>
+        '''  Ищет локализованную строку, похожую на Exit.
+        '''</summary>
+        Friend ReadOnly Property s_Exit() As String
+            Get
+                Return ResourceManager.GetString("s_Exit", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Ищет локализованную строку, похожую на Hide.
+        '''</summary>
+        Friend ReadOnly Property s_Hide() As String
+            Get
+                Return ResourceManager.GetString("s_Hide", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Ищет локализованную строку, похожую на Show.
+        '''</summary>
+        Friend ReadOnly Property s_Show() As String
+            Get
+                Return ResourceManager.GetString("s_Show", resourceCulture)
+            End Get
         End Property
     End Module
 End Namespace
