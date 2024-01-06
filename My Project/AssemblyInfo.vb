@@ -9,8 +9,8 @@ Imports System.Runtime.InteropServices
 ' Проверьте значения атрибутов сборки
 
 <Assembly: AssemblyTitle("TSRC Server")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("")> 
+<Assembly: AssemblyDescription("Remote Control Server")> 
+<Assembly: AssemblyCompany("BlazeR404")> 
 <Assembly: AssemblyProduct("TSRC Server")> 
 <Assembly: AssemblyCopyright("Copyright ©  2024")> 
 <Assembly: AssemblyTrademark("")> 

@@ -21,16 +21,20 @@ Public Class Settings
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub Load()
-        ' Обновляем список ip
+        ' Основные
         GetIpList()
-        ' Заполняем настройки
         MainForm.Text = Application.ProductName + " v" + Application.ProductVersion
         MainForm.TrayIcon.Text = Application.ProductName
+        MainForm.AutorunAppCheckbox.Checked = WindowsStartup.IsActive
+        ' Сервер
         MainForm.IpInput.SelectedItem = GetIp()
         MainForm.PortInput.Text = GetPort()
         MainForm.Ipv6CheckBox.Checked = My.Settings.UseIPv6
         MainForm.AccessKeyInput.Text = My.Settings.AccessKey
         MainForm.AutorunServerCheckBox.Checked = My.Settings.AutorunTcpServer
+        ' Приложения
+        MainForm.AimpInput.Text = My.Settings.AimpPath
+        MainForm.MpcInput.Text = My.Settings.MpcPath
     End Sub
 
     ''' <summary>
@@ -38,6 +42,13 @@ Public Class Settings
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub Save()
+        ' Основные
+        If MainForm.AutorunAppCheckbox.Checked = True Then
+            WindowsStartup.Add()
+        Else
+            WindowsStartup.Remove()
+        End If
+        ' Сервер
         If MainForm.IpInput.Text <> "" Then
             My.Settings.UserIp = MainForm.IpInput.Text
         End If
@@ -47,6 +58,14 @@ Public Class Settings
         My.Settings.UseIPv6 = MainForm.Ipv6CheckBox.Checked
         My.Settings.AutorunTcpServer = MainForm.AutorunServerCheckBox.Checked
         My.Settings.AccessKey = MainForm.AccessKeyInput.Text
+        ' Приложения
+        If MainForm.AimpInput.Text <> "" Then
+            My.Settings.AimpPath = MainForm.AimpInput.Text
+        End If
+        If MainForm.MpcInput.Text <> "" Then
+            My.Settings.MpcPath = MainForm.MpcInput.Text
+        End If
+
         My.Settings.Save()
     End Sub
 

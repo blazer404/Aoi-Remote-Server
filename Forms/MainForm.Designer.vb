@@ -40,20 +40,16 @@ Partial Class MainForm
         Me.PortLabel = New System.Windows.Forms.Label()
         Me.AccessKeyLabel = New System.Windows.Forms.Label()
         Me.TabPanel = New System.Windows.Forms.TabControl()
-        Me.SettingsTab = New System.Windows.Forms.TabPage()
-        Me.Label1 = New System.Windows.Forms.Label()
+        Me.ServerTab = New System.Windows.Forms.TabPage()
+        Me.ServerStatusLabel = New System.Windows.Forms.Label()
         Me.PortInput = New System.Windows.Forms.TextBox()
         Me.AccessKeyInput = New System.Windows.Forms.TextBox()
-        Me.AutorunAppCheckbot = New System.Windows.Forms.CheckBox()
+        Me.AutorunAppCheckbox = New System.Windows.Forms.CheckBox()
         Me.Ipv6CheckBox = New System.Windows.Forms.CheckBox()
         Me.GitHubLink = New System.Windows.Forms.LinkLabel()
         Me.AccessKeyButton = New System.Windows.Forms.Button()
         Me.PortButton = New System.Windows.Forms.Button()
         Me.AppsTab = New System.Windows.Forms.TabPage()
-        Me.Label4 = New System.Windows.Forms.Label()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.MpcButton = New System.Windows.Forms.Button()
-        Me.AimpButton = New System.Windows.Forms.Button()
         Me.MpcInput = New System.Windows.Forms.TextBox()
         Me.MpcLabel = New System.Windows.Forms.Label()
         Me.AimpInput = New System.Windows.Forms.TextBox()
@@ -61,9 +57,10 @@ Partial Class MainForm
         Me.DebugTab = New System.Windows.Forms.TabPage()
         Me.LogBox = New System.Windows.Forms.TextBox()
         Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
+        Me.ResetButton = New System.Windows.Forms.Button()
         Me.TrayMenu.SuspendLayout()
         Me.TabPanel.SuspendLayout()
-        Me.SettingsTab.SuspendLayout()
+        Me.ServerTab.SuspendLayout()
         Me.AppsTab.SuspendLayout()
         Me.DebugTab.SuspendLayout()
         Me.FlowLayoutPanel1.SuspendLayout()
@@ -205,7 +202,7 @@ Partial Class MainForm
         '
         'TabPanel
         '
-        Me.TabPanel.Controls.Add(Me.SettingsTab)
+        Me.TabPanel.Controls.Add(Me.ServerTab)
         Me.TabPanel.Controls.Add(Me.AppsTab)
         Me.TabPanel.Controls.Add(Me.DebugTab)
         Me.TabPanel.Location = New System.Drawing.Point(11, 6)
@@ -214,39 +211,39 @@ Partial Class MainForm
         Me.TabPanel.Size = New System.Drawing.Size(284, 217)
         Me.TabPanel.TabIndex = 0
         '
-        'SettingsTab
+        'ServerTab
         '
-        Me.SettingsTab.Controls.Add(Me.Label1)
-        Me.SettingsTab.Controls.Add(Me.PortInput)
-        Me.SettingsTab.Controls.Add(Me.AccessKeyInput)
-        Me.SettingsTab.Controls.Add(Me.AutorunAppCheckbot)
-        Me.SettingsTab.Controls.Add(Me.Ipv6CheckBox)
-        Me.SettingsTab.Controls.Add(Me.GitHubLink)
-        Me.SettingsTab.Controls.Add(Me.AutorunServerCheckBox)
-        Me.SettingsTab.Controls.Add(Me.AccessKeyButton)
-        Me.SettingsTab.Controls.Add(Me.PortButton)
-        Me.SettingsTab.Controls.Add(Me.IpInput)
-        Me.SettingsTab.Controls.Add(Me.AccessKeyLabel)
-        Me.SettingsTab.Controls.Add(Me.IpLabel)
-        Me.SettingsTab.Controls.Add(Me.PortLabel)
-        Me.SettingsTab.Location = New System.Drawing.Point(4, 22)
-        Me.SettingsTab.Name = "SettingsTab"
-        Me.SettingsTab.Padding = New System.Windows.Forms.Padding(3, 6, 3, 3)
-        Me.SettingsTab.Size = New System.Drawing.Size(276, 191)
-        Me.SettingsTab.TabIndex = 0
-        Me.SettingsTab.Text = "Settings"
-        Me.SettingsTab.UseVisualStyleBackColor = True
+        Me.ServerTab.Controls.Add(Me.ServerStatusLabel)
+        Me.ServerTab.Controls.Add(Me.PortInput)
+        Me.ServerTab.Controls.Add(Me.AccessKeyInput)
+        Me.ServerTab.Controls.Add(Me.AutorunAppCheckbox)
+        Me.ServerTab.Controls.Add(Me.Ipv6CheckBox)
+        Me.ServerTab.Controls.Add(Me.GitHubLink)
+        Me.ServerTab.Controls.Add(Me.AutorunServerCheckBox)
+        Me.ServerTab.Controls.Add(Me.AccessKeyButton)
+        Me.ServerTab.Controls.Add(Me.PortButton)
+        Me.ServerTab.Controls.Add(Me.IpInput)
+        Me.ServerTab.Controls.Add(Me.AccessKeyLabel)
+        Me.ServerTab.Controls.Add(Me.IpLabel)
+        Me.ServerTab.Controls.Add(Me.PortLabel)
+        Me.ServerTab.Location = New System.Drawing.Point(4, 22)
+        Me.ServerTab.Name = "ServerTab"
+        Me.ServerTab.Padding = New System.Windows.Forms.Padding(3, 6, 3, 3)
+        Me.ServerTab.Size = New System.Drawing.Size(276, 191)
+        Me.ServerTab.TabIndex = 0
+        Me.ServerTab.Text = "Server"
+        Me.ServerTab.UseVisualStyleBackColor = True
         '
-        'Label1
+        'ServerStatusLabel
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.Label1.ForeColor = System.Drawing.Color.OrangeRed
-        Me.Label1.Location = New System.Drawing.Point(142, 169)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(42, 13)
-        Me.Label1.TabIndex = 19
-        Me.Label1.Text = "TODO"
+        Me.ServerStatusLabel.AutoSize = True
+        Me.ServerStatusLabel.ForeColor = System.Drawing.Color.IndianRed
+        Me.ServerStatusLabel.Location = New System.Drawing.Point(90, 105)
+        Me.ServerStatusLabel.Name = "ServerStatusLabel"
+        Me.ServerStatusLabel.Size = New System.Drawing.Size(89, 13)
+        Me.ServerStatusLabel.TabIndex = 21
+        Me.ServerStatusLabel.Text = "Server is stopped"
+        Me.ServerStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'PortInput
         '
@@ -262,15 +259,15 @@ Partial Class MainForm
         Me.AccessKeyInput.Size = New System.Drawing.Size(116, 20)
         Me.AccessKeyInput.TabIndex = 17
         '
-        'AutorunAppCheckbot
+        'AutorunAppCheckbox
         '
-        Me.AutorunAppCheckbot.AutoSize = True
-        Me.AutorunAppCheckbot.Location = New System.Drawing.Point(6, 168)
-        Me.AutorunAppCheckbot.Name = "AutorunAppCheckbot"
-        Me.AutorunAppCheckbot.Size = New System.Drawing.Size(143, 17)
-        Me.AutorunAppCheckbot.TabIndex = 8
-        Me.AutorunAppCheckbot.Text = "Run on Windows startup"
-        Me.AutorunAppCheckbot.UseVisualStyleBackColor = True
+        Me.AutorunAppCheckbox.AutoSize = True
+        Me.AutorunAppCheckbox.Location = New System.Drawing.Point(6, 168)
+        Me.AutorunAppCheckbox.Name = "AutorunAppCheckbox"
+        Me.AutorunAppCheckbox.Size = New System.Drawing.Size(143, 17)
+        Me.AutorunAppCheckbox.TabIndex = 8
+        Me.AutorunAppCheckbox.Text = "Run on Windows startup"
+        Me.AutorunAppCheckbox.UseVisualStyleBackColor = True
         '
         'Ipv6CheckBox
         '
@@ -316,10 +313,6 @@ Partial Class MainForm
         '
         'AppsTab
         '
-        Me.AppsTab.Controls.Add(Me.Label4)
-        Me.AppsTab.Controls.Add(Me.Label3)
-        Me.AppsTab.Controls.Add(Me.MpcButton)
-        Me.AppsTab.Controls.Add(Me.AimpButton)
         Me.AppsTab.Controls.Add(Me.MpcInput)
         Me.AppsTab.Controls.Add(Me.MpcLabel)
         Me.AppsTab.Controls.Add(Me.AimpInput)
@@ -332,54 +325,12 @@ Partial Class MainForm
         Me.AppsTab.Text = "Apps"
         Me.AppsTab.UseVisualStyleBackColor = True
         '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.Label4.ForeColor = System.Drawing.Color.OrangeRed
-        Me.Label4.Location = New System.Drawing.Point(219, 36)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(42, 13)
-        Me.Label4.TabIndex = 24
-        Me.Label4.Text = "TODO"
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.Label3.ForeColor = System.Drawing.Color.OrangeRed
-        Me.Label3.Location = New System.Drawing.Point(219, 10)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(42, 13)
-        Me.Label3.TabIndex = 23
-        Me.Label3.Text = "TODO"
-        '
-        'MpcButton
-        '
-        Me.MpcButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer))
-        Me.MpcButton.Location = New System.Drawing.Point(247, 33)
-        Me.MpcButton.Name = "MpcButton"
-        Me.MpcButton.Size = New System.Drawing.Size(23, 20)
-        Me.MpcButton.TabIndex = 4
-        Me.MpcButton.Text = "..."
-        Me.MpcButton.UseVisualStyleBackColor = True
-        '
-        'AimpButton
-        '
-        Me.AimpButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer))
-        Me.AimpButton.Location = New System.Drawing.Point(247, 7)
-        Me.AimpButton.Name = "AimpButton"
-        Me.AimpButton.Size = New System.Drawing.Size(23, 20)
-        Me.AimpButton.TabIndex = 2
-        Me.AimpButton.Text = "..."
-        Me.AimpButton.UseVisualStyleBackColor = True
-        '
         'MpcInput
         '
         Me.MpcInput.Location = New System.Drawing.Point(57, 33)
         Me.MpcInput.Name = "MpcInput"
         Me.MpcInput.ReadOnly = True
-        Me.MpcInput.Size = New System.Drawing.Size(184, 20)
+        Me.MpcInput.Size = New System.Drawing.Size(213, 20)
         Me.MpcInput.TabIndex = 3
         '
         'MpcLabel
@@ -397,7 +348,7 @@ Partial Class MainForm
         Me.AimpInput.Location = New System.Drawing.Point(57, 7)
         Me.AimpInput.Name = "AimpInput"
         Me.AimpInput.ReadOnly = True
-        Me.AimpInput.Size = New System.Drawing.Size(184, 20)
+        Me.AimpInput.Size = New System.Drawing.Size(213, 20)
         Me.AimpInput.TabIndex = 1
         '
         'AimpLabel
@@ -441,6 +392,7 @@ Partial Class MainForm
         Me.FlowLayoutPanel1.Controls.Add(Me.TabPanel)
         Me.FlowLayoutPanel1.Controls.Add(Me.CloseButton)
         Me.FlowLayoutPanel1.Controls.Add(Me.SaveButton)
+        Me.FlowLayoutPanel1.Controls.Add(Me.ResetButton)
         Me.FlowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.FlowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft
         Me.FlowLayoutPanel1.Location = New System.Drawing.Point(0, 0)
@@ -448,6 +400,17 @@ Partial Class MainForm
         Me.FlowLayoutPanel1.Padding = New System.Windows.Forms.Padding(3)
         Me.FlowLayoutPanel1.Size = New System.Drawing.Size(304, 265)
         Me.FlowLayoutPanel1.TabIndex = 16
+        '
+        'ResetButton
+        '
+        Me.ResetButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer))
+        Me.ResetButton.Location = New System.Drawing.Point(10, 229)
+        Me.ResetButton.Margin = New System.Windows.Forms.Padding(3, 3, 50, 3)
+        Me.ResetButton.Name = "ResetButton"
+        Me.ResetButton.Size = New System.Drawing.Size(75, 23)
+        Me.ResetButton.TabIndex = 102
+        Me.ResetButton.Text = "Reset"
+        Me.ResetButton.UseVisualStyleBackColor = True
         '
         'MainForm
         '
@@ -465,8 +428,8 @@ Partial Class MainForm
         Me.Text = "%APP_TITLE%"
         Me.TrayMenu.ResumeLayout(False)
         Me.TabPanel.ResumeLayout(False)
-        Me.SettingsTab.ResumeLayout(False)
-        Me.SettingsTab.PerformLayout()
+        Me.ServerTab.ResumeLayout(False)
+        Me.ServerTab.PerformLayout()
         Me.AppsTab.ResumeLayout(False)
         Me.AppsTab.PerformLayout()
         Me.DebugTab.ResumeLayout(False)
@@ -486,22 +449,20 @@ Partial Class MainForm
     Friend WithEvents PortLabel As System.Windows.Forms.Label
     Friend WithEvents AccessKeyLabel As System.Windows.Forms.Label
     Friend WithEvents TabPanel As System.Windows.Forms.TabControl
-    Friend WithEvents SettingsTab As System.Windows.Forms.TabPage
+    Friend WithEvents ServerTab As System.Windows.Forms.TabPage
     Friend WithEvents AccessKeyButton As System.Windows.Forms.Button
     Friend WithEvents PortButton As System.Windows.Forms.Button
     Friend WithEvents DebugTab As System.Windows.Forms.TabPage
     Friend WithEvents AppsTab As System.Windows.Forms.TabPage
     Friend WithEvents LogBox As System.Windows.Forms.TextBox
     Friend WithEvents FlowLayoutPanel1 As System.Windows.Forms.FlowLayoutPanel
-    Friend WithEvents MpcButton As System.Windows.Forms.Button
-    Friend WithEvents AimpButton As System.Windows.Forms.Button
     Friend WithEvents MpcInput As System.Windows.Forms.TextBox
     Friend WithEvents MpcLabel As System.Windows.Forms.Label
     Friend WithEvents AimpInput As System.Windows.Forms.TextBox
     Friend WithEvents AimpLabel As System.Windows.Forms.Label
     Friend WithEvents Ipv6CheckBox As System.Windows.Forms.CheckBox
     Friend WithEvents GitHubLink As System.Windows.Forms.LinkLabel
-    Friend WithEvents AutorunAppCheckbot As System.Windows.Forms.CheckBox
+    Friend WithEvents AutorunAppCheckbox As System.Windows.Forms.CheckBox
     Friend WithEvents TrayMenu As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents TrayMenuShowApp As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripMenuItem1 As System.Windows.Forms.ToolStripSeparator
@@ -509,8 +470,7 @@ Partial Class MainForm
     Friend WithEvents TrayIcon As System.Windows.Forms.NotifyIcon
     Friend WithEvents AccessKeyInput As System.Windows.Forms.TextBox
     Friend WithEvents PortInput As System.Windows.Forms.TextBox
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents Label4 As System.Windows.Forms.Label
-    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents ServerStatusLabel As System.Windows.Forms.Label
+    Friend WithEvents ResetButton As System.Windows.Forms.Button
 
 End Class

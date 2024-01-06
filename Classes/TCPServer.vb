@@ -23,6 +23,8 @@ Public Class TCPServer
             MainForm.ServerButtom.Text = "Stop Server"
             MainForm.ClientButton.Enabled = True
             Utils.UpdateTextBox(MainForm, MainForm.LogBox, "Server is running..." + vbNewLine + "Waiting for a connection...")
+            MainForm.ServerStatusLabel.Text = "Server is running"
+            MainForm.ServerStatusLabel.ForeColor = Color.LimeGreen
         End If
     End Sub
 
@@ -78,6 +80,8 @@ Public Class TCPServer
             MainForm.ServerButtom.Text = "Start Server"
             MainForm.ClientButton.Enabled = False
             Utils.UpdateTextBox(MainForm, MainForm.LogBox, "Server is stopped...")
+            MainForm.ServerStatusLabel.Text = "Server is stopped"
+            MainForm.ServerStatusLabel.ForeColor = Color.IndianRed
         End If
     End Sub
 

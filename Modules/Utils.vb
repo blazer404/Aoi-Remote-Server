@@ -37,7 +37,7 @@
     End Sub
 
     ''' <summary>
-    ''' Генерируем ключ
+    ''' Генерируем ключ по алфавиту
     ''' </summary>
     ''' <param name="maxLenght"></param>
     ''' <returns></returns>
@@ -53,5 +53,14 @@
         Return key
     End Function
 
+    ''' <summary>
+    ''' Генерируем случайный порт в диапазоне от 10000 до 65535
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Function GeneratePort()
+        Dim random As New Random
+        Return random.Next(10000, 65535)
+    End Function
 
 End Module
