@@ -37,6 +37,24 @@
     End Sub
 
     ''' <summary>
+    ''' Обновление лога
+    ''' </summary>
+    ''' <param name="text"></param>
+    ''' <remarks></remarks>
+    Public Sub UpdateDebugLog(text As String)
+        UpdateTextBox(MainForm, MainForm.LogBox, text)
+    End Sub
+
+    ''' <summary>
+    ''' Очистка лога
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub ClearDebugLog()
+        ClearTextBox(MainForm, MainForm.LogBox)
+    End Sub
+
+
+    ''' <summary>
     ''' Генерируем ключ по алфавиту
     ''' </summary>
     ''' <param name="maxLenght"></param>

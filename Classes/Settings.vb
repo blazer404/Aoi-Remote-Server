@@ -77,7 +77,7 @@ Public Class Settings
     Public Sub Reset()
         My.Settings.Reset()
         WindowsStartup.Remove()
-        Utils.UpdateTextBox(MainForm, MainForm.LogBox, "Settings is reset")
+        Utils.UpdateDebugLog("Settings is reset")
     End Sub
 
     ''' <summary>

@@ -19,7 +19,7 @@ Public Class TCPServer
             serverThread = New Thread(AddressOf StartListener)
             serverThread.Start()
             isRunning = True
-            Utils.UpdateTextBox(MainForm, MainForm.LogBox, "Server is running..." + vbNewLine + "Waiting for a connection...")
+            Utils.UpdateDebugLog("Server is running..." + vbNewLine + "Waiting for a connection...")
             MainForm.RunServerButton.Text = "Stop Server"
             MainForm.TestClientButton.Enabled = True
             MainForm.ServerStatusLabel.Text = "Server is running"
@@ -37,7 +37,7 @@ Public Class TCPServer
             serverThread.Abort()
             server.Stop()
             isRunning = False
-            Utils.UpdateTextBox(MainForm, MainForm.LogBox, "Server is stopped...")
+            Utils.UpdateDebugLog("Server is stopped...")
             MainForm.RunServerButton.Text = "Start Server"
             MainForm.TestClientButton.Enabled = False
             MainForm.ServerStatusLabel.Text = "Server is stopped"
@@ -62,7 +62,7 @@ Public Class TCPServer
                 clientThread.Start()
             End While
         Catch e As SocketException
-            Utils.UpdateTextBox(MainForm, MainForm.LogBox, "SocketException: " + e.Message)
+            Utils.UpdateDebugLog("SocketException: " + e.Message)
         Finally
             server.Stop()
         End Try
@@ -79,6 +79,16 @@ Public Class TCPServer
             Dim data As Byte() = New Byte(256) {}
             Dim bytesRead As Integer = stream.Read(data, 0, data.Length)
             Dim responseData As String = Encoding.UTF8.GetString(data, 0, bytesRead)
+
+
+            ' TODO Вывести принятое в дебаг-лог (invoke вызывает открытие другого потока - пофиксить)
+            '   обработать действия по свитчу
+            '   
+
+            'Utils.UpdateDebugLog(responseData)
+
+
+
             ' Отправка данных клиенту.
             Dim message As Byte() = Encoding.UTF8.GetBytes("Hello from server")
             stream.Write(message, 0, message.Length)

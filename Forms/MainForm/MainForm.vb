@@ -72,7 +72,7 @@
     Private Sub SaveButton_Click(sender As Object, e As EventArgs) Handles SaveButton.Click
         TCPServer.CloseConnection()
         Settings.Save()
-        Utils.UpdateTextBox(Me, Me.LogBox, "Settings is saved")
+        Utils.UpdateDebugLog("Settings is saved")
         If AutorunServerCheckBox.Checked = True Then
             TCPServer.OpenConnection()
         End If
