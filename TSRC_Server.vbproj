@@ -40,6 +40,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>TSRC Server.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -50,6 +51,7 @@
     <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>TSRC Server.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <OptionExplicit>On</OptionExplicit>
@@ -94,32 +96,26 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Forms\MainForm\MainForm.vb">
+    <Compile Include="Forms\MainForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\MainForm\MainForm.Designer.vb">
+    <Compile Include="Forms\MainForm.Designer.vb">
       <DependentUpon>MainForm.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\MainForm\_AppsTab.vb">
+    <Compile Include="Forms\_AppsTab.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\MainForm\_DebugTab.vb">
+    <Compile Include="Forms\_DebugTab.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\MainForm\_ServerTab.vb">
+    <Compile Include="Forms\_ServerTab.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\MainForm\_TrayMenu.vb">
+    <Compile Include="Forms\_TrayMenu.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Classes\Settings.vb" />
-    <Compile Include="Forms\TestClientForm\TestClientForm.Designer.vb">
-      <DependentUpon>TestClientForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\TestClientForm\TestClientForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Modules\WindowsStartup.vb" />
     <Compile Include="Modules\Utils.vb" />
     <Compile Include="Classes\TCPServer.vb" />
@@ -140,11 +136,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Forms\MainForm\MainForm.resx">
+    <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\TestClientForm\TestClientForm.resx">
-      <DependentUpon>TestClientForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

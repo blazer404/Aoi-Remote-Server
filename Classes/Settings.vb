@@ -77,7 +77,7 @@ Public Class Settings
     Public Sub Reset()
         My.Settings.Reset()
         WindowsStartup.Remove()
-        Utils.UpdateDebugLog("Settings is reset")
+        Utils.UpdateTextBox(MainForm.LogBox, "Settings is reset")
     End Sub
 
     ''' <summary>
@@ -114,8 +114,7 @@ Public Class Settings
         Dim hostName As String = Dns.GetHostName()
         Dim addresses() As IPAddress = Dns.GetHostAddresses(hostName)
         MainForm.IpInput.Items.Clear()
-        MainForm.IpInput.Items.Add("0.0.0.0")
-        MainForm.IpInput.Items.Add("127.0.0.1")
+        MainForm.IpInput.Items.Add(IPAddress.Any)
         For Each address As IPAddress In addresses
             If use_ip_v6 = True Or address.AddressFamily = Sockets.AddressFamily.InterNetwork Then
                 MainForm.IpInput.Items.Add(address.ToString())

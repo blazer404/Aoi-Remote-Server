@@ -25,7 +25,6 @@ Partial Class MainForm
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
         Me.RunServerButton = New System.Windows.Forms.Button()
-        Me.TestClientButton = New System.Windows.Forms.Button()
         Me.ClearLogButton = New System.Windows.Forms.Button()
         Me.TrayIcon = New System.Windows.Forms.NotifyIcon(Me.components)
         Me.TrayMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -75,17 +74,6 @@ Partial Class MainForm
         Me.RunServerButton.TabIndex = 1
         Me.RunServerButton.Text = "Start Server"
         Me.RunServerButton.UseVisualStyleBackColor = True
-        '
-        'TestClientButton
-        '
-        Me.TestClientButton.Enabled = False
-        Me.TestClientButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer))
-        Me.TestClientButton.Location = New System.Drawing.Point(97, 162)
-        Me.TestClientButton.Name = "TestClientButton"
-        Me.TestClientButton.Size = New System.Drawing.Size(85, 23)
-        Me.TestClientButton.TabIndex = 2
-        Me.TestClientButton.Text = "Test Client"
-        Me.TestClientButton.UseVisualStyleBackColor = True
         '
         'ClearLogButton
         '
@@ -364,7 +352,6 @@ Partial Class MainForm
         'DebugTab
         '
         Me.DebugTab.Controls.Add(Me.LogBox)
-        Me.DebugTab.Controls.Add(Me.TestClientButton)
         Me.DebugTab.Controls.Add(Me.ClearLogButton)
         Me.DebugTab.Controls.Add(Me.RunServerButton)
         Me.DebugTab.Location = New System.Drawing.Point(4, 22)
@@ -383,6 +370,7 @@ Partial Class MainForm
         Me.LogBox.Name = "LogBox"
         Me.LogBox.ReadOnly = True
         Me.LogBox.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.LogBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.LogBox.Size = New System.Drawing.Size(270, 150)
         Me.LogBox.TabIndex = 1
         Me.LogBox.TabStop = False
@@ -441,7 +429,6 @@ Partial Class MainForm
 
     End Sub
     Friend WithEvents RunServerButton As System.Windows.Forms.Button
-    Friend WithEvents TestClientButton As System.Windows.Forms.Button
     Friend WithEvents ClearLogButton As System.Windows.Forms.Button
     Friend WithEvents SaveButton As System.Windows.Forms.Button
     Friend WithEvents CloseButton As System.Windows.Forms.Button

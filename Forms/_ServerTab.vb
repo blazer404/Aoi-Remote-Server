@@ -59,7 +59,7 @@
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub portButton_Click(sender As Object, e As EventArgs) Handles PortButton.Click
+    Private Sub PortButton_Click(sender As Object, e As EventArgs) Handles PortButton.Click
         PortInput.Text = Utils.GeneratePort
     End Sub
 

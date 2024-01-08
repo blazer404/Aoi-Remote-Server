@@ -1,56 +1,22 @@
 ﻿Public Module Utils
 
-    Private Delegate Sub UpdateTextBoxDelegate(ByVal form As Form, ByVal textBox As TextBox, ByVal text As String)
-    Private Delegate Sub ClearTextBoxDelegate(ByVal form As Form, ByVal textBox As TextBox)
-
     ''' <summary>
     ''' Добавление строки в TextBox
     ''' </summary>
-    ''' <param name="form"></param>
     ''' <param name="textBox"></param>
     ''' <param name="text"></param>
     ''' <remarks></remarks>
-    Public Sub UpdateTextBox(form As Form, textBox As TextBox, text As String)
-        If textBox.InvokeRequired Then
-            Dim handler As New UpdateTextBoxDelegate(AddressOf UpdateTextBox)
-            form.Invoke(handler, textBox, text)
-        Else
-            textBox.AppendText(text & vbNewLine)
-        End If
-        textBox.SelectionStart = textBox.Text.Length
-        textBox.ScrollToCaret()
+    Public Sub UpdateTextBox(textBox As TextBox, text As String)
+        textBox.AppendText(text & vbNewLine)
     End Sub
 
     ''' <summary>
     ''' Очистка текста в TextBox
     ''' </summary>
-    ''' <param name="form"></param>
     ''' <param name="textBox"></param>
     ''' <remarks></remarks>
-    Public Sub ClearTextBox(form As Form, textBox As TextBox)
-        If textBox.InvokeRequired Then
-            Dim handler As New ClearTextBoxDelegate(AddressOf ClearTextBox)
-            form.Invoke(handler, textBox, "")
-        Else
-            textBox.Text = ""
-        End If
-    End Sub
-
-    ''' <summary>
-    ''' Обновление лога
-    ''' </summary>
-    ''' <param name="text"></param>
-    ''' <remarks></remarks>
-    Public Sub UpdateDebugLog(text As String)
-        UpdateTextBox(MainForm, MainForm.LogBox, text)
-    End Sub
-
-    ''' <summary>
-    ''' Очистка лога
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Sub ClearDebugLog()
-        ClearTextBox(MainForm, MainForm.LogBox)
+    Public Sub ClearTextBox(textBox As TextBox)
+        textBox.Text = ""
     End Sub
 
 

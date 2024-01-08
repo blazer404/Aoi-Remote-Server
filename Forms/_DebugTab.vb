@@ -1,8 +1,4 @@
-﻿'Imports System.Net.Sockets
-'Imports System.Text
-
-
-Partial Public Class MainForm
+﻿Partial Public Class MainForm
 
     ''' <summary>
     ''' Нажатие на кнопку запуска/остановки сервера
@@ -19,23 +15,13 @@ Partial Public Class MainForm
     End Sub
 
     ''' <summary>
-    ''' Нажатие на кнопку клиента
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
-    Private Sub TestClientButton_Click(sender As Object, e As EventArgs) Handles TestClientButton.Click
-        TestClientForm.Show()
-    End Sub
-
-    ''' <summary>
     ''' Нажатие на кнопку лога
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub ClearLogButton_Click(sender As Object, e As EventArgs) Handles ClearLogButton.Click
-        Utils.ClearDebugLog()
+        Utils.ClearTextBox(LogBox)
     End Sub
 
 End Class
