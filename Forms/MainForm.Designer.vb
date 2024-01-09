@@ -224,14 +224,13 @@ Partial Class MainForm
         '
         'ServerStatusLabel
         '
-        Me.ServerStatusLabel.AutoSize = True
         Me.ServerStatusLabel.ForeColor = System.Drawing.Color.IndianRed
-        Me.ServerStatusLabel.Location = New System.Drawing.Point(90, 105)
+        Me.ServerStatusLabel.Location = New System.Drawing.Point(11, 105)
         Me.ServerStatusLabel.Name = "ServerStatusLabel"
-        Me.ServerStatusLabel.Size = New System.Drawing.Size(89, 13)
+        Me.ServerStatusLabel.Size = New System.Drawing.Size(258, 13)
         Me.ServerStatusLabel.TabIndex = 21
         Me.ServerStatusLabel.Text = "Server is stopped"
-        Me.ServerStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.ServerStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'PortInput
         '

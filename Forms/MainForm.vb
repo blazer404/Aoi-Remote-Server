@@ -3,12 +3,46 @@
     Private TCPServer As TCPServer
     Private Settings As Settings
 
-    Sub UpdateLog(ByVal data As String) Implements TCPServer.OnReceiveDataListener.UpdateLog
-        LogBox.Invoke(New Action(Of String)(AddressOf UpdateLogText), data)
+    Sub OnOpenConnection() Implements TCPServer.OnReceiveDataListener.OnOpenConnection
+        Me.Invoke(New Action(AddressOf OpenConnectionAction))
+    End Sub
+
+    Sub OnCloseConnection() Implements TCPServer.OnReceiveDataListener.OnCloseConnection
+        Me.Invoke(New Action(AddressOf CloseConnectionAction))
     End Sub
 
     Sub OnDataReceived(ByVal data As String) Implements TCPServer.OnReceiveDataListener.OnDataReceived
         LogBox.Invoke(New Action(Of String)(AddressOf UpdateLogText), data)
+    End Sub
+
+    Sub UpdateLog(ByVal data As String) Implements TCPServer.OnReceiveDataListener.UpdateLog
+        LogBox.Invoke(New Action(Of String)(AddressOf UpdateLogText), data)
+    End Sub
+
+    ''' <summary>
+    ''' Действие при успешном включении сервера
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private Sub OpenConnectionAction()
+        TCPServer.isRunning = True
+        UpdateLog("Server is running")
+        RunServerButton.Text = "Stop Server"
+        ServerStatusLabel.Text = "Server is running"
+        ServerStatusLabel.ForeColor = Color.Green
+        CloseButton.Text = My.Resources.s_Hide
+    End Sub
+
+    ''' <summary>
+    ''' Действие при отключении сервера
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private Sub CloseConnectionAction()
+        TCPServer.isRunning = False
+        UpdateLog("Server is stopped")
+        RunServerButton.Text = "Start Server"
+        ServerStatusLabel.Text = "Server is stopped"
+        ServerStatusLabel.ForeColor = Color.IndianRed
+        CloseButton.Text = My.Resources.s_Exit
     End Sub
 
     ''' <summary>

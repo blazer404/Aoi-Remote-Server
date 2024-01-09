@@ -18,17 +18,19 @@ Public Class TCPServer
     ''' </summary>
     ''' <remarks></remarks>
     Interface OnReceiveDataListener
-        Sub UpdateLog(ByVal data As String)
+        Sub OnCloseConnection()
+        Sub OnOpenConnection()
         Sub OnDataReceived(ByVal data As String)
+        Sub UpdateLog(ByVal data As String)
     End Interface
 
     ''' <summary>
     ''' Установка слушателя для получения сообщений
     ''' </summary>
-    ''' <param name="listenerObject"></param>
+    ''' <param name="obj"></param>
     ''' <remarks></remarks>
-    Public Sub SetListener(ByVal listenerObject As Object)
-        Listener = listenerObject
+    Public Sub SetListener(ByVal obj As Object)
+        Listener = obj
     End Sub
 
     ''' <summary>
@@ -37,19 +39,15 @@ Public Class TCPServer
     ''' <remarks></remarks>
     Public Sub OpenConnection()
         Try
+            Listener.UpdateLog("Open connection")
             If Not isRunning Then
                 DestroyServerThread()
                 ServerThread = New Thread(AddressOf CreateServer)
                 ServerThread.Start()
-                isRunning = True
-                Listener.UpdateLog("Server is running")
-                MainForm.RunServerButton.Text = "Stop Server"
-                MainForm.ServerStatusLabel.Text = "Server is running"
-                MainForm.ServerStatusLabel.ForeColor = Color.Green
-                MainForm.CloseButton.Text = My.Resources.s_Hide
             End If
         Catch ex As Exception
-            Listener.UpdateLog("OpenConnection Exception: " & ex.Message)
+            Listener.OnCloseConnection()
+            Listener.UpdateLog("☻ Exception: " & ex.Message)
         End Try
     End Sub
 
@@ -59,19 +57,16 @@ Public Class TCPServer
     ''' <remarks></remarks>
     Public Sub CloseConnection()
         Try
+            Listener.UpdateLog("Close connection")
             If isRunning Then
                 DestroyServer()
                 DestroyClient()
                 DestroyServerThread()
-                isRunning = False
-                Listener.UpdateLog("Server is stopped")
-                MainForm.RunServerButton.Text = "Start Server"
-                MainForm.ServerStatusLabel.Text = "Server is stopped"
-                MainForm.ServerStatusLabel.ForeColor = Color.IndianRed
-                MainForm.CloseButton.Text = My.Resources.s_Exit
             End If
         Catch ex As Exception
-            Listener.UpdateLog("CloseConnection exception: " & ex.Message)
+            Listener.UpdateLog("☻ Exception: " & ex.Message)
+        Finally
+            Listener.OnCloseConnection()
         End Try
     End Sub
 
@@ -81,11 +76,14 @@ Public Class TCPServer
     ''' <remarks></remarks>
     Public Sub CreateServer()
         Try
+            Listener.UpdateLog("Create server")
+            DestroyServer()
             Dim settings As New Settings
             Dim ip As IPAddress = IPAddress.Parse(settings.GetIp())
             Dim port As Integer = Integer.Parse(settings.GetPort())
             Server = New TcpListener(ip, port)
             Server.Start()
+            Listener.OnOpenConnection()
             While True
                 If Server Is Nothing Then
                     Exit While
@@ -93,11 +91,13 @@ Public Class TCPServer
                 Client = Server.AcceptTcpClient()
                 ProcessClient(Client)
             End While
-        Catch ex As Exception
-            'Listener.UpdateLog("CreateServer exception: " & ex.Message)
-            'Listener.UpdateLog("CreateServer exception: " & ex.StackTrace)
-        Finally
-            DestroyServer()
+        Catch ex As SocketException
+            If ex.ErrorCode = 10048 Then
+                Listener.UpdateLog("☻ Exception: Port is busy")
+            Else
+                Listener.UpdateLog("☻ Exception: " & ex.Message)
+            End If
+            Listener.OnCloseConnection()
         End Try
     End Sub
 
@@ -120,13 +120,14 @@ Public Class TCPServer
             i = stream.Read(bytes, 0, bytes.Length)
         End While
         DestroyClient()
+        Listener.UpdateLog("Client disconnected")
     End Sub
 
     ''' <summary>
     ''' Уничтожение сервера
     ''' </summary>
     ''' <remarks></remarks>
-    Public Sub DestroyServer()
+    Private Sub DestroyServer()
         If Server IsNot Nothing Then
             Server.Stop()
             Server = Nothing
