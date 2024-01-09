@@ -114,7 +114,7 @@ Public Class TCPServer
         Dim stream As NetworkStream = client.GetStream()
         Dim i As Integer = stream.Read(bytes, 0, bytes.Length)
         While i <> 0
-            data = System.Text.Encoding.UTF8.GetString(bytes, 0, i)
+            data = Encoding.UTF8.GetString(bytes, 0, i)
             Listener.UpdateLog("Received: " & data.ToString())
             'todo обработать действия от клиента
             i = stream.Read(bytes, 0, bytes.Length)

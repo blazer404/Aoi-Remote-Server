@@ -27,6 +27,7 @@ Public Class Settings
         MainForm.Text = Application.ProductName + " v" + Application.ProductVersion
         MainForm.TrayIcon.Text = Application.ProductName
         MainForm.AutorunAppCheckbox.Checked = WindowsStartup.IsActive
+        MainForm.ShowDebugCheckBox.Checked = My.Settings.ShowDebug
         ' Сервер
         MainForm.IpInput.SelectedItem = GetIp()
         MainForm.PortInput.Text = GetPort()
@@ -66,7 +67,7 @@ Public Class Settings
         If MainForm.MpcInput.Text <> "" Then
             My.Settings.MpcPath = MainForm.MpcInput.Text
         End If
-
+        My.Settings.ShowDebug = MainForm.ShowDebugCheckBox.Checked
         My.Settings.Save()
     End Sub
 

@@ -19,7 +19,6 @@
         textBox.Text = ""
     End Sub
 
-
     ''' <summary>
     ''' Генерируем ключ по алфавиту
     ''' </summary>

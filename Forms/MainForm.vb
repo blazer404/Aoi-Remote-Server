@@ -12,11 +12,11 @@
     End Sub
 
     Sub OnDataReceived(ByVal data As String) Implements TCPServer.OnReceiveDataListener.OnDataReceived
-        LogBox.Invoke(New Action(Of String)(AddressOf UpdateLogText), data)
+        Me.Invoke(New Action(Of String)(AddressOf UpdateLogText), data)
     End Sub
 
     Sub UpdateLog(ByVal data As String) Implements TCPServer.OnReceiveDataListener.UpdateLog
-        LogBox.Invoke(New Action(Of String)(AddressOf UpdateLogText), data)
+        Me.Invoke(New Action(Of String)(AddressOf UpdateLogText), data)
     End Sub
 
     ''' <summary>
@@ -51,7 +51,9 @@
     ''' <param name="data"></param>
     ''' <remarks></remarks>
     Private Sub UpdateLogText(ByVal data As String)
-        Utils.UpdateTextBox(LogBox, data)
+        If ShowDebugCheckBox.Checked = True Then
+            Utils.UpdateTextBox(LogBox, data)
+        End If
     End Sub
 
     ''' <summary>
@@ -61,15 +63,17 @@
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        ' Определяем начальное поведение
+        TabPanel.TabPages.Remove(DebugTab)
+        ' Грузим настройки
         My.Settings.Upgrade()
         Settings = New Settings
         Settings.Load()
+        ' Создаем сервера и запускаем если надо
         TCPServer = New TCPServer
         TCPServer.SetListener(Me)
-        If My.Settings.AutorunTcpServer Then
-            TCPServer.OpenConnection()
-        End If
         If My.Settings.AutorunTcpServer = True Then
+            TCPServer.OpenConnection()
             Me.CloseButton.Text = My.Resources.s_Hide
             Me.Opacity = 0 ' Очень важный костыль - не трогай
         Else
@@ -124,7 +128,7 @@
     Private Sub SaveButton_Click(sender As Object, e As EventArgs) Handles SaveButton.Click
         TCPServer.CloseConnection()
         Settings.Save()
-        Utils.UpdateTextBox(LogBox, "Settings is saved")
+        UpdateLogText("Settings is saved")
         If AutorunServerCheckBox.Checked = True Then
             TCPServer.OpenConnection()
         End If
@@ -142,6 +146,21 @@
             TCPServer.CloseConnection()
             Settings.Reset()
             Settings.Load()
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Отображение вкладки отладки
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub ShowDebugCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles ShowDebugCheckBox.CheckedChanged
+        Dim index As Integer = TabPanel.TabCount
+        If ShowDebugCheckBox.Checked = True Then
+            TabPanel.TabPages.Insert(index, DebugTab)
+        Else
+            TabPanel.TabPages.Remove(DebugTab)
         End If
     End Sub
 

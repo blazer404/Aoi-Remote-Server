@@ -40,6 +40,7 @@ Partial Class MainForm
         Me.AccessKeyLabel = New System.Windows.Forms.Label()
         Me.TabPanel = New System.Windows.Forms.TabControl()
         Me.ServerTab = New System.Windows.Forms.TabPage()
+        Me.ShowDebugCheckBox = New System.Windows.Forms.CheckBox()
         Me.ServerStatusLabel = New System.Windows.Forms.Label()
         Me.PortInput = New System.Windows.Forms.TextBox()
         Me.AccessKeyInput = New System.Windows.Forms.TextBox()
@@ -201,6 +202,7 @@ Partial Class MainForm
         '
         'ServerTab
         '
+        Me.ServerTab.Controls.Add(Me.ShowDebugCheckBox)
         Me.ServerTab.Controls.Add(Me.ServerStatusLabel)
         Me.ServerTab.Controls.Add(Me.PortInput)
         Me.ServerTab.Controls.Add(Me.AccessKeyInput)
@@ -222,12 +224,22 @@ Partial Class MainForm
         Me.ServerTab.Text = "Server"
         Me.ServerTab.UseVisualStyleBackColor = True
         '
+        'ShowDebugCheckBox
+        '
+        Me.ShowDebugCheckBox.AutoSize = True
+        Me.ShowDebugCheckBox.Location = New System.Drawing.Point(6, 122)
+        Me.ShowDebugCheckBox.Name = "ShowDebugCheckBox"
+        Me.ShowDebugCheckBox.Size = New System.Drawing.Size(88, 17)
+        Me.ShowDebugCheckBox.TabIndex = 22
+        Me.ShowDebugCheckBox.Text = "Show Debug"
+        Me.ShowDebugCheckBox.UseVisualStyleBackColor = True
+        '
         'ServerStatusLabel
         '
         Me.ServerStatusLabel.ForeColor = System.Drawing.Color.IndianRed
-        Me.ServerStatusLabel.Location = New System.Drawing.Point(11, 105)
+        Me.ServerStatusLabel.Location = New System.Drawing.Point(6, 98)
         Me.ServerStatusLabel.Name = "ServerStatusLabel"
-        Me.ServerStatusLabel.Size = New System.Drawing.Size(258, 13)
+        Me.ServerStatusLabel.Size = New System.Drawing.Size(263, 13)
         Me.ServerStatusLabel.TabIndex = 21
         Me.ServerStatusLabel.Text = "Server is stopped"
         Me.ServerStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -269,7 +281,7 @@ Partial Class MainForm
         'GitHubLink
         '
         Me.GitHubLink.AutoSize = True
-        Me.GitHubLink.Location = New System.Drawing.Point(230, 169)
+        Me.GitHubLink.Location = New System.Drawing.Point(229, 169)
         Me.GitHubLink.Name = "GitHubLink"
         Me.GitHubLink.Size = New System.Drawing.Size(40, 13)
         Me.GitHubLink.TabIndex = 9
@@ -460,5 +472,6 @@ Partial Class MainForm
     Friend WithEvents PortInput As System.Windows.Forms.TextBox
     Friend WithEvents ServerStatusLabel As System.Windows.Forms.Label
     Friend WithEvents ResetButton As System.Windows.Forms.Button
+    Friend WithEvents ShowDebugCheckBox As System.Windows.Forms.CheckBox
 
 End Class

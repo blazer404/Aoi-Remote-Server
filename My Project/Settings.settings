@@ -35,5 +35,8 @@
     <Setting Name="AccessKey" Type="System.String" Scope="User">
       <Value Profile="(Default)">12345678</Value>
     </Setting>
+    <Setting Name="ShowDebug" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
