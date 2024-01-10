@@ -1,22 +1,41 @@
-﻿Partial Public Class MainForm : Implements TCPServer.OnReceiveDataListener
+﻿Partial Public Class MainForm : Implements TCPServer.DataListener
 
     Private TCPServer As TCPServer
     Private Settings As Settings
 
-    Sub OnOpenConnection() Implements TCPServer.OnReceiveDataListener.OnOpenConnection
+    '''''''''''' Rewrite Interface - START ''''''''''''
+
+    Sub OnOpenConnection() Implements TCPServer.DataListener.OnOpenConnection
         Me.Invoke(New Action(AddressOf OpenConnectionAction))
     End Sub
 
-    Sub OnCloseConnection() Implements TCPServer.OnReceiveDataListener.OnCloseConnection
+    Sub OnCloseConnection() Implements TCPServer.DataListener.OnCloseConnection
         Me.Invoke(New Action(AddressOf CloseConnectionAction))
     End Sub
 
-    Sub OnDataReceived(ByVal data As String) Implements TCPServer.OnReceiveDataListener.OnDataReceived
+    Sub OnClientConnected() Implements TCPServer.DataListener.OnClientConnected
+        Console.Beep()
+        Me.Invoke(New Action(Of String)(AddressOf UpdateLogText), "Client connected")
+    End Sub
+
+    Sub OnClientDisconnected() Implements TCPServer.DataListener.OnClientDisconnected
+        Console.Beep()
+        Me.Invoke(New Action(Of String)(AddressOf UpdateLogText), "Client disconnected")
+    End Sub
+
+    Sub OnDataReceived(ByVal data As String) Implements TCPServer.DataListener.OnDataReceived
         Me.Invoke(New Action(Of String)(AddressOf UpdateLogText), data)
     End Sub
 
-    Sub UpdateLog(ByVal data As String) Implements TCPServer.OnReceiveDataListener.UpdateLog
-        Me.Invoke(New Action(Of String)(AddressOf UpdateLogText), data)
+    Sub OnUpdateLog(ByVal data As String) Implements TCPServer.DataListener.OnUpdateLog
+        Try
+            Me.Invoke(New Action(Of String)(AddressOf UpdateLogText), data)
+        Catch ex As Exception
+        End Try
+    End Sub
+
+    Sub OnShowError(ByVal data As String) Implements TCPServer.DataListener.OnShowError
+        Me.Invoke(New Action(Of String)(AddressOf ShowErrorBox), data)
     End Sub
 
     ''' <summary>
@@ -25,7 +44,7 @@
     ''' <remarks></remarks>
     Private Sub OpenConnectionAction()
         TCPServer.isRunning = True
-        UpdateLog("Server is running")
+        UpdateLogText("Server is running")
         RunServerButton.Text = "Stop Server"
         ServerStatusLabel.Text = "Server is running"
         ServerStatusLabel.ForeColor = Color.Green
@@ -38,7 +57,7 @@
     ''' <remarks></remarks>
     Private Sub CloseConnectionAction()
         TCPServer.isRunning = False
-        UpdateLog("Server is stopped")
+        UpdateLogText("Server is stopped")
         RunServerButton.Text = "Start Server"
         ServerStatusLabel.Text = "Server is stopped"
         ServerStatusLabel.ForeColor = Color.IndianRed
@@ -55,6 +74,17 @@
             Utils.UpdateTextBox(LogBox, data)
         End If
     End Sub
+
+    ''' <summary>
+    ''' Показ сообщения об ошибке
+    ''' </summary>
+    ''' <param name="data"></param>
+    ''' <remarks></remarks>
+    Private Sub ShowErrorBox(ByVal data As String)
+        MessageBox.Show(data, "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+    End Sub
+
+    '''''''''''' Rewrite Interface - END ''''''''''''
 
     ''' <summary>
     ''' Загрузка приложения
@@ -75,6 +105,8 @@
         If My.Settings.AutorunTcpServer = True Then
             TCPServer.OpenConnection()
             Me.CloseButton.Text = My.Resources.s_Hide
+        End If
+        If My.Settings.RunMinimized Then
             Me.Opacity = 0 ' Очень важный костыль - не трогай
         Else
             Me.TrayMenuShowApp.Text = My.Resources.s_Hide
@@ -88,7 +120,7 @@
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub MainForm_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
-        If My.Settings.AutorunTcpServer = True Then
+        If My.Settings.RunMinimized = True Then
             Me.Hide()
             Me.Opacity = 1
         End If
@@ -146,21 +178,6 @@
             TCPServer.CloseConnection()
             Settings.Reset()
             Settings.Load()
-        End If
-    End Sub
-
-    ''' <summary>
-    ''' Отображение вкладки отладки
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
-    Private Sub ShowDebugCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles ShowDebugCheckBox.CheckedChanged
-        Dim index As Integer = TabPanel.TabCount
-        If ShowDebugCheckBox.Checked = True Then
-            TabPanel.TabPages.Insert(index, DebugTab)
-        Else
-            TabPanel.TabPages.Remove(DebugTab)
         End If
     End Sub
 

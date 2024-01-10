@@ -74,6 +74,21 @@
     End Sub
 
     ''' <summary>
+    ''' Отображение вкладки отладки
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub ShowDebugCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles ShowDebugCheckBox.CheckedChanged
+        Dim index As Integer = TabPanel.TabCount - 1
+        If ShowDebugCheckBox.Checked = True Then
+            TabPanel.TabPages.Insert(index, DebugTab)
+        Else
+            TabPanel.TabPages.Remove(DebugTab)
+        End If
+    End Sub
+
+    ''' <summary>
     ''' Переход на GitHub приложения
     ''' </summary>
     ''' <param name="sender"></param>

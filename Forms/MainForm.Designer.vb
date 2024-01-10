@@ -40,13 +40,13 @@ Partial Class MainForm
         Me.AccessKeyLabel = New System.Windows.Forms.Label()
         Me.TabPanel = New System.Windows.Forms.TabControl()
         Me.ServerTab = New System.Windows.Forms.TabPage()
+        Me.RunMinimizedCheckBox = New System.Windows.Forms.CheckBox()
         Me.ShowDebugCheckBox = New System.Windows.Forms.CheckBox()
         Me.ServerStatusLabel = New System.Windows.Forms.Label()
         Me.PortInput = New System.Windows.Forms.TextBox()
         Me.AccessKeyInput = New System.Windows.Forms.TextBox()
         Me.AutorunAppCheckbox = New System.Windows.Forms.CheckBox()
         Me.Ipv6CheckBox = New System.Windows.Forms.CheckBox()
-        Me.GitHubLink = New System.Windows.Forms.LinkLabel()
         Me.AccessKeyButton = New System.Windows.Forms.Button()
         Me.PortButton = New System.Windows.Forms.Button()
         Me.AppsTab = New System.Windows.Forms.TabPage()
@@ -56,6 +56,8 @@ Partial Class MainForm
         Me.AimpLabel = New System.Windows.Forms.Label()
         Me.DebugTab = New System.Windows.Forms.TabPage()
         Me.LogBox = New System.Windows.Forms.TextBox()
+        Me.AboutTab = New System.Windows.Forms.TabPage()
+        Me.GitHubLink = New System.Windows.Forms.LinkLabel()
         Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
         Me.ResetButton = New System.Windows.Forms.Button()
         Me.TrayMenu.SuspendLayout()
@@ -63,13 +65,14 @@ Partial Class MainForm
         Me.ServerTab.SuspendLayout()
         Me.AppsTab.SuspendLayout()
         Me.DebugTab.SuspendLayout()
+        Me.AboutTab.SuspendLayout()
         Me.FlowLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'RunServerButton
         '
         Me.RunServerButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer))
-        Me.RunServerButton.Location = New System.Drawing.Point(6, 162)
+        Me.RunServerButton.Location = New System.Drawing.Point(3, 162)
         Me.RunServerButton.Name = "RunServerButton"
         Me.RunServerButton.Size = New System.Drawing.Size(85, 23)
         Me.RunServerButton.TabIndex = 1
@@ -194,6 +197,7 @@ Partial Class MainForm
         Me.TabPanel.Controls.Add(Me.ServerTab)
         Me.TabPanel.Controls.Add(Me.AppsTab)
         Me.TabPanel.Controls.Add(Me.DebugTab)
+        Me.TabPanel.Controls.Add(Me.AboutTab)
         Me.TabPanel.Location = New System.Drawing.Point(11, 6)
         Me.TabPanel.Name = "TabPanel"
         Me.TabPanel.SelectedIndex = 0
@@ -202,13 +206,13 @@ Partial Class MainForm
         '
         'ServerTab
         '
+        Me.ServerTab.Controls.Add(Me.RunMinimizedCheckBox)
         Me.ServerTab.Controls.Add(Me.ShowDebugCheckBox)
         Me.ServerTab.Controls.Add(Me.ServerStatusLabel)
         Me.ServerTab.Controls.Add(Me.PortInput)
         Me.ServerTab.Controls.Add(Me.AccessKeyInput)
         Me.ServerTab.Controls.Add(Me.AutorunAppCheckbox)
         Me.ServerTab.Controls.Add(Me.Ipv6CheckBox)
-        Me.ServerTab.Controls.Add(Me.GitHubLink)
         Me.ServerTab.Controls.Add(Me.AutorunServerCheckBox)
         Me.ServerTab.Controls.Add(Me.AccessKeyButton)
         Me.ServerTab.Controls.Add(Me.PortButton)
@@ -224,10 +228,20 @@ Partial Class MainForm
         Me.ServerTab.Text = "Server"
         Me.ServerTab.UseVisualStyleBackColor = True
         '
+        'RunMinimizedCheckBox
+        '
+        Me.RunMinimizedCheckBox.AutoSize = True
+        Me.RunMinimizedCheckBox.Location = New System.Drawing.Point(173, 168)
+        Me.RunMinimizedCheckBox.Name = "RunMinimizedCheckBox"
+        Me.RunMinimizedCheckBox.Size = New System.Drawing.Size(94, 17)
+        Me.RunMinimizedCheckBox.TabIndex = 23
+        Me.RunMinimizedCheckBox.Text = "Run minimized"
+        Me.RunMinimizedCheckBox.UseVisualStyleBackColor = True
+        '
         'ShowDebugCheckBox
         '
         Me.ShowDebugCheckBox.AutoSize = True
-        Me.ShowDebugCheckBox.Location = New System.Drawing.Point(6, 122)
+        Me.ShowDebugCheckBox.Location = New System.Drawing.Point(6, 168)
         Me.ShowDebugCheckBox.Name = "ShowDebugCheckBox"
         Me.ShowDebugCheckBox.Size = New System.Drawing.Size(88, 17)
         Me.ShowDebugCheckBox.TabIndex = 22
@@ -237,7 +251,7 @@ Partial Class MainForm
         'ServerStatusLabel
         '
         Me.ServerStatusLabel.ForeColor = System.Drawing.Color.IndianRed
-        Me.ServerStatusLabel.Location = New System.Drawing.Point(6, 98)
+        Me.ServerStatusLabel.Location = New System.Drawing.Point(6, 105)
         Me.ServerStatusLabel.Name = "ServerStatusLabel"
         Me.ServerStatusLabel.Size = New System.Drawing.Size(263, 13)
         Me.ServerStatusLabel.TabIndex = 21
@@ -261,11 +275,11 @@ Partial Class MainForm
         'AutorunAppCheckbox
         '
         Me.AutorunAppCheckbox.AutoSize = True
-        Me.AutorunAppCheckbox.Location = New System.Drawing.Point(6, 168)
+        Me.AutorunAppCheckbox.Location = New System.Drawing.Point(173, 145)
         Me.AutorunAppCheckbox.Name = "AutorunAppCheckbox"
-        Me.AutorunAppCheckbox.Size = New System.Drawing.Size(143, 17)
+        Me.AutorunAppCheckbox.Size = New System.Drawing.Size(96, 17)
         Me.AutorunAppCheckbox.TabIndex = 8
-        Me.AutorunAppCheckbox.Text = "Run on Windows startup"
+        Me.AutorunAppCheckbox.Text = "Run on startup"
         Me.AutorunAppCheckbox.UseVisualStyleBackColor = True
         '
         'Ipv6CheckBox
@@ -277,16 +291,6 @@ Partial Class MainForm
         Me.Ipv6CheckBox.TabIndex = 2
         Me.Ipv6CheckBox.Text = "Use IPv6"
         Me.Ipv6CheckBox.UseVisualStyleBackColor = True
-        '
-        'GitHubLink
-        '
-        Me.GitHubLink.AutoSize = True
-        Me.GitHubLink.Location = New System.Drawing.Point(229, 169)
-        Me.GitHubLink.Name = "GitHubLink"
-        Me.GitHubLink.Size = New System.Drawing.Size(40, 13)
-        Me.GitHubLink.TabIndex = 9
-        Me.GitHubLink.TabStop = True
-        Me.GitHubLink.Text = "GitHub"
         '
         'AccessKeyButton
         '
@@ -386,6 +390,26 @@ Partial Class MainForm
         Me.LogBox.TabIndex = 1
         Me.LogBox.TabStop = False
         '
+        'AboutTab
+        '
+        Me.AboutTab.Controls.Add(Me.GitHubLink)
+        Me.AboutTab.Location = New System.Drawing.Point(4, 22)
+        Me.AboutTab.Name = "AboutTab"
+        Me.AboutTab.Size = New System.Drawing.Size(276, 191)
+        Me.AboutTab.TabIndex = 3
+        Me.AboutTab.Text = "About"
+        Me.AboutTab.UseVisualStyleBackColor = True
+        '
+        'GitHubLink
+        '
+        Me.GitHubLink.AutoSize = True
+        Me.GitHubLink.Location = New System.Drawing.Point(3, 170)
+        Me.GitHubLink.Name = "GitHubLink"
+        Me.GitHubLink.Size = New System.Drawing.Size(40, 13)
+        Me.GitHubLink.TabIndex = 10
+        Me.GitHubLink.TabStop = True
+        Me.GitHubLink.Text = "GitHub"
+        '
         'FlowLayoutPanel1
         '
         Me.FlowLayoutPanel1.Controls.Add(Me.TabPanel)
@@ -435,6 +459,8 @@ Partial Class MainForm
         Me.AppsTab.PerformLayout()
         Me.DebugTab.ResumeLayout(False)
         Me.DebugTab.PerformLayout()
+        Me.AboutTab.ResumeLayout(False)
+        Me.AboutTab.PerformLayout()
         Me.FlowLayoutPanel1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
@@ -461,7 +487,6 @@ Partial Class MainForm
     Friend WithEvents AimpInput As System.Windows.Forms.TextBox
     Friend WithEvents AimpLabel As System.Windows.Forms.Label
     Friend WithEvents Ipv6CheckBox As System.Windows.Forms.CheckBox
-    Friend WithEvents GitHubLink As System.Windows.Forms.LinkLabel
     Friend WithEvents AutorunAppCheckbox As System.Windows.Forms.CheckBox
     Friend WithEvents TrayMenu As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents TrayMenuShowApp As System.Windows.Forms.ToolStripMenuItem
@@ -473,5 +498,8 @@ Partial Class MainForm
     Friend WithEvents ServerStatusLabel As System.Windows.Forms.Label
     Friend WithEvents ResetButton As System.Windows.Forms.Button
     Friend WithEvents ShowDebugCheckBox As System.Windows.Forms.CheckBox
+    Friend WithEvents RunMinimizedCheckBox As System.Windows.Forms.CheckBox
+    Friend WithEvents AboutTab As System.Windows.Forms.TabPage
+    Friend WithEvents GitHubLink As System.Windows.Forms.LinkLabel
 
 End Class

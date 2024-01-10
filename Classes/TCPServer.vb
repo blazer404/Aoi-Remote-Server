@@ -11,17 +11,20 @@ Public Class TCPServer
     Private Server As TcpListener = Nothing
     Private ServerThread As Thread = Nothing
     Private Client As TcpClient = Nothing
-    Private Listener As OnReceiveDataListener = Nothing
+    Private Listener As DataListener = Nothing
 
     ''' <summary>
     ''' Интерфейс для отловки сообщений
     ''' </summary>
     ''' <remarks></remarks>
-    Interface OnReceiveDataListener
+    Interface DataListener
         Sub OnCloseConnection()
         Sub OnOpenConnection()
+        Sub OnClientConnected()
+        Sub OnClientDisconnected()
         Sub OnDataReceived(ByVal data As String)
-        Sub UpdateLog(ByVal data As String)
+        Sub OnUpdateLog(ByVal data As String)
+        Sub OnShowError(ByVal data As String)
     End Interface
 
     ''' <summary>
@@ -39,15 +42,15 @@ Public Class TCPServer
     ''' <remarks></remarks>
     Public Sub OpenConnection()
         Try
-            Listener.UpdateLog("Open connection")
+            Listener.OnUpdateLog("Open connection")
             If Not isRunning Then
                 DestroyServerThread()
                 ServerThread = New Thread(AddressOf CreateServer)
                 ServerThread.Start()
             End If
         Catch ex As Exception
+            Listener.OnUpdateLog("☻ Exception: " & ex.Message)
             Listener.OnCloseConnection()
-            Listener.UpdateLog("☻ Exception: " & ex.Message)
         End Try
     End Sub
 
@@ -57,14 +60,14 @@ Public Class TCPServer
     ''' <remarks></remarks>
     Public Sub CloseConnection()
         Try
-            Listener.UpdateLog("Close connection")
+            Listener.OnUpdateLog("Close connection")
             If isRunning Then
                 DestroyServer()
                 DestroyClient()
                 DestroyServerThread()
             End If
         Catch ex As Exception
-            Listener.UpdateLog("☻ Exception: " & ex.Message)
+            Listener.OnUpdateLog("☻ Exception: " & ex.Message)
         Finally
             Listener.OnCloseConnection()
         End Try
@@ -76,12 +79,17 @@ Public Class TCPServer
     ''' <remarks></remarks>
     Public Sub CreateServer()
         Try
-            Listener.UpdateLog("Create server")
+            Listener.OnUpdateLog("Create server")
             DestroyServer()
             Dim settings As New Settings
-            Dim ip As IPAddress = IPAddress.Parse(settings.GetIp())
-            Dim port As Integer = Integer.Parse(settings.GetPort())
-            Server = New TcpListener(ip, port)
+            Dim ip = settings.GetIp()
+            Dim port = settings.GetPort()
+            If ValidateSocket(ip, port) = False Then
+                Listener.OnCloseConnection()
+                Exit Sub
+            End If
+            Listener.OnUpdateLog("Using socket " & ip & ":" & port)
+            Server = New TcpListener(IPAddress.Parse(ip), Integer.Parse(port))
             Server.Start()
             Listener.OnOpenConnection()
             While True
@@ -93,34 +101,35 @@ Public Class TCPServer
             End While
         Catch ex As SocketException
             If ex.ErrorCode = 10048 Then
-                Listener.UpdateLog("☻ Exception: Port is busy")
+                Dim err As String = "Port is busy"
+                Listener.OnUpdateLog(err)
+                Listener.OnShowError(err)
             Else
-                Listener.UpdateLog("☻ Exception: " & ex.Message)
+                Listener.OnUpdateLog("☻ Exception: " & ex.Message)
             End If
             Listener.OnCloseConnection()
         End Try
     End Sub
 
     ''' <summary>
-    ''' Чтение полученных данных от клиента
+    ''' Чтение полученных данных от клиента и последующая обработка
     ''' </summary>
     ''' <param name="client"></param>
     ''' <remarks></remarks>
     Private Sub ProcessClient(client As TcpClient)
-        Listener.UpdateLog("Client connected")
-        Console.Beep()
+        Listener.OnClientConnected()
         Dim bytes(1024) As Byte
         Dim data As String = Nothing
         Dim stream As NetworkStream = client.GetStream()
         Dim i As Integer = stream.Read(bytes, 0, bytes.Length)
         While i <> 0
             data = Encoding.UTF8.GetString(bytes, 0, i)
-            Listener.UpdateLog("Received: " & data.ToString())
+            Listener.OnUpdateLog("Received: " & data.ToString())
             'todo обработать действия от клиента
             i = stream.Read(bytes, 0, bytes.Length)
         End While
         DestroyClient()
-        Listener.UpdateLog("Client disconnected")
+        Listener.OnClientDisconnected()
     End Sub
 
     ''' <summary>
@@ -155,5 +164,29 @@ Public Class TCPServer
             Client = Nothing
         End If
     End Sub
+
+    ''' <summary>
+    ''' Проверяем сокет на пустоту
+    ''' </summary>
+    ''' <param name="ip"></param>
+    ''' <param name="port"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function ValidateSocket(ByVal ip As String, ByVal port As String)
+        Dim err As String
+        If ip = "" Then
+            err = "IP address is empty"
+            Listener.OnUpdateLog(err)
+            Listener.OnShowError(err)
+            Return False
+        End If
+        If port = "" Or port = 0 Then
+            err = "Port is empty or invalid"
+            Listener.OnUpdateLog(err)
+            Listener.OnShowError(err)
+            Return False
+        End If
+        Return True
+    End Function
 
 End Class

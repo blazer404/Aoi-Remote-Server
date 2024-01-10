@@ -26,14 +26,15 @@ Public Class Settings
         GetIpList()
         MainForm.Text = Application.ProductName + " v" + Application.ProductVersion
         MainForm.TrayIcon.Text = Application.ProductName
-        MainForm.AutorunAppCheckbox.Checked = WindowsStartup.IsActive
-        MainForm.ShowDebugCheckBox.Checked = My.Settings.ShowDebug
         ' Сервер
         MainForm.IpInput.SelectedItem = GetIp()
         MainForm.PortInput.Text = GetPort()
         MainForm.Ipv6CheckBox.Checked = My.Settings.UseIPv6
         MainForm.AccessKeyInput.Text = My.Settings.AccessKey
         MainForm.AutorunServerCheckBox.Checked = My.Settings.AutorunTcpServer
+        MainForm.AutorunAppCheckbox.Checked = WindowsStartup.IsActive
+        MainForm.RunMinimizedCheckBox.Checked = My.Settings.RunMinimized
+        MainForm.ShowDebugCheckBox.Checked = My.Settings.ShowDebug
         ' Приложения
         MainForm.AimpInput.Text = My.Settings.AimpPath
         MainForm.MpcInput.Text = My.Settings.MpcPath
@@ -51,23 +52,16 @@ Public Class Settings
             WindowsStartup.Remove()
         End If
         ' Сервер
-        If MainForm.IpInput.Text <> "" Then
-            My.Settings.UserIp = MainForm.IpInput.Text
-        End If
-        If MainForm.PortInput.Text <> "" Then
-            My.Settings.UserPort = MainForm.PortInput.Text
-        End If
+        My.Settings.UserIp = MainForm.IpInput.Text
+        My.Settings.UserPort = MainForm.PortInput.Text
         My.Settings.UseIPv6 = MainForm.Ipv6CheckBox.Checked
-        My.Settings.AutorunTcpServer = MainForm.AutorunServerCheckBox.Checked
         My.Settings.AccessKey = MainForm.AccessKeyInput.Text
-        ' Приложения
-        If MainForm.AimpInput.Text <> "" Then
-            My.Settings.AimpPath = MainForm.AimpInput.Text
-        End If
-        If MainForm.MpcInput.Text <> "" Then
-            My.Settings.MpcPath = MainForm.MpcInput.Text
-        End If
+        My.Settings.AutorunTcpServer = MainForm.AutorunServerCheckBox.Checked
+        My.Settings.RunMinimized = MainForm.RunMinimizedCheckBox.Checked
         My.Settings.ShowDebug = MainForm.ShowDebugCheckBox.Checked
+        ' Приложения
+        My.Settings.AimpPath = MainForm.AimpInput.Text
+        My.Settings.MpcPath = MainForm.MpcInput.Text
         My.Settings.Save()
     End Sub
 
@@ -88,9 +82,9 @@ Public Class Settings
     ''' <remarks></remarks>
     Public Function GetIp()
         If My.Settings.UserIp <> "" Then
-            Return My.Settings.UserIp
+            Return My.Settings.UserIp.ToString
         Else
-            Return My.Settings.DefaultIp
+            Return My.Settings.DefaultIp.ToString
         End If
     End Function
 
@@ -101,9 +95,9 @@ Public Class Settings
     ''' <remarks></remarks>
     Public Function GetPort()
         If My.Settings.UserPort Then
-            Return My.Settings.UserPort
+            Return My.Settings.UserPort.ToString
         Else
-            Return My.Settings.DefaultPort
+            Return My.Settings.DefaultPort.ToString
         End If
     End Function
 

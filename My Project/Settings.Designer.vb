@@ -65,7 +65,7 @@ Namespace My
         
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("127.0.0.1")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public ReadOnly Property DefaultIp() As String
             Get
                 Return CType(Me("DefaultIp"),String)
@@ -186,6 +186,18 @@ Namespace My
             End Get
             Set
                 Me("ShowDebug") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property RunMinimized() As String
+            Get
+                Return CType(Me("RunMinimized"),String)
+            End Get
+            Set
+                Me("RunMinimized") = value
             End Set
         End Property
     End Class
