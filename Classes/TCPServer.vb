@@ -11,6 +11,7 @@ Public Class TCPServer
     Private Server As TcpListener = Nothing
     Private ServerThread As Thread = Nothing
     Private Client As TcpClient = Nothing
+    Private ClientStream As NetworkStream = Nothing
     Private Listener As DataListener = Nothing
 
     ''' <summary>
@@ -97,7 +98,7 @@ Public Class TCPServer
                     Exit While
                 End If
                 Client = Server.AcceptTcpClient()
-                ProcessClient(Client)
+                ProcessClient()
             End While
         Catch ex As SocketException
             If ex.ErrorCode = 10048 Then
@@ -114,23 +115,41 @@ Public Class TCPServer
     ''' <summary>
     ''' Чтение полученных данных от клиента и последующая обработка
     ''' </summary>
-    ''' <param name="client"></param>
     ''' <remarks></remarks>
-    Private Sub ProcessClient(client As TcpClient)
-        Listener.OnClientConnected()
-        Dim bytes(1024) As Byte
-        Dim data As String = Nothing
-        Dim stream As NetworkStream = client.GetStream()
-        Dim i As Integer = stream.Read(bytes, 0, bytes.Length)
-        While i <> 0
-            data = Encoding.UTF8.GetString(bytes, 0, i)
-            Listener.OnUpdateLog("Received: " & data.ToString())
-            'todo обработать действия от клиента
-            i = stream.Read(bytes, 0, bytes.Length)
-        End While
-        DestroyClient()
-        Listener.OnClientDisconnected()
+    Private Sub ProcessClient()
+        Try
+            Listener.OnClientConnected()
+            Dim bytes(1024) As Byte
+            Dim data As String = Nothing
+            ClientStream = Client.GetStream()
+            Dim i As Integer = ClientStream.Read(bytes, 0, bytes.Length)
+            While i <> 0
+                data = Encoding.UTF8.GetString(bytes, 0, i)
+                Listener.OnUpdateLog("Received: " & data.ToString())
+                SendMessage("You request - " & data.ToString)
+                'todo обработать действия от клиента
+                i = ClientStream.Read(bytes, 0, bytes.Length)
+            End While
+            DestroyClient()
+            Listener.OnClientDisconnected()
+        Catch ex As Exception
+            DestroyClient()
+            Listener.OnClientDisconnected()
+        End Try
     End Sub
+
+    ''' <summary>
+    ''' Отправка сообщения клиенту
+    ''' </summary>
+    ''' <param name="text"></param>
+    ''' <remarks></remarks>
+    Public Sub SendMessage(ByVal text)
+        If isRunning Then
+            Dim data As [Byte]() = Encoding.UTF8.GetBytes(text)
+            ClientStream.Write(data, 0, data.Length)
+        End If
+    End Sub
+
 
     ''' <summary>
     ''' Уничтожение сервера
