@@ -23,8 +23,8 @@
         Me.Invoke(New Action(Of String)(AddressOf UpdateLogText), "Client disconnected")
     End Sub
 
-    Sub OnDataReceived(ByVal data As String) Implements TCPServer.DataListener.OnDataReceived
-        Me.Invoke(New Action(Of String)(AddressOf UpdateLogText), data)
+    Sub OnCommandReceived(ByVal playerName As String, ByVal command As String) Implements TCPServer.DataListener.OnCommandReceived
+        Me.Invoke(New Action(Of String, String)(AddressOf SendCommand), playerName, command)
     End Sub
 
     Sub OnUpdateLog(ByVal data As String) Implements TCPServer.DataListener.OnUpdateLog
@@ -82,6 +82,16 @@
     ''' <remarks></remarks>
     Private Sub ShowErrorBox(ByVal data As String)
         MessageBox.Show(data, "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+    End Sub
+
+    ''' <summary>
+    ''' Отправка полученной команды проигрывателю
+    ''' </summary>
+    ''' <param name="name"></param>
+    ''' <param name="command"></param>
+    ''' <remarks></remarks>
+    Private Sub SendCommand(ByVal name As String, ByVal command As String)
+        MediaPlayer.SendCommand(name, command)
     End Sub
 
     '''''''''''' Rewrite Interface - END ''''''''''''

@@ -23,9 +23,9 @@ Public Class TCPServer
         Sub OnOpenConnection()
         Sub OnClientConnected()
         Sub OnClientDisconnected()
-        Sub OnDataReceived(ByVal data As String)
         Sub OnUpdateLog(ByVal data As String)
         Sub OnShowError(ByVal data As String)
+        Sub OnCommandReceived(ByVal playerName As String, ByVal command As String)
     End Interface
 
     ''' <summary>
@@ -125,9 +125,7 @@ Public Class TCPServer
             Dim i As Integer = ClientStream.Read(bytes, 0, bytes.Length)
             While i <> 0
                 data = Encoding.UTF8.GetString(bytes, 0, i)
-                Listener.OnUpdateLog("Received: " & data.ToString())
-                SendMessage("You request - " & data.ToString)
-                'todo обработать действия от клиента
+                ClientRequestHandler(data.ToString)
                 i = ClientStream.Read(bytes, 0, bytes.Length)
             End While
             DestroyClient()
@@ -207,5 +205,45 @@ Public Class TCPServer
         End If
         Return True
     End Function
+
+
+    ''' <summary>
+    ''' Обработка запроса от клиента с последующей отправкой команды проигрывателю
+    ''' </summary>
+    ''' <param name="request"></param>
+    ''' <remarks>
+    ''' Пример валидного запроса: "N=[player_name];C=[command];P=[access_key]" (необязательно в этом порядке)
+    ''' </remarks>
+    Private Sub ClientRequestHandler(ByVal request As String)
+        Listener.OnUpdateLog("Received: " & request)
+        ' разбираем полученый запрос в массив
+        request = request.Replace(" ", "")
+        Dim pairsArr As String() = request.Split(";")
+        Dim result As New Dictionary(Of String, String)()
+        For Each pair As String In pairsArr
+            Dim item() As String = pair.Split("=")
+            If item.Length = 2 Then
+                result(item(0)) = item(1)
+            End If
+        Next
+        Dim playerName As String = result("N")
+        Dim command As String = result("C")
+        Dim accessKey As String = result("P")
+        ' проверяем пароль
+        If accessKey <> My.Settings.AccessKey Then
+            SendMessage("{'success': false, 'error_code': 403, message: 'Wrong password'}")
+            DestroyClient()
+            Exit Sub
+        End If
+        ' проверяем, чтобы команда была разрешена
+        If Not MediaPlayer.APP_COMMANDS.ContainsKey(playerName) Or Not MediaPlayer.APP_COMMANDS(playerName).Contains(command) Then
+            SendMessage("{'success': false, 'error_code': 404, message: 'Wrong command'}")
+            DestroyClient()
+            Exit Sub
+        End If
+        ' передаем команду проигрывателю
+        Listener.OnCommandReceived(playerName, command)
+        SendMessage("{'success': true}")
+    End Sub
 
 End Class
