@@ -121,6 +121,11 @@
         Else
             Me.TrayMenuShowApp.Text = My.Resources.s_Hide
         End If
+
+        'TODO delete this after add aimp api 
+        AimpInput.Enabled = False
+        AimpInput.Visible = False
+        AimpLabel.Text &= "        [ недоступно в этой версии ]"
     End Sub
 
     ''' <summary>

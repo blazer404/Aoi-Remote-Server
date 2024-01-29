@@ -6,16 +6,18 @@ Public Module MediaPlayer
     Public Const AIMP = "AIMP"
 
     Public Const MPC_PLAYPAUSE = 889
-    Public Const MPC_STOP = 890
-    Public Const MPC_NEXT = 921
-    Public Const MPC_PREV = 920
-    Public Const MPC_FULLSCREEN = 830
+    Public Const MPC_PREV = 921 'jump prev chapter, use 919 for jump files
+    Public Const MPC_NEXT = 922 'jump next chapter, use 920 for jump files
     Public Const MPC_VOL_UP = 907
     Public Const MPC_VOL_DOWN = 908
-    Public Const MPC_MUTE = 909
+    Public Const MPC_STOP = 890
     Public Const MPC_AUDIO_NEXT = 952
+    Public Const MPC_AUDIO_PREV = 953
+    Public Const MPC_MUTE = 909
     Public Const MPC_SUB_NEXT = 954
-    Public Const MPC_SUB_ONOFF = 955
+    Public Const MPC_SUB_PREV = 955
+    Public Const MPC_SUB_ONOFF = 956
+    Public Const MPC_FULLSCREEN = 830
     Public Const MPC_CLOSE = 804
     Public Const MPC_EXIT = 816
 
@@ -25,7 +27,23 @@ Public Module MediaPlayer
     }
 
     Public APP_COMMANDS As New Dictionary(Of String, Integer()) From {
-        {MPC, New Integer() {MPC_PLAYPAUSE, MPC_STOP, MPC_NEXT, MPC_PREV, MPC_FULLSCREEN, MPC_VOL_UP, MPC_VOL_DOWN, MPC_MUTE, MPC_AUDIO_NEXT, MPC_SUB_NEXT, MPC_SUB_ONOFF, MPC_CLOSE, MPC_EXIT}},
+        {MPC, New Integer() {
+                MPC_PLAYPAUSE,
+                MPC_PREV,
+                MPC_NEXT,
+                MPC_VOL_UP,
+                MPC_VOL_DOWN,
+                MPC_STOP,
+                MPC_AUDIO_NEXT,
+                MPC_AUDIO_PREV,
+                MPC_MUTE,
+                MPC_SUB_NEXT,
+                MPC_SUB_PREV,
+                MPC_SUB_ONOFF,
+                MPC_FULLSCREEN,
+                MPC_CLOSE,
+                MPC_EXIT
+            }},
         {AIMP, New Integer() {}}
     }
 

@@ -216,7 +216,6 @@ Public Class TCPServer
     ''' </remarks>
     Private Sub ClientRequestHandler(ByVal request As String)
         Listener.OnUpdateLog("Received: " & request)
-        ' разбираем полученый запрос в массив
         request = request.Replace(" ", "")
         Dim pairsArr As String() = request.Split(";")
         Dim result As New Dictionary(Of String, String)()
@@ -229,21 +228,43 @@ Public Class TCPServer
         Dim playerName As String = result("N")
         Dim command As String = result("C")
         Dim accessKey As String = result("P")
-        ' проверяем пароль
-        If accessKey <> My.Settings.AccessKey Then
-            SendMessage("{'success': false, 'error_code': 403, message: 'Wrong password'}")
-            DestroyClient()
+        If IsValidAccessKey(accessKey) <> True OrElse IsValidCommand(playerName, command) <> True Then
+            Listener.OnUpdateLog("Invalid client. Connection rejected")
             Exit Sub
         End If
-        ' проверяем, чтобы команда была разрешена
-        If Not MediaPlayer.APP_COMMANDS.ContainsKey(playerName) Or Not MediaPlayer.APP_COMMANDS(playerName).Contains(command) Then
-            SendMessage("{'success': false, 'error_code': 404, message: 'Wrong command'}")
-            DestroyClient()
-            Exit Sub
-        End If
-        ' передаем команду проигрывателю
         Listener.OnCommandReceived(playerName, command)
-        SendMessage("{'success': true}")
+        SendMessage(Utils.JsonResponse(True, 200, "OK"))
     End Sub
+
+    ''' <summary>
+    ''' Валидация пароля
+    ''' </summary>
+    ''' <param name="accessKey"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function IsValidAccessKey(accessKey)
+        If accessKey <> My.Settings.AccessKey Then
+            SendMessage(Utils.JsonResponse(False, 403, "Wrong password"))
+            DestroyClient()
+            Return False
+        End If
+        Return True
+    End Function
+
+    ''' <summary>
+    ''' Валидация команды проигрывателя
+    ''' </summary>
+    ''' <param name="playerName"></param>
+    ''' <param name="command"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function IsValidCommand(ByVal playerName As String, ByVal command As String)
+        If Not MediaPlayer.APP_COMMANDS.ContainsKey(playerName) Or Not MediaPlayer.APP_COMMANDS(playerName).Contains(command) Then
+            SendMessage(Utils.JsonResponse(False, 404, "Wrong command"))
+            DestroyClient()
+            Return False
+        End If
+        Return True
+    End Function
 
 End Class

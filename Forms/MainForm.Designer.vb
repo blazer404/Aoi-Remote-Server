@@ -330,7 +330,7 @@ Partial Class MainForm
         '
         'MpcInput
         '
-        Me.MpcInput.Location = New System.Drawing.Point(57, 33)
+        Me.MpcInput.Location = New System.Drawing.Point(57, 9)
         Me.MpcInput.Name = "MpcInput"
         Me.MpcInput.ReadOnly = True
         Me.MpcInput.Size = New System.Drawing.Size(213, 20)
@@ -339,7 +339,7 @@ Partial Class MainForm
         'MpcLabel
         '
         Me.MpcLabel.AutoSize = True
-        Me.MpcLabel.Location = New System.Drawing.Point(6, 37)
+        Me.MpcLabel.Location = New System.Drawing.Point(6, 13)
         Me.MpcLabel.Name = "MpcLabel"
         Me.MpcLabel.Size = New System.Drawing.Size(48, 13)
         Me.MpcLabel.TabIndex = 21
@@ -348,7 +348,7 @@ Partial Class MainForm
         '
         'AimpInput
         '
-        Me.AimpInput.Location = New System.Drawing.Point(57, 7)
+        Me.AimpInput.Location = New System.Drawing.Point(57, 35)
         Me.AimpInput.Name = "AimpInput"
         Me.AimpInput.ReadOnly = True
         Me.AimpInput.Size = New System.Drawing.Size(213, 20)
@@ -357,7 +357,7 @@ Partial Class MainForm
         'AimpLabel
         '
         Me.AimpLabel.AutoSize = True
-        Me.AimpLabel.Location = New System.Drawing.Point(6, 12)
+        Me.AimpLabel.Location = New System.Drawing.Point(6, 38)
         Me.AimpLabel.Name = "AimpLabel"
         Me.AimpLabel.Size = New System.Drawing.Size(33, 13)
         Me.AimpLabel.TabIndex = 19

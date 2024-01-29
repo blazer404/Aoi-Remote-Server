@@ -46,4 +46,16 @@
         Return random.Next(10000, 65535)
     End Function
 
+    ''' <summary>
+    ''' Конвертируем переданные параметры в JSON для ответа
+    ''' </summary>
+    ''' <param name="success"></param>
+    ''' <param name="code"></param>
+    ''' <param name="message"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Function JsonResponse(ByVal success As Boolean, ByVal code As Integer, Optional ByVal message As String = "") As String
+        Return "{""success"": " & success.ToString.ToLower & ", ""code"": " & code.ToString & ", ""message"": """ & message.ToLower & """}"
+    End Function
+
 End Module
