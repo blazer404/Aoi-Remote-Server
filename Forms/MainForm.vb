@@ -1,40 +1,33 @@
-﻿Partial Public Class MainForm : Implements TCPServer.DataListener
+﻿Imports TSRC.Interfaces
 
-    Private TCPServer As TCPServer
-    Private Settings As Settings
+Partial Public Class MainForm : Implements IMessageListener
+
+    Private Property Server As HttpServer = Nothing
+    Private Property Settings As Settings = Nothing
+    Private Property MediaPlayer As New MediaPlayer
 
     '''''''''''' Rewrite Interface - START ''''''''''''
 
-    Sub OnOpenConnection() Implements TCPServer.DataListener.OnOpenConnection
+    Sub OnOpenConnection() Implements IMessageListener.OnOpenConnection
         Me.Invoke(New Action(AddressOf OpenConnectionAction))
     End Sub
 
-    Sub OnCloseConnection() Implements TCPServer.DataListener.OnCloseConnection
+    Sub OnCloseConnection() Implements IMessageListener.OnCloseConnection
         Me.Invoke(New Action(AddressOf CloseConnectionAction))
     End Sub
 
-    Sub OnClientConnected() Implements TCPServer.DataListener.OnClientConnected
-        Console.Beep()
-        Me.Invoke(New Action(Of String)(AddressOf UpdateLogText), "Client connected")
-    End Sub
-
-    Sub OnClientDisconnected() Implements TCPServer.DataListener.OnClientDisconnected
-        Console.Beep()
-        Me.Invoke(New Action(Of String)(AddressOf UpdateLogText), "Client disconnected")
-    End Sub
-
-    Sub OnCommandReceived(ByVal playerName As String, ByVal command As String) Implements TCPServer.DataListener.OnCommandReceived
+    Sub OnCommandReceived(ByVal playerName As String, ByVal command As String) Implements IMessageListener.OnCommandReceived
         Me.Invoke(New Action(Of String, String)(AddressOf SendCommand), playerName, command)
     End Sub
 
-    Sub OnUpdateLog(ByVal data As String) Implements TCPServer.DataListener.OnUpdateLog
+    Sub OnUpdateLog(ByVal data As String) Implements IMessageListener.OnUpdateLog
         Try
             Me.Invoke(New Action(Of String)(AddressOf UpdateLogText), data)
         Catch ex As Exception
         End Try
     End Sub
 
-    Sub OnShowError(ByVal data As String) Implements TCPServer.DataListener.OnShowError
+    Sub OnShowError(ByVal data As String) Implements IMessageListener.OnShowError
         Me.Invoke(New Action(Of String)(AddressOf ShowErrorBox), data)
     End Sub
 
@@ -43,7 +36,7 @@
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub OpenConnectionAction()
-        TCPServer.isRunning = True
+        Server.isRunning = True
         UpdateLogText("Server is running")
         RunServerButton.Text = "Stop Server"
         ServerStatusLabel.Text = "Server is running"
@@ -56,7 +49,7 @@
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub CloseConnectionAction()
-        TCPServer.isRunning = False
+        Server.isRunning = False
         UpdateLogText("Server is stopped")
         RunServerButton.Text = "Start Server"
         ServerStatusLabel.Text = "Server is stopped"
@@ -71,7 +64,7 @@
     ''' <remarks></remarks>
     Private Sub UpdateLogText(ByVal data As String)
         If ShowDebugCheckBox.Checked = True Then
-            Utils.UpdateTextBox(LogBox, data)
+            UpdateTextBox(LogBox, data)
         End If
     End Sub
 
@@ -87,14 +80,38 @@
     ''' <summary>
     ''' Отправка полученной команды проигрывателю
     ''' </summary>
-    ''' <param name="name"></param>
-    ''' <param name="command"></param>
+    ''' <param name="playerName"></param>
+    ''' <param name="commandKey"></param>
     ''' <remarks></remarks>
-    Private Sub SendCommand(ByVal name As String, ByVal command As String)
-        MediaPlayer.SendCommand(name, command)
+    Private Sub SendCommand(ByVal playerName As String, ByVal commandKey As String)
+        MediaPlayer.SendCommand(playerName, commandKey)
     End Sub
 
     '''''''''''' Rewrite Interface - END ''''''''''''
+
+    ''' <summary>
+    ''' Загрузка настроек
+    ''' </summary>
+    Private Sub LoadSettings(Optional ByVal needUpgrade As Boolean = True)
+        If needUpgrade Then
+            My.Settings.Upgrade()
+        End If
+        Settings = New Settings
+        Settings.Load()
+    End Sub
+
+    ''' <summary>
+    ''' Создание сервера
+    ''' </summary>
+    Private Sub CreateServer()
+        Server = New HttpServer With {
+             .Ip = Settings.GetIp(),
+             .Port = Settings.GetPort(),
+             .Token = Settings.GetAuthToken(),
+             .Listener = Me
+         }
+    End Sub
+
 
     ''' <summary>
     ''' Загрузка приложения
@@ -105,15 +122,10 @@
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Определяем начальное поведение
         TabPanel.TabPages.Remove(DebugTab)
-        ' Грузим настройки
-        My.Settings.Upgrade()
-        Settings = New Settings
-        Settings.Load()
-        ' Создаем сервера и запускаем если надо
-        TCPServer = New TCPServer
-        TCPServer.SetListener(Me)
+        LoadSettings()
+        CreateServer()
         If My.Settings.AutorunTcpServer = True Then
-            TCPServer.OpenConnection()
+            Server.Start()
             Me.CloseButton.Text = My.Resources.s_Hide
         End If
         If My.Settings.RunMinimized Then
@@ -148,7 +160,7 @@
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub MainForm_Closing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        If e.CloseReason = CloseReason.UserClosing AndAlso TCPServer.isRunning Then
+        If e.CloseReason = CloseReason.UserClosing AndAlso Server.isRunning Then
             e.Cancel = True
             Me.TrayMenuShowApp.Text = My.Resources.s_Show
             Me.Hide()
@@ -162,7 +174,7 @@
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub CloseButton_Click(sender As Object, e As EventArgs) Handles CloseButton.Click
-        Settings.Load()
+        Settings.Save()
         Me.Close()
     End Sub
 
@@ -173,11 +185,12 @@
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub SaveButton_Click(sender As Object, e As EventArgs) Handles SaveButton.Click
-        TCPServer.CloseConnection()
+        Server.Close()
         Settings.Save()
         UpdateLogText("Settings is saved")
+        CreateServer()
         If AutorunServerCheckBox.Checked = True Then
-            TCPServer.OpenConnection()
+            Server.Start()
         End If
     End Sub
 
@@ -190,9 +203,10 @@
     Private Sub ResetButton_Click(sender As Object, e As EventArgs) Handles ResetButton.Click
         Dim result = MessageBox.Show("Are you sure you want to reset?", "Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning)
         If result = Windows.Forms.DialogResult.OK Then
-            TCPServer.CloseConnection()
+            Server.Close()
             Settings.Reset()
-            Settings.Load()
+            LoadSettings(False)
+            CreateServer()
         End If
     End Sub
 

@@ -9,9 +9,9 @@
     Private Sub Ipc6CheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles Ipv6CheckBox.CheckedChanged
         Dim value_bak = IpInput.SelectedItem
         If Ipv6CheckBox.Checked = True Then
-            Settings.use_ip_v6 = True
+            Settings.UseIpv6 = True
         Else
-            Settings.use_ip_v6 = False
+            Settings.UseIpv6 = False
         End If
         Settings.GetIpList()
         IpInput.SelectedItem = value_bak
@@ -60,7 +60,7 @@
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub PortButton_Click(sender As Object, e As EventArgs) Handles PortButton.Click
-        PortInput.Text = Utils.GeneratePort
+        PortInput.Text = GeneratePort()
     End Sub
 
     ''' <summary>
@@ -69,8 +69,8 @@
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub AccessKeyButton_Click(sender As Object, e As EventArgs) Handles AccessKeyButton.Click
-        AccessKeyInput.Text = Utils.GenerateKey(8)
+    Private Sub AuthTokenButton_Click(sender As Object, e As EventArgs) Handles AuthTokenButton.Click
+        AuthTokenInput.Text = GenerateKey(8)
     End Sub
 
     ''' <summary>

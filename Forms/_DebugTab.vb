@@ -7,10 +7,10 @@
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub RunServerButton_Click(sender As Object, e As EventArgs) Handles RunServerButton.Click
-        If Not TCPServer.isRunning Then
-            TCPServer.OpenConnection()
+        If Not Server.isRunning Then
+            Server.Start()
         Else
-            TCPServer.CloseConnection()
+            Server.Close()
         End If
     End Sub
 
@@ -21,7 +21,7 @@
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub ClearLogButton_Click(sender As Object, e As EventArgs) Handles ClearLogButton.Click
-        Utils.ClearTextBox(LogBox)
+        ClearTextBox(LogBox)
     End Sub
 
 End Class

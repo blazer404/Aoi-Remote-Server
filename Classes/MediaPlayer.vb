@@ -1,6 +1,7 @@
 ﻿Imports System.Runtime.InteropServices
 
-Public Module MediaPlayer
+
+Public Class MediaPlayer
 
     Public Const MPC = "MPC"
     Public Const AIMP = "AIMP"
@@ -58,7 +59,7 @@ Public Module MediaPlayer
     ''' <returns></returns>
     ''' <remarks></remarks>
     <DllImport("user32.dll", SetLastError:=True)>
-    Private Function SendMessage(hWnd As IntPtr, Msg As UInteger, wParam As IntPtr, lParam As IntPtr) As IntPtr
+    Private Shared Function SendMessage(hWnd As IntPtr, Msg As UInteger, wParam As IntPtr, lParam As IntPtr) As IntPtr
     End Function
 
     ''' <summary>
@@ -112,19 +113,19 @@ Public Module MediaPlayer
     ''' Отправка команды проигрывателю
     ''' </summary>
     ''' <param name="playerName"></param>
-    ''' <param name="command"></param>
+    ''' <param name="commandKey"></param>
     ''' <remarks></remarks>
-    Public Sub SendCommand(ByVal playerName As String, ByVal command As Integer)
+    Public Sub SendCommand(ByVal playerName As String, ByVal commandKey As Integer)
         Try
             Dim playerPid = FindByName(playerName)
             If playerPid Is Nothing Then
                 Exit Sub
             End If
             Dim WmCommand = WM_COMMANDS(playerName)(0)
-            SendMessage(playerPid, WmCommand, command, IntPtr.Zero)
+            SendMessage(playerPid, WmCommand, commandKey, IntPtr.Zero)
         Catch ex As Exception
             MainForm.OnUpdateLog(ex.Message)
         End Try
     End Sub
 
-End Module
+End Class

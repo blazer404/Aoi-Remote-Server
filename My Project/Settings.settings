@@ -32,7 +32,7 @@
     <Setting Name="AutorunTcpServer" Type="System.String" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="AccessKey" Type="System.String" Scope="User">
+    <Setting Name="AuthToken" Type="System.String" Scope="User">
       <Value Profile="(Default)">12345678</Value>
     </Setting>
     <Setting Name="ShowDebug" Type="System.Boolean" Scope="User">

@@ -3,7 +3,9 @@
 
 Public Class Settings
 
-    Public use_ip_v6 As Boolean = False
+    Public Property UseIpv6 As Boolean = False
+    Private Property WindowsStartup As New WindowsStartup
+
 
     ''' <summary>
     ''' Копируем настройки из старой версии
@@ -30,7 +32,7 @@ Public Class Settings
         MainForm.IpInput.SelectedItem = GetIp()
         MainForm.PortInput.Text = GetPort()
         MainForm.Ipv6CheckBox.Checked = My.Settings.UseIPv6
-        MainForm.AccessKeyInput.Text = My.Settings.AccessKey
+        MainForm.AuthTokenInput.Text = My.Settings.AuthToken
         MainForm.AutorunServerCheckBox.Checked = My.Settings.AutorunTcpServer
         MainForm.AutorunAppCheckbox.Checked = WindowsStartup.IsActive
         MainForm.RunMinimizedCheckBox.Checked = My.Settings.RunMinimized
@@ -55,7 +57,7 @@ Public Class Settings
         My.Settings.UserIp = MainForm.IpInput.Text
         My.Settings.UserPort = MainForm.PortInput.Text
         My.Settings.UseIPv6 = MainForm.Ipv6CheckBox.Checked
-        My.Settings.AccessKey = MainForm.AccessKeyInput.Text
+        My.Settings.AuthToken = MainForm.AuthTokenInput.Text
         My.Settings.AutorunTcpServer = MainForm.AutorunServerCheckBox.Checked
         My.Settings.RunMinimized = MainForm.RunMinimizedCheckBox.Checked
         My.Settings.ShowDebug = MainForm.ShowDebugCheckBox.Checked
@@ -72,15 +74,14 @@ Public Class Settings
     Public Sub Reset()
         My.Settings.Reset()
         WindowsStartup.Remove()
-        Utils.UpdateTextBox(MainForm.LogBox, "Settings is reset")
+        UpdateTextBox(MainForm.LogBox, "Settings is reset")
     End Sub
 
     ''' <summary>
     ''' Получение IP
     ''' </summary>
     ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Function GetIp()
+    Public Function GetIp() As String
         If My.Settings.UserIp <> "" Then
             Return My.Settings.UserIp.ToString
         Else
@@ -93,12 +94,20 @@ Public Class Settings
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function GetPort()
+    Public Function GetPort() As String
         If My.Settings.UserPort Then
             Return My.Settings.UserPort.ToString
         Else
             Return My.Settings.DefaultPort.ToString
         End If
+    End Function
+
+    ''' <summary>
+    ''' Получение пароля
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function GetAuthToken() As String
+        Return My.Settings.AuthToken
     End Function
 
     ''' <summary>
@@ -109,9 +118,8 @@ Public Class Settings
         Dim hostName As String = Dns.GetHostName()
         Dim addresses() As IPAddress = Dns.GetHostAddresses(hostName)
         MainForm.IpInput.Items.Clear()
-        MainForm.IpInput.Items.Add(IPAddress.Any)
         For Each address As IPAddress In addresses
-            If use_ip_v6 = True Or address.AddressFamily = Sockets.AddressFamily.InterNetwork Then
+            If UseIpv6 = True Or address.AddressFamily = Sockets.AddressFamily.InterNetwork Then
                 MainForm.IpInput.Items.Add(address.ToString())
             End If
         Next

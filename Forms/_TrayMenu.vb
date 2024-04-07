@@ -43,7 +43,7 @@
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub TrayMenuExit_Click(sender As Object, e As EventArgs) Handles TrayMenuExit.Click
-        TCPServer.CloseConnection()
+        Server.Close()
         Application.Exit()
     End Sub
 

@@ -44,10 +44,10 @@ Partial Class MainForm
         Me.ShowDebugCheckBox = New System.Windows.Forms.CheckBox()
         Me.ServerStatusLabel = New System.Windows.Forms.Label()
         Me.PortInput = New System.Windows.Forms.TextBox()
-        Me.AccessKeyInput = New System.Windows.Forms.TextBox()
+        Me.AuthTokenInput = New System.Windows.Forms.TextBox()
         Me.AutorunAppCheckbox = New System.Windows.Forms.CheckBox()
         Me.Ipv6CheckBox = New System.Windows.Forms.CheckBox()
-        Me.AccessKeyButton = New System.Windows.Forms.Button()
+        Me.AuthTokenButton = New System.Windows.Forms.Button()
         Me.PortButton = New System.Windows.Forms.Button()
         Me.AppsTab = New System.Windows.Forms.TabPage()
         Me.MpcInput = New System.Windows.Forms.TextBox()
@@ -210,11 +210,11 @@ Partial Class MainForm
         Me.ServerTab.Controls.Add(Me.ShowDebugCheckBox)
         Me.ServerTab.Controls.Add(Me.ServerStatusLabel)
         Me.ServerTab.Controls.Add(Me.PortInput)
-        Me.ServerTab.Controls.Add(Me.AccessKeyInput)
+        Me.ServerTab.Controls.Add(Me.AuthTokenInput)
         Me.ServerTab.Controls.Add(Me.AutorunAppCheckbox)
         Me.ServerTab.Controls.Add(Me.Ipv6CheckBox)
         Me.ServerTab.Controls.Add(Me.AutorunServerCheckBox)
-        Me.ServerTab.Controls.Add(Me.AccessKeyButton)
+        Me.ServerTab.Controls.Add(Me.AuthTokenButton)
         Me.ServerTab.Controls.Add(Me.PortButton)
         Me.ServerTab.Controls.Add(Me.IpInput)
         Me.ServerTab.Controls.Add(Me.AccessKeyLabel)
@@ -265,12 +265,12 @@ Partial Class MainForm
         Me.PortInput.Size = New System.Drawing.Size(116, 20)
         Me.PortInput.TabIndex = 18
         '
-        'AccessKeyInput
+        'AuthTokenInput
         '
-        Me.AccessKeyInput.Location = New System.Drawing.Point(77, 62)
-        Me.AccessKeyInput.Name = "AccessKeyInput"
-        Me.AccessKeyInput.Size = New System.Drawing.Size(116, 20)
-        Me.AccessKeyInput.TabIndex = 17
+        Me.AuthTokenInput.Location = New System.Drawing.Point(77, 62)
+        Me.AuthTokenInput.Name = "AuthTokenInput"
+        Me.AuthTokenInput.Size = New System.Drawing.Size(116, 20)
+        Me.AuthTokenInput.TabIndex = 17
         '
         'AutorunAppCheckbox
         '
@@ -292,16 +292,16 @@ Partial Class MainForm
         Me.Ipv6CheckBox.Text = "Use IPv6"
         Me.Ipv6CheckBox.UseVisualStyleBackColor = True
         '
-        'AccessKeyButton
+        'AuthTokenButton
         '
-        Me.AccessKeyButton.BackColor = System.Drawing.Color.Transparent
-        Me.AccessKeyButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer))
-        Me.AccessKeyButton.Location = New System.Drawing.Point(199, 60)
-        Me.AccessKeyButton.Name = "AccessKeyButton"
-        Me.AccessKeyButton.Size = New System.Drawing.Size(70, 23)
-        Me.AccessKeyButton.TabIndex = 6
-        Me.AccessKeyButton.Text = "Generate"
-        Me.AccessKeyButton.UseVisualStyleBackColor = True
+        Me.AuthTokenButton.BackColor = System.Drawing.Color.Transparent
+        Me.AuthTokenButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer))
+        Me.AuthTokenButton.Location = New System.Drawing.Point(199, 60)
+        Me.AuthTokenButton.Name = "AuthTokenButton"
+        Me.AuthTokenButton.Size = New System.Drawing.Size(70, 23)
+        Me.AuthTokenButton.TabIndex = 6
+        Me.AuthTokenButton.Text = "Generate"
+        Me.AuthTokenButton.UseVisualStyleBackColor = True
         '
         'PortButton
         '
@@ -476,7 +476,7 @@ Partial Class MainForm
     Friend WithEvents AccessKeyLabel As System.Windows.Forms.Label
     Friend WithEvents TabPanel As System.Windows.Forms.TabControl
     Friend WithEvents ServerTab As System.Windows.Forms.TabPage
-    Friend WithEvents AccessKeyButton As System.Windows.Forms.Button
+    Friend WithEvents AuthTokenButton As System.Windows.Forms.Button
     Friend WithEvents PortButton As System.Windows.Forms.Button
     Friend WithEvents DebugTab As System.Windows.Forms.TabPage
     Friend WithEvents AppsTab As System.Windows.Forms.TabPage
@@ -493,7 +493,7 @@ Partial Class MainForm
     Friend WithEvents ToolStripMenuItem1 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents TrayMenuExit As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents TrayIcon As System.Windows.Forms.NotifyIcon
-    Friend WithEvents AccessKeyInput As System.Windows.Forms.TextBox
+    Friend WithEvents AuthTokenInput As System.Windows.Forms.TextBox
     Friend WithEvents PortInput As System.Windows.Forms.TextBox
     Friend WithEvents ServerStatusLabel As System.Windows.Forms.Label
     Friend WithEvents ResetButton As System.Windows.Forms.Button
