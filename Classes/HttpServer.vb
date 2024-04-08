@@ -65,6 +65,7 @@ Public Class HttpServer
                 Listener.OnCloseConnection()
                 Exit Sub
             End If
+            Ip = If(Ip = "0.0.0.0", "*", Ip)
             Dim endpoint As String = "http://" & Ip & ":" & Port & "/"
             Listener.OnUpdateLog("Endpoint: " & endpoint)
             Server = New HttpListener

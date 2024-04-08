@@ -1,11 +1,21 @@
 ﻿Imports System.Net
+Imports Microsoft.Win32
+Imports Microsoft.Win32.Registry
 
 
 Public Class Settings
 
     Public Property UseIpv6 As Boolean = False
-    Private Property WindowsStartup As New WindowsStartup
+    Private Property WinStartupIsActive As Boolean = False
+    Private Property WinStartupRegSubKey As String = "SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
 
+
+    ''' <summary>
+    ''' Конструктор класса
+    ''' </summary>
+    Public Sub New()
+        WinStartupIsActive = GetWinStartupStatus()
+    End Sub
 
     ''' <summary>
     ''' Копируем настройки из старой версии
@@ -34,7 +44,7 @@ Public Class Settings
         MainForm.Ipv6CheckBox.Checked = My.Settings.UseIPv6
         MainForm.AuthTokenInput.Text = My.Settings.AuthToken
         MainForm.AutorunServerCheckBox.Checked = My.Settings.AutorunTcpServer
-        MainForm.AutorunAppCheckbox.Checked = WindowsStartup.IsActive
+        MainForm.AutorunAppCheckbox.Checked = WinStartupIsActive
         MainForm.RunMinimizedCheckBox.Checked = My.Settings.RunMinimized
         MainForm.ShowDebugCheckBox.Checked = My.Settings.ShowDebug
         ' Приложения
@@ -49,9 +59,9 @@ Public Class Settings
     Public Sub Save()
         ' Основные
         If MainForm.AutorunAppCheckbox.Checked = True Then
-            WindowsStartup.Add()
+            WinStartupAdd()
         Else
-            WindowsStartup.Remove()
+            WinStartupRemove()
         End If
         ' Сервер
         My.Settings.UserIp = MainForm.IpInput.Text
@@ -73,7 +83,7 @@ Public Class Settings
     ''' <remarks></remarks>
     Public Sub Reset()
         My.Settings.Reset()
-        WindowsStartup.Remove()
+        WinStartupRemove()
         UpdateTextBox(MainForm.LogBox, "Settings is reset")
     End Sub
 
@@ -82,11 +92,7 @@ Public Class Settings
     ''' </summary>
     ''' <returns></returns>
     Public Function GetIp() As String
-        If My.Settings.UserIp <> "" Then
-            Return My.Settings.UserIp.ToString
-        Else
-            Return My.Settings.DefaultIp.ToString
-        End If
+        Return If(My.Settings.UserIp <> "", My.Settings.UserIp.ToString, My.Settings.DefaultIp.ToString)
     End Function
 
     ''' <summary>
@@ -95,11 +101,7 @@ Public Class Settings
     ''' <returns></returns>
     ''' <remarks></remarks>
     Public Function GetPort() As String
-        If My.Settings.UserPort Then
-            Return My.Settings.UserPort.ToString
-        Else
-            Return My.Settings.DefaultPort.ToString
-        End If
+        Return If(My.Settings.UserPort, My.Settings.UserPort.ToString, My.Settings.DefaultPort.ToString)
     End Function
 
     ''' <summary>
@@ -118,11 +120,45 @@ Public Class Settings
         Dim hostName As String = Dns.GetHostName()
         Dim addresses() As IPAddress = Dns.GetHostAddresses(hostName)
         MainForm.IpInput.Items.Clear()
+        MainForm.IpInput.Items.Add("0.0.0.0")
         For Each address As IPAddress In addresses
             If UseIpv6 = True Or address.AddressFamily = Sockets.AddressFamily.InterNetwork Then
                 MainForm.IpInput.Items.Add(address.ToString())
             End If
         Next
     End Sub
+
+    ''' <summary>
+    ''' Добавление приложения в автозагрузку системы
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private Sub WinStartupAdd()
+        If WinStartupIsActive = False Then
+            Dim regKey As RegistryKey = CurrentUser.OpenSubKey(WinStartupRegSubKey, True)
+            regKey.SetValue(Application.ProductName, Application.ExecutablePath)
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Удаление приложения из автозагрузки системы
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private Sub WinStartupRemove()
+        If WinStartupIsActive = True Then
+            Dim regKey As RegistryKey = CurrentUser.OpenSubKey(WinStartupRegSubKey, True)
+            regKey.DeleteValue(Application.ProductName, False)
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Проверка находится ли приложение в автозагрузке системы
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function GetWinStartupStatus() As Boolean
+        Dim regKey As RegistryKey = CurrentUser.OpenSubKey(WinStartupRegSubKey, False)
+        Dim value As Object = regKey.GetValue(Application.ProductName)
+        Return (value IsNot Nothing AndAlso value.ToString() = Application.ExecutablePath)
+    End Function
 
 End Class

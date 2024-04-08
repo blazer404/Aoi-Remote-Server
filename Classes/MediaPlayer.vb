@@ -89,7 +89,7 @@ Public Class MediaPlayer
     ''' </summary>
     ''' <param name="name"></param>
     ''' <remarks></remarks>
-    Private Function FindByName(ByVal name As String)
+    Private Function FindProcessByName(ByVal name As String)
         Dim path = GetPath(name)
         If path Is Nothing Then
             Return Nothing
@@ -117,7 +117,7 @@ Public Class MediaPlayer
     ''' <remarks></remarks>
     Public Sub SendCommand(ByVal playerName As String, ByVal commandKey As Integer)
         Try
-            Dim playerPid = FindByName(playerName)
+            Dim playerPid = FindProcessByName(playerName)
             If playerPid Is Nothing Then
                 Exit Sub
             End If

@@ -42,8 +42,7 @@
     ''' <returns></returns>
     ''' <remarks></remarks>
     Public Function GeneratePort()
-        Dim random As New Random
-        Return random.Next(10000, 65535)
+        Return (New Random).Next(10000, 65535)
     End Function
 
     ''' <summary>

@@ -28,8 +28,7 @@ Public Class Json
     ''' <param name="json"></param>
     ''' <returns></returns>
     Public Function Deserialize(ByVal json As String) As Object
-        Dim data As JObject = JObject.Parse(json)
-        Return data
+        Return JObject.Parse(json)
     End Function
 
 End Class

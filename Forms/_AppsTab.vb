@@ -5,7 +5,7 @@
     ''' </summary>
     ''' <param name="pathInput"></param>
     ''' <remarks></remarks>
-    Private Sub selectAppFile(defaultFilename As String, pathInput As TextBox)
+    Private Sub SelectAppFile(defaultFilename As String, pathInput As TextBox)
         Dim fileDialog As New OpenFileDialog
         fileDialog.Filter = "Исполняемые файлы (*.exe)|*.exe"
         fileDialog.FileName = defaultFilename
@@ -22,7 +22,7 @@
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub AimpInput_TextClick(sender As Object, e As EventArgs) Handles AimpInput.Click
-        selectAppFile("AIMP", AimpInput)
+        SelectAppFile("AIMP", AimpInput)
     End Sub
 
     ''' <summary>
@@ -32,7 +32,7 @@
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub MpcInput_TextClick(sender As Object, e As EventArgs) Handles MpcInput.Click
-        selectAppFile("mpc-hc", MpcInput)
+        SelectAppFile("mpc-hc", MpcInput)
     End Sub
 
 End Class
