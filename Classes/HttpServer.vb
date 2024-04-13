@@ -194,6 +194,9 @@ Public Class HttpServer
         Dim response As HttpListenerResponse = context.Response
         response.ContentType = "application/json"
         response.ContentLength64 = buffer.Length
+        response.AddHeader("Access-Control-Allow-Origin", "*")
+        response.AddHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+        response.AddHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization")
         Await response.OutputStream.WriteAsync(buffer, 0, buffer.Length)
         response.OutputStream.Close()
         response.Close()
