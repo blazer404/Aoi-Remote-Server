@@ -138,7 +138,6 @@ Public Class HttpServer
             Dim request = JsonParse(Await GetRequest(context))
             Dim player As String = request("player").ToString()
             Dim command As Integer = Convert.ToInt32(request("command"))
-            Listener.OnUpdateLog(player & ": " & command)
             Listener.OnCommandReceived(player, command)
             Await SetResponse(context, JsonResponse(True, 200, "OK"))
         Catch ex As Exception
