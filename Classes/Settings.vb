@@ -8,6 +8,7 @@ Public Class Settings
     Public Property UseIpv6 As Boolean = False
     Private Property WinStartupIsActive As Boolean = False
     Private Property WinStartupRegSubKey As String = "SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
+    Private Property FirewallKey As String = "SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules"
 
 
     ''' <summary>
@@ -34,6 +35,7 @@ Public Class Settings
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub Load()
+        AddFirewallRule()
         ' Основные
         GetIpList()
         MainForm.Text = Application.ProductName + " v" + Application.ProductVersion
@@ -136,6 +138,7 @@ Public Class Settings
         If WinStartupIsActive = False Then
             Dim regKey As RegistryKey = CurrentUser.OpenSubKey(WinStartupRegSubKey, True)
             regKey.SetValue(Application.ProductName, Application.ExecutablePath)
+            regKey.Close()
         End If
     End Sub
 
@@ -147,6 +150,7 @@ Public Class Settings
         If WinStartupIsActive = True Then
             Dim regKey As RegistryKey = CurrentUser.OpenSubKey(WinStartupRegSubKey, True)
             regKey.DeleteValue(Application.ProductName, False)
+            regKey.Close()
         End If
     End Sub
 
@@ -158,7 +162,20 @@ Public Class Settings
     Private Function GetWinStartupStatus() As Boolean
         Dim regKey As RegistryKey = CurrentUser.OpenSubKey(WinStartupRegSubKey, False)
         Dim value As Object = regKey.GetValue(Application.ProductName)
-        Return (value IsNot Nothing AndAlso value.ToString() = Application.ExecutablePath)
+        Dim status = value IsNot Nothing AndAlso value.ToString() = Application.ExecutablePath
+        regKey.Close()
+        Return status
     End Function
+
+    Public Sub AddFirewallRule()
+        'Dim appName = Application.ProductName.Replace(" ", "_")
+        'Dim appPath As String = (Process.GetCurrentProcess().MainModule.FileName).ToLower
+        'Dim proc As New Process()
+        'proc.StartInfo.FileName = "netsh"
+        'proc.StartInfo.Arguments = "advfirewall firewall add rule name=""" & appName & """ dir=in action=allow program=""" & appPath & """ enable=yes"
+        'proc.StartInfo.Verb = "runas"
+        'proc.Start()
+        'proc.WaitForExit()
+    End Sub
 
 End Class

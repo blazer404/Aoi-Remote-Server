@@ -3,7 +3,7 @@
 
 Partial Public Class MainForm : Implements IMessageListener
 
-    Private Property Server As HttpServer = Nothing
+    Private Property Server As SocketServer = Nothing
     Private Property Settings As Settings = Nothing
     Private Property MediaPlayer As New MediaPlayer
 
@@ -105,7 +105,7 @@ Partial Public Class MainForm : Implements IMessageListener
     ''' Создание сервера
     ''' </summary>
     Private Sub CreateServer()
-        Server = New HttpServer With {
+        Server = New SocketServer With {
              .Ip = Settings.GetIp(),
              .Port = Settings.GetPort(),
              .Token = Settings.GetAuthToken(),

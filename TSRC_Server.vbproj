@@ -100,7 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Interfaces.vb" />
-    <Compile Include="Classes\HttpServer.vb" />
+    <Compile Include="Classes\SocketServer.vb" />
     <Compile Include="Classes\Json.vb" />
     <Compile Include="Forms\MainForm.vb">
       <SubType>Form</SubType>

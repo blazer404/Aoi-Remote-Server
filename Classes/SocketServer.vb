@@ -1,14 +1,13 @@
 ﻿Imports TSRC.Interfaces
-Imports System.IO
 Imports System.Net
 Imports System.Text
 Imports System.Threading
-Imports System.Text.RegularExpressions
+Imports System.Net.Sockets
 
 
-Public Class HttpServer
+Public Class SocketServer
 
-    Private Property Server As HttpListener = Nothing
+    Private Property Server As Socket = Nothing
     Private Property ServerThread As Thread = Nothing
     Public Property IsRunning As Boolean = False
     Public Property Ip As String = Nothing
@@ -61,24 +60,26 @@ Public Class HttpServer
         Try
             Listener.OnUpdateLog("Create server")
             DestroyServer()
-            If IsValidSocket() = False Then
+            If IsValidAddress() = False Then
                 Listener.OnCloseConnection()
                 Exit Sub
             End If
-            Ip = If(Ip = "0.0.0.0", "*", Ip)
-            Dim endpoint As String = "http://" & Ip & ":" & Port & "/"
-            Listener.OnUpdateLog("Endpoint: " & endpoint)
-            Server = New HttpListener
-            Server.Prefixes.Add(endpoint)
-            Server.Start()
+            Dim parsedIp As IPAddress = IPAddress.Parse(Ip)
+            Dim endpoint As New IPEndPoint(parsedIp, Port)
+            Listener.OnUpdateLog("Endpoint: " & endpoint.ToString)
+            Server = New Socket(parsedIp.AddressFamily, SocketType.Stream, ProtocolType.Tcp)
+            Server.Bind(endpoint)
+            Server.Listen(10)
             Listener.OnOpenConnection()
             While IsRunning And Server IsNot Nothing
-                Dim context As HttpListenerContext = Server.GetContext()
-                Task.Run(Function() ProcessRequest(context))
+                Dim client As Socket = Server.Accept()
+                Task.Run(Function() ProcessRequest(client))
             End While
-        Catch ex As HttpListenerException
-            Listener.OnUpdateLog("☻ HttpListenerException: " & ex.Message)
-        Catch ex As Exception
+        Catch ex As SocketException
+            If ex.ErrorCode <> 10004 Then
+                Listener.OnUpdateLog("☻ Exception: " & ex.Message)
+                Listener.OnCloseConnection()
+            End If
         End Try
     End Sub
 
@@ -88,7 +89,8 @@ Public Class HttpServer
     ''' <remarks></remarks>
     Private Sub DestroyServer()
         If Server IsNot Nothing Then
-            Server.Stop()
+            Server.Close()
+            Server.Dispose()
             Server = Nothing
         End If
     End Sub
@@ -109,7 +111,7 @@ Public Class HttpServer
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function IsValidSocket()
+    Private Function IsValidAddress()
         Dim err As String
         If Ip = "" Then
             err = "IP address is empty"
@@ -130,75 +132,74 @@ Public Class HttpServer
     ''' Обработка запроса от клиента
     ''' </summary>
     ''' <remarks></remarks>
-    Private Async Function ProcessRequest(context) As Task
+    Private Async Function ProcessRequest(client As Socket) As Task
         Try
-            If Await IsValidClient(context) = False Then
+            Dim params As Dictionary(Of String, Object) = ParseRequest(client)
+            If Await IsValidClient(client, params) = False Then
                 Exit Function
             End If
-            Dim request = JsonParse(Await GetRequest(context))
-            Dim player As String = request("player").ToString()
-            Dim command As Integer = Convert.ToInt32(request("command"))
-            Listener.OnCommandReceived(player, command)
-            Await SetResponse(context, JsonResponse(True, 200, "OK"))
+            Dim target As String = params("T").ToString()
+            Dim command As Integer = Convert.ToInt32(params("C"))
+            Listener.OnCommandReceived(target, command)
+            Await SetResponse(client, JsonResponse(True, 200, "OK"))
         Catch ex As Exception
-            Dim unused = SetResponse(context, JsonResponse(True, 500, ex.Message))
+            Dim unused = SetResponse(client, JsonResponse(True, 500, ex.Message))
         End Try
     End Function
 
     ''' <summary>
+    ''' Парсим запрос
+    ''' </summary>
+    ''' <param name="client"></param>
+    ''' <returns></returns>
+    Private Function ParseRequest(client As Socket)
+        Dim bytes As Byte() = New Byte(1023) {}
+        Dim bytesRec As Integer = client.Receive(bytes)
+        Dim data As String = Encoding.UTF8.GetString(bytes, 0, bytesRec).ToString
+        Listener.OnUpdateLog("vbNewLine" & data)
+        Dim lines() As String = data.Split("&")
+        Dim params As New Dictionary(Of String, Object)()
+        For Each line As String In lines
+            If line.Trim() <> "" Then
+                Dim linePair = line.Split("=")
+                params.Add(linePair(0).Trim().ToUpper, linePair(1).Trim())
+            End If
+        Next
+        Return params
+    End Function
+
+
+    ''' <summary>
     ''' Валидация клиента
     ''' </summary>
-    ''' <param name="context"></param>
+    ''' <param name="params"></param>
     ''' <returns></returns>
-    Private Async Function IsValidClient(context As HttpListenerContext) As Task(Of Boolean)
-        Dim request As HttpListenerRequest = context.Request
-        Dim authHeader As String = request.Headers("Authorization")
-        If String.IsNullOrEmpty(authHeader) OrElse Not authHeader.StartsWith("Bearer ") Then
-            Await SetResponse(context, JsonResponse(False, 401, "Unauthorized"))
+    Private Async Function IsValidClient(client As Socket, params As Dictionary(Of String, Object)) As Task(Of Boolean)
+        Dim authToken As String = If(params.ContainsKey("P"), params("P"), Nothing)
+        If authToken Is Nothing Then
+            Await SetResponse(client, JsonResponse(False, 401, "Unauthorized"))
+            Listener.OnUpdateLog(JsonResponse(False, 401, "Unauthorized 1"))
             Return False
         End If
-        Dim authToken As String = authHeader.Substring(7)
         If authToken <> Token Then
-            Await SetResponse(context, JsonResponse(False, 401, "Unauthorized"))
-            Return False
-        End If
-        If request.HttpMethod.ToLower <> "post" Then
-            Await SetResponse(context, JsonResponse(False, 405, "Method not allowed"))
+            Await SetResponse(client, JsonResponse(False, 401, "Unauthorized"))
+            Listener.OnUpdateLog(JsonResponse(False, 401, "Unauthorized 2"))
             Return False
         End If
         Return True
     End Function
 
     ''' <summary>
-    ''' Чтение сообщения запроса
-    ''' </summary>
-    ''' <returns></returns>
-    Private Async Function GetRequest(context As HttpListenerContext) As Task(Of String)
-        Dim request As HttpListenerRequest = context.Request
-        Dim reader As New StreamReader(request.InputStream)
-        Dim body As String = Await reader.ReadToEndAsync()
-        body = body.Replace(vbLf, "")
-        body = Regex.Replace(body, "\s+", " ")
-        Listener.OnUpdateLog("Request: " & body)
-        Return body
-    End Function
-
-    ''' <summary>
     ''' Отправка ответа клиенту
     ''' </summary>
-    ''' <param name="context"></param>
+    ''' <param name="client"></param>
     ''' <param name="message"></param>
-    Private Async Function SetResponse(context As HttpListenerContext, ByVal message As String) As Task
-        Dim buffer As Byte() = Encoding.UTF8.GetBytes(message)
-        Dim response As HttpListenerResponse = context.Response
-        response.ContentType = "application/json"
-        response.ContentLength64 = buffer.Length
-        response.AddHeader("Access-Control-Allow-Origin", "*")
-        response.AddHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-        response.AddHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization")
-        Await response.OutputStream.WriteAsync(buffer, 0, buffer.Length)
-        response.OutputStream.Close()
-        response.Close()
+    Private Async Function SetResponse(client As Socket, ByVal message As String) As Task
+        Dim response As Byte() = Encoding.UTF8.GetBytes(message)
+        client.Send(response)
+        Await Task.Delay(2000)
+        client.Shutdown(SocketShutdown.Both)
+        client.Close()
     End Function
 
 End Class

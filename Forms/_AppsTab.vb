@@ -6,13 +6,14 @@
     ''' <param name="pathInput"></param>
     ''' <remarks></remarks>
     Private Sub SelectAppFile(defaultFilename As String, pathInput As TextBox)
-        Dim fileDialog As New OpenFileDialog
-        fileDialog.Filter = "Исполняемые файлы (*.exe)|*.exe"
-        fileDialog.FileName = defaultFilename
-        If (fileDialog.ShowDialog() = Windows.Forms.DialogResult.OK) Then
-            pathInput.Text = fileDialog.FileName
-        End If
-        fileDialog.Dispose()
+        Using fileDialog As New OpenFileDialog
+            fileDialog.Filter = "Исполняемые файлы (*.exe)|*.exe"
+            fileDialog.FileName = defaultFilename
+            If (fileDialog.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+                pathInput.Text = fileDialog.FileName
+            End If
+            fileDialog.Dispose()
+        End Using
     End Sub
 
     ''' <summary>
