@@ -58,23 +58,28 @@ Public Class HttpServer
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub CreateServer()
-        Listener.OnUpdateLog("Create server")
-        DestroyServer()
-        If IsValidSocket() = False Then
-            Listener.OnCloseConnection()
-            Exit Sub
-        End If
-        Ip = If(Ip = "0.0.0.0", "*", Ip)
-        Dim endpoint As String = "http://" & Ip & ":" & Port & "/"
-        Listener.OnUpdateLog("Endpoint: " & endpoint)
-        Server = New HttpListener
-        Server.Prefixes.Add(endpoint)
-        Server.Start()
-        Listener.OnOpenConnection()
-        While IsRunning And Server IsNot Nothing
-            Dim context As HttpListenerContext = Server.GetContext()
+        Try
+            Listener.OnUpdateLog("Create server")
+            DestroyServer()
+            If IsValidSocket() = False Then
+                Listener.OnCloseConnection()
+                Exit Sub
+            End If
+            Ip = If(Ip = "0.0.0.0", "*", Ip)
+            Dim endpoint As String = "http://" & Ip & ":" & Port & "/"
+            Listener.OnUpdateLog("Endpoint: " & endpoint)
+            Server = New HttpListener
+            Server.Prefixes.Add(endpoint)
+            Server.Start()
+            Listener.OnOpenConnection()
+            While IsRunning And Server IsNot Nothing
+                Dim context As HttpListenerContext = Server.GetContext()
                 Task.Run(Function() ProcessRequest(context))
-        End While
+            End While
+        Catch ex As HttpListenerException
+            Listener.OnUpdateLog("☻ HttpListenerException: " & ex.Message)
+        Catch ex As Exception
+        End Try
     End Sub
 
     ''' <summary>

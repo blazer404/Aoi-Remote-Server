@@ -7,6 +7,9 @@
     ''' <param name="text"></param>
     ''' <remarks></remarks>
     Public Sub UpdateTextBox(textBox As TextBox, text As String)
+        If textBox.Lines.Length > 1000 Then
+            textBox.Text = textBox.Text.Substring(textBox.Text.IndexOf(vbNewLine) + 1)
+        End If
         textBox.AppendText(text & vbNewLine)
     End Sub
 
