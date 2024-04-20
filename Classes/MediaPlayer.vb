@@ -104,6 +104,10 @@ Public Class MediaPlayer
                     End If
                 End If
             Catch ex As Exception
+                'просто напоминалка
+                If Debugger.IsAttached Then
+                    Console.WriteLine("Это запланированое падение - забей. Метод не нашел провцесс или не смог получить к нему доступ")
+                End If
             End Try
         Next
         Return Nothing

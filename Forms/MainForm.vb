@@ -36,7 +36,7 @@ Partial Public Class MainForm : Implements IMessageListener
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub OpenConnectionAction()
-        Server.isRunning = True
+        Server.IsRunning = True
         UpdateLogText("Server is running")
         RunServerButton.Text = "Stop Server"
         ServerStatusLabel.Text = "Server is running"
@@ -49,7 +49,7 @@ Partial Public Class MainForm : Implements IMessageListener
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub CloseConnectionAction()
-        Server.isRunning = False
+        Server.IsRunning = False
         UpdateLogText("Server is stopped")
         RunServerButton.Text = "Start Server"
         ServerStatusLabel.Text = "Server is stopped"
@@ -83,8 +83,8 @@ Partial Public Class MainForm : Implements IMessageListener
     ''' <param name="playerName"></param>
     ''' <param name="commandKey"></param>
     ''' <remarks></remarks>
-    Private Sub SendCommand(ByVal playerName As String, ByVal commandKey As String)
-        MediaPlayer.SendCommand(playerName, commandKey)
+    Private Async Sub SendCommand(ByVal playerName As String, ByVal commandKey As String)
+        Await Task.Run(Sub() MediaPlayer.SendCommand(playerName, commandKey))
     End Sub
 
     '''''''''''' Rewrite Interface - END ''''''''''''
