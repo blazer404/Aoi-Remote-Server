@@ -159,7 +159,7 @@ Public Class SocketServer
         Dim bytes As Byte() = New Byte(1023) {}
         Dim bytesRec As Integer = client.Receive(bytes)
         Dim data As String = Encoding.UTF8.GetString(bytes, 0, bytesRec).ToString
-        Listener.OnUpdateLog("vbNewLine" & data)
+        Listener.OnUpdateLog("Request: " & data)
         Dim lines() As String = data.Split("&")
         Dim params As New Dictionary(Of String, Object)()
         For Each line As String In lines

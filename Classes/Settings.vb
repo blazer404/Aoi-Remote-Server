@@ -1,4 +1,5 @@
 ﻿Imports System.Net
+Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 Imports Microsoft.Win32
 Imports Microsoft.Win32.Registry
 
@@ -131,24 +132,17 @@ Public Class Settings
     End Sub
 
     ''' <summary>
-    ''' Проверяем наличие ключа в реестре
-    ''' </summary>
-    ''' <param name="keyName"></param>
-    ''' <returns></returns>
-    Private Function RegKeyExists(keyName As String) As Boolean
-        Dim regKey As RegistryKey = CurrentUser.OpenSubKey(keyName, False)
-        Return regKey IsNot Nothing
-    End Function
-
-    ''' <summary>
     ''' Добавление приложения в автозагрузку системы
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub WinStartupAdd()
-        If WinStartupIsActive = False AndAlso Not RegKeyExists(WinStartupRegSubKey) Then
+        If WinStartupIsActive = False Then
             Dim regKey As RegistryKey = CurrentUser.OpenSubKey(WinStartupRegSubKey, True)
-            regKey.SetValue(Application.ProductName, Application.ExecutablePath)
-            regKey.Close()
+            If regKey IsNot Nothing Then
+                regKey.SetValue(Application.ProductName, Application.ExecutablePath)
+                regKey.Close()
+                WinStartupIsActive = True
+            End If
         End If
     End Sub
 
@@ -157,10 +151,13 @@ Public Class Settings
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub WinStartupRemove()
-        If WinStartupIsActive = True AndAlso RegKeyExists(WinStartupRegSubKey) Then
+        If WinStartupIsActive = True Then
             Dim regKey As RegistryKey = CurrentUser.OpenSubKey(WinStartupRegSubKey, True)
-            regKey.DeleteValue(Application.ProductName, False)
-            regKey.Close()
+            If regKey IsNot Nothing Then
+                regKey.DeleteValue(Application.ProductName, False)
+                regKey.Close()
+            End If
+            WinStartupIsActive = False
         End If
     End Sub
 
@@ -171,8 +168,8 @@ Public Class Settings
     ''' <remarks></remarks>
     Private Function GetWinStartupStatus() As Boolean
         Dim status As Boolean = False
-        If RegKeyExists(WinStartupRegSubKey) Then
-            Dim regKey As RegistryKey = CurrentUser.OpenSubKey(WinStartupRegSubKey, False)
+        Dim regKey As RegistryKey = CurrentUser.OpenSubKey(WinStartupRegSubKey, False)
+        If regKey IsNot Nothing Then
             Dim value As Object = regKey.GetValue(Application.ProductName)
             status = value IsNot Nothing AndAlso value.ToString() = Application.ExecutablePath
             regKey.Close()
