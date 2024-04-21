@@ -131,11 +131,21 @@ Public Class Settings
     End Sub
 
     ''' <summary>
+    ''' Проверяем наличие ключа в реестре
+    ''' </summary>
+    ''' <param name="keyName"></param>
+    ''' <returns></returns>
+    Private Function RegKeyExists(keyName As String) As Boolean
+        Dim regKey As RegistryKey = CurrentUser.OpenSubKey(keyName, False)
+        Return regKey IsNot Nothing
+    End Function
+
+    ''' <summary>
     ''' Добавление приложения в автозагрузку системы
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub WinStartupAdd()
-        If WinStartupIsActive = False Then
+        If WinStartupIsActive = False AndAlso Not RegKeyExists(WinStartupRegSubKey) Then
             Dim regKey As RegistryKey = CurrentUser.OpenSubKey(WinStartupRegSubKey, True)
             regKey.SetValue(Application.ProductName, Application.ExecutablePath)
             regKey.Close()
@@ -147,7 +157,7 @@ Public Class Settings
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub WinStartupRemove()
-        If WinStartupIsActive = True Then
+        If WinStartupIsActive = True AndAlso RegKeyExists(WinStartupRegSubKey) Then
             Dim regKey As RegistryKey = CurrentUser.OpenSubKey(WinStartupRegSubKey, True)
             regKey.DeleteValue(Application.ProductName, False)
             regKey.Close()
@@ -160,10 +170,13 @@ Public Class Settings
     ''' <returns></returns>
     ''' <remarks></remarks>
     Private Function GetWinStartupStatus() As Boolean
-        Dim regKey As RegistryKey = CurrentUser.OpenSubKey(WinStartupRegSubKey, False)
-        Dim value As Object = regKey.GetValue(Application.ProductName)
-        Dim status = value IsNot Nothing AndAlso value.ToString() = Application.ExecutablePath
-        regKey.Close()
+        Dim status As Boolean = False
+        If RegKeyExists(WinStartupRegSubKey) Then
+            Dim regKey As RegistryKey = CurrentUser.OpenSubKey(WinStartupRegSubKey, False)
+            Dim value As Object = regKey.GetValue(Application.ProductName)
+            status = value IsNot Nothing AndAlso value.ToString() = Application.ExecutablePath
+            regKey.Close()
+        End If
         Return status
     End Function
 

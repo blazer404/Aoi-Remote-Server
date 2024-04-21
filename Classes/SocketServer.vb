@@ -112,15 +112,15 @@ Public Class SocketServer
     ''' <returns></returns>
     ''' <remarks></remarks>
     Private Function IsValidAddress()
-        Dim err As String
+        Dim err As String = ""
         If Ip = "" Then
             err = "IP address is empty"
-            Listener.OnUpdateLog(err)
-            Listener.OnShowError(err)
-            Return False
+        ElseIf Port = "" Then
+            err = "Port is empty"
+        ElseIf Port < 1024 Or Port > 65535 Then
+            err = "Port is invalid. It must be in range from 1024 to 65535"
         End If
-        If Port = "" Or Port = 0 Then
-            err = "Port is empty or invalid"
+        If err <> "" Then
             Listener.OnUpdateLog(err)
             Listener.OnShowError(err)
             Return False
@@ -134,6 +134,7 @@ Public Class SocketServer
     ''' <remarks></remarks>
     Private Async Function ProcessRequest(client As Socket) As Task
         Try
+            client.ReceiveTimeout = 5000
             Dim params As Dictionary(Of String, Object) = ParseRequest(client)
             If Await IsValidClient(client, params) = False Then
                 Exit Function
@@ -142,8 +143,10 @@ Public Class SocketServer
             Dim command As Integer = Convert.ToInt32(params("C"))
             Listener.OnCommandReceived(target, command)
             Await SetResponse(client, JsonResponse(True, 200, "OK"))
+        Catch ex As SocketException
+            Dim unused = SetResponse(client, JsonResponse(True, 500, "Connection timeout"))
         Catch ex As Exception
-            Dim unused = SetResponse(client, JsonResponse(True, 500, ex.Message))
+            Dim unused = SetResponse(client, JsonResponse(True, 500, "Internal server error"))
         End Try
     End Function
 
@@ -178,12 +181,10 @@ Public Class SocketServer
         Dim authToken As String = If(params.ContainsKey("P"), params("P"), Nothing)
         If authToken Is Nothing Then
             Await SetResponse(client, JsonResponse(False, 401, "Unauthorized"))
-            Listener.OnUpdateLog(JsonResponse(False, 401, "Unauthorized 1"))
             Return False
         End If
         If authToken <> Token Then
             Await SetResponse(client, JsonResponse(False, 401, "Unauthorized"))
-            Listener.OnUpdateLog(JsonResponse(False, 401, "Unauthorized 2"))
             Return False
         End If
         Return True
