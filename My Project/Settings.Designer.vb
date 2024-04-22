@@ -95,16 +95,6 @@ Namespace My
             End Set
         End Property
         
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.WebServiceUrl),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("https://github.com/blazer404/TSRC_Server")>  _
-        Public ReadOnly Property GitHubUrl() As String
-            Get
-                Return CType(Me("GitHubUrl"),String)
-            End Get
-        End Property
-        
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
@@ -200,6 +190,16 @@ Namespace My
                 Me("RunMinimized") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.WebServiceUrl),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("https://github.com/blazer404/Aoi-Remote-Server")>  _
+        Public ReadOnly Property GitHubUrl() As String
+            Get
+                Return CType(Me("GitHubUrl"),String)
+            End Get
+        End Property
     End Class
 End Namespace
 
@@ -211,9 +211,9 @@ Namespace My
     Friend Module MySettingsProperty
         
         <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>  _
-        Friend ReadOnly Property Settings() As Global.TSRC.My.MySettings
+        Friend ReadOnly Property Settings() As Global.AoiRemoteServer.My.MySettings
             Get
-                Return Global.TSRC.My.MySettings.Default
+                Return Global.AoiRemoteServer.My.MySettings.Default
             End Get
         End Property
     End Module

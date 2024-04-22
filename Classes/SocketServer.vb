@@ -1,4 +1,4 @@
-﻿Imports TSRC.Interfaces
+﻿Imports AoiRemoteServer.Interfaces
 Imports System.Net
 Imports System.Text
 Imports System.Threading

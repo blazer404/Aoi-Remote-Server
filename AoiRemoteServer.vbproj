@@ -6,9 +6,9 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{69704D43-639E-4B31-A85E-3F8B8A707B32}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>TSRC.My.MyApplication</StartupObject>
-    <RootNamespace>TSRC</RootNamespace>
-    <AssemblyName>TSRC Server</AssemblyName>
+    <StartupObject>AoiRemoteServer.My.MyApplication</StartupObject>
+    <RootNamespace>AoiRemoteServer</RootNamespace>
+    <AssemblyName>Aoi Remote Server</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -38,7 +38,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>TSRC Server.xml</DocumentationFile>
+    <DocumentationFile>Aoi Remote Server.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
@@ -49,7 +49,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>TSRC Server.xml</DocumentationFile>
+    <DocumentationFile>Aoi Remote Server.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
@@ -75,7 +75,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>tsrc_key.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>my_key.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -167,7 +167,6 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
-    <None Include="tsrc_key.pfx" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -182,6 +181,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="my_key.pfx" />
     <None Include="Resourses\icon_green_circle.ico" />
   </ItemGroup>
   <ItemGroup>

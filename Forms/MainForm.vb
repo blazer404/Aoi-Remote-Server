@@ -1,4 +1,4 @@
-﻿Imports TSRC.Interfaces
+﻿Imports AoiRemoteServer.Interfaces
 
 
 Partial Public Class MainForm : Implements IServerListener
