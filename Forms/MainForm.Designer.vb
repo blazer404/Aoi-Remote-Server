@@ -23,7 +23,6 @@ Partial Class MainForm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
         Me.RunServerButton = New System.Windows.Forms.Button()
         Me.ClearLogButton = New System.Windows.Forms.Button()
         Me.TrayIcon = New System.Windows.Forms.NotifyIcon(Me.components)
@@ -92,7 +91,6 @@ Partial Class MainForm
         'TrayIcon
         '
         Me.TrayIcon.ContextMenuStrip = Me.TrayMenu
-        Me.TrayIcon.Icon = CType(resources.GetObject("TrayIcon.Icon"), System.Drawing.Icon)
         Me.TrayIcon.Text = "TrayMenu"
         Me.TrayIcon.Visible = True
         '
@@ -443,7 +441,6 @@ Partial Class MainForm
         Me.ClientSize = New System.Drawing.Size(304, 265)
         Me.Controls.Add(Me.FlowLayoutPanel1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "MainForm"

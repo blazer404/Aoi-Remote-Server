@@ -3,48 +3,11 @@
 
 Public Class MediaPlayer
 
-    Public Const MPC = "MPC"
-    Public Const AIMP = "AIMP"
+    Private Const MPC = "MPC"
+    Private Const AIMP = "AIMP"
 
-    Public Const MPC_PLAYPAUSE = 889
-    Public Const MPC_PREV = 921 'jump prev chapter, use 919 for jump files
-    Public Const MPC_NEXT = 922 'jump next chapter, use 920 for jump files
-    Public Const MPC_VOL_UP = 907
-    Public Const MPC_VOL_DOWN = 908
-    Public Const MPC_STOP = 890
-    Public Const MPC_AUDIO_NEXT = 952
-    Public Const MPC_AUDIO_PREV = 953
-    Public Const MPC_MUTE = 909
-    Public Const MPC_SUB_NEXT = 954
-    Public Const MPC_SUB_PREV = 955
-    Public Const MPC_SUB_ONOFF = 956
-    Public Const MPC_FULLSCREEN = 830
-    Public Const MPC_CLOSE = 804
-    Public Const MPC_EXIT = 816
-
-    Public WM_COMMANDS As New Dictionary(Of String, Integer()) From {
+    Private ReadOnly WM_COMMANDS As New Dictionary(Of String, Integer()) From {
         {MPC, New Integer() {&H111}},
-        {AIMP, New Integer() {}}
-    }
-
-    Public APP_COMMANDS As New Dictionary(Of String, Integer()) From {
-        {MPC, New Integer() {
-                MPC_PLAYPAUSE,
-                MPC_PREV,
-                MPC_NEXT,
-                MPC_VOL_UP,
-                MPC_VOL_DOWN,
-                MPC_STOP,
-                MPC_AUDIO_NEXT,
-                MPC_AUDIO_PREV,
-                MPC_MUTE,
-                MPC_SUB_NEXT,
-                MPC_SUB_PREV,
-                MPC_SUB_ONOFF,
-                MPC_FULLSCREEN,
-                MPC_CLOSE,
-                MPC_EXIT
-            }},
         {AIMP, New Integer() {}}
     }
 
@@ -116,17 +79,20 @@ Public Class MediaPlayer
     ''' <summary>
     ''' Отправка команды проигрывателю
     ''' </summary>
-    ''' <param name="playerName"></param>
+    ''' <param name="target"></param>
     ''' <param name="commandKey"></param>
     ''' <remarks></remarks>
-    Public Sub SendCommand(ByVal playerName As String, ByVal commandKey As Integer)
+    Public Sub SendCommand(ByVal target As String, ByVal commandKey As Integer)
+
+        'todo разобрать тут команды по свитчу: системные в одну сторону, от проигрывателей в другую
+
         Try
-            Dim playerPid = FindProcessByName(playerName)
-            If playerPid Is Nothing Then
+            Dim pid = FindProcessByName(target)
+            If pid Is Nothing Then
                 Exit Sub
             End If
-            Dim WmCommand = WM_COMMANDS(playerName)(0)
-            SendMessage(playerPid, WmCommand, commandKey, IntPtr.Zero)
+            Dim WmCommand = WM_COMMANDS(target)(0)
+            SendMessage(pid, WmCommand, commandKey, IntPtr.Zero)
         Catch ex As Exception
             MainForm.OnUpdateLog(ex.Message)
         End Try

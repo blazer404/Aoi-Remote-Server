@@ -36,7 +36,6 @@ Public Class Settings
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub Load()
-        AddFirewallRule()
         ' Основные
         GetIpList()
         MainForm.Text = Application.ProductName + " v" + Application.ProductVersion
@@ -87,7 +86,7 @@ Public Class Settings
     Public Sub Reset()
         My.Settings.Reset()
         WinStartupRemove()
-        UpdateTextBox(MainForm.LogBox, "Settings is reset")
+        Utils.UpdateTextBox(MainForm.LogBox, "Settings is reset")
     End Sub
 
     ''' <summary>
@@ -176,16 +175,5 @@ Public Class Settings
         End If
         Return status
     End Function
-
-    Public Sub AddFirewallRule()
-        'Dim appName = Application.ProductName.Replace(" ", "_")
-        'Dim appPath As String = (Process.GetCurrentProcess().MainModule.FileName).ToLower
-        'Dim proc As New Process()
-        'proc.StartInfo.FileName = "netsh"
-        'proc.StartInfo.Arguments = "advfirewall firewall add rule name=""" & appName & """ dir=in action=allow program=""" & appPath & """ enable=yes"
-        'proc.StartInfo.Verb = "runas"
-        'proc.Start()
-        'proc.WaitForExit()
-    End Sub
 
 End Class

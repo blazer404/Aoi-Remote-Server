@@ -61,6 +61,46 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
+        '''</summary>
+        Friend ReadOnly Property icon_green_circle() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("icon_green_circle", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
+        '''</summary>
+        Friend ReadOnly Property icon_green_square() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("icon_green_square", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
+        '''</summary>
+        Friend ReadOnly Property icon_orange_circle() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("icon_orange_circle", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
+        '''</summary>
+        Friend ReadOnly Property icon_orange_squae() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("icon_orange_squae", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Ищет локализованную строку, похожую на Exit.
         '''</summary>
         Friend ReadOnly Property s_Exit() As String

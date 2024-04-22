@@ -1,4 +1,4 @@
-﻿Public Module Utils
+﻿Public Class Utils
 
     ''' <summary>
     ''' Добавление строки в TextBox
@@ -6,7 +6,7 @@
     ''' <param name="textBox"></param>
     ''' <param name="text"></param>
     ''' <remarks></remarks>
-    Public Sub UpdateTextBox(textBox As TextBox, text As String)
+    Public Shared Sub UpdateTextBox(textBox As TextBox, text As String)
         If textBox.Lines.Length > 1000 Then
             textBox.Text = textBox.Text.Substring(textBox.Text.IndexOf(vbNewLine) + 1)
         End If
@@ -18,7 +18,7 @@
     ''' </summary>
     ''' <param name="textBox"></param>
     ''' <remarks></remarks>
-    Public Sub ClearTextBox(textBox As TextBox)
+    Public Shared Sub ClearTextBox(textBox As TextBox)
         textBox.Text = ""
     End Sub
 
@@ -28,7 +28,7 @@
     ''' <param name="maxLenght"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function GenerateKey(maxLenght As Integer)
+    Public Shared Function GenerateKey(maxLenght As Integer)
         Dim chars As String = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
         Dim random As New Random()
         Dim key As String = ""
@@ -44,29 +44,10 @@
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function GeneratePort()
+    Public Shared Function GeneratePort()
         Return (New Random).Next(10000, 65535)
     End Function
 
-    ''' <summary>
-    ''' Конвертируем переданные параметры в JSON для ответа
-    ''' </summary>
-    ''' <param name="success"></param>
-    ''' <param name="code"></param>
-    ''' <param name="message"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Function JsonResponse(ByVal success As Boolean, Optional ByVal code As Integer = Nothing, Optional ByVal message As String = "") As String
-        Return (New Json With {.success = success, .code = code, .message = message}).Serialize()
-    End Function
 
-    ''' <summary>
-    ''' Конвертируем данные из JSON в объект
-    ''' </summary>
-    ''' <param name="request"></param>
-    ''' <returns></returns>
-    Public Function JsonParse(ByVal request As String)
-        Return (New Json).Deserialize(request)
-    End Function
 
-End Module
+End Class

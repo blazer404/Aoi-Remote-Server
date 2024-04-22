@@ -69,12 +69,15 @@
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resourses\icon.ico</ApplicationIcon>
+    <ApplicationIcon>Resourses\icon_green_circle.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>tsrc_key.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -101,7 +104,6 @@
   <ItemGroup>
     <Compile Include="Classes\Interfaces.vb" />
     <Compile Include="Classes\SocketServer.vb" />
-    <Compile Include="Classes\Json.vb" />
     <Compile Include="Forms\MainForm.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -123,7 +125,8 @@
     </Compile>
     <Compile Include="Classes\Settings.vb" />
     <Compile Include="Classes\MediaPlayer.vb" />
-    <Compile Include="Modules\Utils.vb" />
+    <Compile Include="Classes\Json.vb" />
+    <Compile Include="Classes\Utils.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -164,11 +167,7 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resourses\icon.ico" />
-    <Content Include="Resourses\icon.png" />
+    <None Include="tsrc_key.pfx" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -181,6 +180,18 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resourses\icon_green_circle.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resourses\icon_green_square.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resourses\icon_orange_circle.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resourses\icon_orange_squae.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

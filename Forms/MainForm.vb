@@ -1,7 +1,7 @@
 ﻿Imports TSRC.Interfaces
 
 
-Partial Public Class MainForm : Implements IMessageListener
+Partial Public Class MainForm : Implements IServerListener
 
     Private Property Server As SocketServer = Nothing
     Private Property Settings As Settings = Nothing
@@ -9,26 +9,26 @@ Partial Public Class MainForm : Implements IMessageListener
 
     '''''''''''' Rewrite Interface - START ''''''''''''
 
-    Sub OnOpenConnection() Implements IMessageListener.OnOpenConnection
+    Sub OnOpenConnection() Implements IServerListener.OnOpenConnection
         Me.Invoke(New Action(AddressOf OpenConnectionAction))
     End Sub
 
-    Sub OnCloseConnection() Implements IMessageListener.OnCloseConnection
+    Sub OnCloseConnection() Implements IServerListener.OnCloseConnection
         Me.Invoke(New Action(AddressOf CloseConnectionAction))
     End Sub
 
-    Sub OnCommandReceived(ByVal playerName As String, ByVal command As String) Implements IMessageListener.OnCommandReceived
-        Me.Invoke(New Action(Of String, String)(AddressOf SendCommand), playerName, command)
+    Sub OnCommandReceived(ByVal target As String, ByVal command As String) Implements IServerListener.OnCommandReceived
+        Me.Invoke(New Action(Of String, String)(AddressOf SendCommand), target, command)
     End Sub
 
-    Sub OnUpdateLog(ByVal data As String) Implements IMessageListener.OnUpdateLog
+    Sub OnUpdateLog(ByVal data As String) Implements IServerListener.OnUpdateLog
         Try
             Me.Invoke(New Action(Of String)(AddressOf UpdateLogText), data)
         Catch ex As Exception
         End Try
     End Sub
 
-    Sub OnShowError(ByVal data As String) Implements IMessageListener.OnShowError
+    Sub OnShowError(ByVal data As String) Implements IServerListener.OnShowError
         Me.Invoke(New Action(Of String)(AddressOf ShowErrorBox), data)
     End Sub
 
@@ -43,6 +43,7 @@ Partial Public Class MainForm : Implements IMessageListener
         ServerStatusLabel.Text = "Server is running"
         ServerStatusLabel.ForeColor = Color.Green
         CloseButton.Text = My.Resources.s_Hide
+        IconsReload()
     End Sub
 
     ''' <summary>
@@ -56,6 +57,7 @@ Partial Public Class MainForm : Implements IMessageListener
         ServerStatusLabel.Text = "Server is stopped"
         ServerStatusLabel.ForeColor = Color.IndianRed
         CloseButton.Text = My.Resources.s_Exit
+        IconsReload()
     End Sub
 
     ''' <summary>
@@ -65,7 +67,7 @@ Partial Public Class MainForm : Implements IMessageListener
     ''' <remarks></remarks>
     Private Sub UpdateLogText(ByVal data As String)
         If ShowDebugCheckBox.Checked = True Then
-            UpdateTextBox(LogBox, data)
+            Utils.UpdateTextBox(LogBox, data)
         End If
     End Sub
 
@@ -81,14 +83,28 @@ Partial Public Class MainForm : Implements IMessageListener
     ''' <summary>
     ''' Отправка полученной команды проигрывателю
     ''' </summary>
-    ''' <param name="playerName"></param>
+    ''' <param name="target"></param>
     ''' <param name="commandKey"></param>
     ''' <remarks></remarks>
-    Private Async Sub SendCommand(ByVal playerName As String, ByVal commandKey As String)
-        Await Task.Run(Sub() MediaPlayer.SendCommand(playerName, commandKey))
+    Private Async Sub SendCommand(ByVal target As String, ByVal commandKey As String)
+        Await Task.Run(Sub() MediaPlayer.SendCommand(target, commandKey))
     End Sub
 
     '''''''''''' Rewrite Interface - END ''''''''''''
+
+
+    ''' <summary>
+    ''' Перезагрузка иконок в зависимости от статуса сервера
+    ''' </summary>
+    Private Sub IconsReload()
+        If Server.IsRunning Then
+            Me.Icon = My.Resources.icon_green_square
+            TrayIcon.Icon = My.Resources.icon_green_circle
+        Else
+            Me.Icon = My.Resources.icon_orange_squae
+            TrayIcon.Icon = My.Resources.icon_orange_circle
+        End If
+    End Sub
 
     ''' <summary>
     ''' Загрузка настроек
@@ -134,11 +150,12 @@ Partial Public Class MainForm : Implements IMessageListener
         Else
             Me.TrayMenuShowApp.Text = My.Resources.s_Hide
         End If
+        IconsReload()
 
         'TODO delete this after add aimp api 
         AimpInput.Enabled = False
         AimpInput.Visible = False
-        AimpLabel.Text &= "        [ недоступно в этой версии ]"
+        AimpLabel.Text &= "        [ функция недоступна или отключена ]"
     End Sub
 
     ''' <summary>

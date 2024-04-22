@@ -21,7 +21,7 @@
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub ClearLogButton_Click(sender As Object, e As EventArgs) Handles ClearLogButton.Click
-        ClearTextBox(LogBox)
+        Utils.ClearTextBox(LogBox)
     End Sub
 
 End Class

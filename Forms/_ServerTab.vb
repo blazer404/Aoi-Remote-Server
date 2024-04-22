@@ -60,7 +60,7 @@
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub PortButton_Click(sender As Object, e As EventArgs) Handles PortButton.Click
-        PortInput.Text = GeneratePort()
+        PortInput.Text = Utils.GeneratePort()
     End Sub
 
     ''' <summary>
@@ -70,7 +70,7 @@
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub AuthTokenButton_Click(sender As Object, e As EventArgs) Handles AuthTokenButton.Click
-        AuthTokenInput.Text = GenerateKey(8)
+        AuthTokenInput.Text = Utils.GenerateKey(8)
     End Sub
 
     ''' <summary>

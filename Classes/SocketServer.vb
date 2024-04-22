@@ -13,7 +13,7 @@ Public Class SocketServer
     Public Property Ip As String = Nothing
     Public Property Port As String = Nothing
     Public Property Token As String = Nothing
-    Public Property Listener As IMessageListener = Nothing
+    Public Property Listener As IServerListener = Nothing
 
 
     ''' <summary>
@@ -142,11 +142,11 @@ Public Class SocketServer
             Dim target As String = params("T").ToString()
             Dim command As Integer = Convert.ToInt32(params("C"))
             Listener.OnCommandReceived(target, command)
-            Await SetResponse(client, JsonResponse(True, 200, "OK"))
+            Await SetResponse(client, Json.CreateResponse(True, 200, "OK"))
         Catch ex As SocketException
-            Dim unused = SetResponse(client, JsonResponse(True, 500, "Connection timeout"))
+            Dim unused = SetResponse(client, Json.CreateResponse(True, 500, "Connection timeout"))
         Catch ex As Exception
-            Dim unused = SetResponse(client, JsonResponse(True, 500, "Internal server error"))
+            Dim unused = SetResponse(client, Json.CreateResponse(True, 500, "Internal server error"))
         End Try
     End Function
 
@@ -180,11 +180,11 @@ Public Class SocketServer
     Private Async Function IsValidClient(client As Socket, params As Dictionary(Of String, Object)) As Task(Of Boolean)
         Dim authToken As String = If(params.ContainsKey("P"), params("P"), Nothing)
         If authToken Is Nothing Then
-            Await SetResponse(client, JsonResponse(False, 401, "Unauthorized"))
+            Await SetResponse(client, Json.CreateResponse(False, 401, "Unauthorized"))
             Return False
         End If
         If authToken <> Token Then
-            Await SetResponse(client, JsonResponse(False, 401, "Unauthorized"))
+            Await SetResponse(client, Json.CreateResponse(False, 401, "Unauthorized"))
             Return False
         End If
         Return True
