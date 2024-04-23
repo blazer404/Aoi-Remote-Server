@@ -107,6 +107,17 @@ Public Class SocketServer
     End Sub
 
     ''' <summary>
+    ''' Уничтожение подключения клиента
+    ''' </summary>
+    ''' <param name="client"></param>
+    Private Sub DestroyClient(client As Socket)
+        If client.Connected Then
+            client.Shutdown(SocketShutdown.Both)
+            client.Close()
+        End If
+    End Sub
+
+    ''' <summary>
     ''' Проверка валидности сокета
     ''' </summary>
     ''' <returns></returns>
@@ -137,6 +148,7 @@ Public Class SocketServer
             client.ReceiveTimeout = 5000
             Dim params As Dictionary(Of String, Object) = ParseRequest(client)
             If Await IsValidClient(client, params) = False Then
+                DestroyClient(client)
                 Exit Function
             End If
             Dim target As String = params("T").ToString()
@@ -195,12 +207,11 @@ Public Class SocketServer
     ''' </summary>
     ''' <param name="client"></param>
     ''' <param name="message"></param>
-    Private Async Function SetResponse(client As Socket, ByVal message As String) As Task
+    Private Async Function SetResponse(client As Socket, message As String) As Task
         Dim response As Byte() = Encoding.UTF8.GetBytes(message)
         client.Send(response)
         Await Task.Delay(2000)
-        client.Shutdown(SocketShutdown.Both)
-        client.Close()
+        DestroyClient(client)
     End Function
 
 End Class

@@ -17,18 +17,18 @@ Partial Public Class MainForm : Implements IServerListener
         Me.Invoke(New Action(AddressOf CloseConnectionAction))
     End Sub
 
-    Sub OnCommandReceived(ByVal target As String, ByVal command As String) Implements IServerListener.OnCommandReceived
+    Sub OnCommandReceived(target As String, command As String) Implements IServerListener.OnCommandReceived
         Me.Invoke(New Action(Of String, String)(AddressOf SendCommand), target, command)
     End Sub
 
-    Sub OnUpdateLog(ByVal data As String) Implements IServerListener.OnUpdateLog
+    Sub OnUpdateLog(data As String) Implements IServerListener.OnUpdateLog
         Try
             Me.Invoke(New Action(Of String)(AddressOf UpdateLogText), data)
         Catch ex As Exception
         End Try
     End Sub
 
-    Sub OnShowError(ByVal data As String) Implements IServerListener.OnShowError
+    Sub OnShowError(data As String) Implements IServerListener.OnShowError
         Me.Invoke(New Action(Of String)(AddressOf ShowErrorBox), data)
     End Sub
 
@@ -65,7 +65,7 @@ Partial Public Class MainForm : Implements IServerListener
     ''' </summary>
     ''' <param name="data"></param>
     ''' <remarks></remarks>
-    Private Sub UpdateLogText(ByVal data As String)
+    Private Sub UpdateLogText(data As String)
         If ShowDebugCheckBox.Checked = True Then
             Utils.UpdateTextBox(LogBox, data)
         End If
@@ -76,7 +76,7 @@ Partial Public Class MainForm : Implements IServerListener
     ''' </summary>
     ''' <param name="data"></param>
     ''' <remarks></remarks>
-    Private Sub ShowErrorBox(ByVal data As String)
+    Private Sub ShowErrorBox(data As String)
         MessageBox.Show(data, "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop)
     End Sub
 
@@ -86,7 +86,7 @@ Partial Public Class MainForm : Implements IServerListener
     ''' <param name="target"></param>
     ''' <param name="commandKey"></param>
     ''' <remarks></remarks>
-    Private Async Sub SendCommand(ByVal target As String, ByVal commandKey As String)
+    Private Async Sub SendCommand(target As String, commandKey As String)
         Await Task.Run(Sub() MediaPlayer.SendCommand(target, commandKey))
     End Sub
 
@@ -109,7 +109,7 @@ Partial Public Class MainForm : Implements IServerListener
     ''' <summary>
     ''' Загрузка настроек
     ''' </summary>
-    Private Sub LoadSettings(Optional ByVal needUpgrade As Boolean = True)
+    Private Sub LoadSettings(Optional needUpgrade As Boolean = True)
         If needUpgrade Then
             My.Settings.Upgrade()
         End If

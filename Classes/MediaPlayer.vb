@@ -31,7 +31,7 @@ Public Class MediaPlayer
     ''' <param name="name"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function GetPath(ByVal name As String)
+    Private Function GetPath(name As String)
         Dim path As String = Nothing
         Select Case name
             Case MPC
@@ -52,7 +52,7 @@ Public Class MediaPlayer
     ''' </summary>
     ''' <param name="name"></param>
     ''' <remarks></remarks>
-    Private Function FindProcessByName(ByVal name As String)
+    Private Function FindProcessByName(name As String)
         Dim path = GetPath(name)
         If path Is Nothing Then
             Return Nothing
@@ -82,7 +82,7 @@ Public Class MediaPlayer
     ''' <param name="target"></param>
     ''' <param name="commandKey"></param>
     ''' <remarks></remarks>
-    Public Sub SendCommand(ByVal target As String, ByVal commandKey As Integer)
+    Public Sub SendCommand(target As String, commandKey As Integer)
 
         'todo разобрать тут команды по свитчу: системные в одну сторону, от проигрывателей в другую
 

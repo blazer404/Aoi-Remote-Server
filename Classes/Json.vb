@@ -8,7 +8,7 @@
     ''' <param name="message"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Shared Function CreateResponse(ByVal success As Boolean, Optional ByVal code As Integer = Nothing, Optional ByVal message As String = "") As String
+    Public Shared Function CreateResponse(success As Boolean, Optional code As Integer = Nothing, Optional message As String = "") As String
         Dim params As New Dictionary(Of String, Object) From {
             {"success", success},
             {"code", code},
@@ -22,7 +22,7 @@
     ''' </summary>
     ''' <param name="params"></param>
     ''' <returns></returns>
-    Private Function SerializeObject(ByVal params As Dictionary(Of String, Object))
+    Private Function SerializeObject(params As Dictionary(Of String, Object))
         Dim json As String = "{"
         For Each pair As KeyValuePair(Of String, Object) In params
             Dim key = pair.Key

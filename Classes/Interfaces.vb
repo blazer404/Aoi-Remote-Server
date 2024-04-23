@@ -7,9 +7,9 @@
     Interface IServerListener
         Sub OnCloseConnection()
         Sub OnOpenConnection()
-        Sub OnUpdateLog(ByVal data As String)
-        Sub OnShowError(ByVal data As String)
-        Sub OnCommandReceived(ByVal target As String, ByVal commandKey As String)
+        Sub OnUpdateLog(data As String)
+        Sub OnShowError(data As String)
+        Sub OnCommandReceived(target As String, commandKey As String)
     End Interface
 
 End Class
