@@ -122,7 +122,9 @@ Public Class Settings
         Dim hostName As String = Dns.GetHostName()
         Dim addresses() As IPAddress = Dns.GetHostAddresses(hostName)
         MainForm.IpInput.Items.Clear()
-        MainForm.IpInput.Items.Add("0.0.0.0")
+        If My.Settings.DefaultIp <> "" Then
+            MainForm.IpInput.Items.Add(My.Settings.DefaultIp)
+        End If
         For Each address As IPAddress In addresses
             If UseIpv6 = True Or address.AddressFamily = Sockets.AddressFamily.InterNetwork Then
                 MainForm.IpInput.Items.Add(address.ToString())

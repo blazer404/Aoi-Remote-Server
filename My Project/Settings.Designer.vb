@@ -65,7 +65,7 @@ Namespace My
         
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0.0.0.0")>  _
         Public ReadOnly Property DefaultIp() As String
             Get
                 Return CType(Me("DefaultIp"),String)
