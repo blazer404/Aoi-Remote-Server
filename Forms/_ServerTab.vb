@@ -82,9 +82,9 @@
     Private Sub ShowDebugCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles ShowDebugCheckBox.CheckedChanged
         Dim index As Integer = TabPanel.TabCount - 1
         If ShowDebugCheckBox.Checked = True Then
-            TabPanel.TabPages.Insert(index, DebugTab)
+            TabPanel.TabPages.Insert(index, LogTab)
         Else
-            TabPanel.TabPages.Remove(DebugTab)
+            TabPanel.TabPages.Remove(LogTab)
         End If
     End Sub
 

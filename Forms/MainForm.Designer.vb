@@ -23,15 +23,13 @@ Partial Class MainForm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Me.RunServerButton = New System.Windows.Forms.Button()
         Me.ClearLogButton = New System.Windows.Forms.Button()
         Me.TrayIcon = New System.Windows.Forms.NotifyIcon(Me.components)
         Me.TrayMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.TrayMenuShowApp = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripSeparator()
         Me.TrayMenuExit = New System.Windows.Forms.ToolStripMenuItem()
-        Me.SaveButton = New System.Windows.Forms.Button()
-        Me.CloseButton = New System.Windows.Forms.Button()
+        Me.SaveSettingsButton = New System.Windows.Forms.Button()
         Me.AutorunServerCheckBox = New System.Windows.Forms.CheckBox()
         Me.IpInput = New System.Windows.Forms.ComboBox()
         Me.IpLabel = New System.Windows.Forms.Label()
@@ -53,30 +51,21 @@ Partial Class MainForm
         Me.MpcLabel = New System.Windows.Forms.Label()
         Me.AimpInput = New System.Windows.Forms.TextBox()
         Me.AimpLabel = New System.Windows.Forms.Label()
-        Me.DebugTab = New System.Windows.Forms.TabPage()
+        Me.LogTab = New System.Windows.Forms.TabPage()
         Me.LogBox = New System.Windows.Forms.TextBox()
         Me.AboutTab = New System.Windows.Forms.TabPage()
         Me.GitHubLink = New System.Windows.Forms.LinkLabel()
         Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
-        Me.ResetButton = New System.Windows.Forms.Button()
+        Me.CancelSettingsButton = New System.Windows.Forms.Button()
+        Me.ResetSettingsButton = New System.Windows.Forms.Button()
         Me.TrayMenu.SuspendLayout()
         Me.TabPanel.SuspendLayout()
         Me.ServerTab.SuspendLayout()
         Me.AppsTab.SuspendLayout()
-        Me.DebugTab.SuspendLayout()
+        Me.LogTab.SuspendLayout()
         Me.AboutTab.SuspendLayout()
         Me.FlowLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'RunServerButton
-        '
-        Me.RunServerButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer))
-        Me.RunServerButton.Location = New System.Drawing.Point(3, 162)
-        Me.RunServerButton.Name = "RunServerButton"
-        Me.RunServerButton.Size = New System.Drawing.Size(85, 23)
-        Me.RunServerButton.TabIndex = 1
-        Me.RunServerButton.Text = "Start Server"
-        Me.RunServerButton.UseVisualStyleBackColor = True
         '
         'ClearLogButton
         '
@@ -117,35 +106,24 @@ Partial Class MainForm
         Me.TrayMenuExit.Size = New System.Drawing.Size(103, 22)
         Me.TrayMenuExit.Text = "Exit"
         '
-        'SaveButton
+        'SaveSettingsButton
         '
-        Me.SaveButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer))
-        Me.SaveButton.Location = New System.Drawing.Point(138, 229)
-        Me.SaveButton.Name = "SaveButton"
-        Me.SaveButton.Size = New System.Drawing.Size(75, 23)
-        Me.SaveButton.TabIndex = 100
-        Me.SaveButton.Text = "Save"
-        Me.SaveButton.UseVisualStyleBackColor = True
-        '
-        'CloseButton
-        '
-        Me.CloseButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer))
-        Me.CloseButton.Location = New System.Drawing.Point(219, 229)
-        Me.CloseButton.Margin = New System.Windows.Forms.Padding(3, 3, 4, 3)
-        Me.CloseButton.Name = "CloseButton"
-        Me.CloseButton.Size = New System.Drawing.Size(75, 23)
-        Me.CloseButton.TabIndex = 101
-        Me.CloseButton.Text = "Exit"
-        Me.CloseButton.UseVisualStyleBackColor = True
+        Me.SaveSettingsButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer))
+        Me.SaveSettingsButton.Location = New System.Drawing.Point(139, 229)
+        Me.SaveSettingsButton.Name = "SaveSettingsButton"
+        Me.SaveSettingsButton.Size = New System.Drawing.Size(75, 23)
+        Me.SaveSettingsButton.TabIndex = 102
+        Me.SaveSettingsButton.Text = "Save"
+        Me.SaveSettingsButton.UseVisualStyleBackColor = True
         '
         'AutorunServerCheckBox
         '
         Me.AutorunServerCheckBox.AutoSize = True
         Me.AutorunServerCheckBox.Location = New System.Drawing.Point(6, 145)
         Me.AutorunServerCheckBox.Name = "AutorunServerCheckBox"
-        Me.AutorunServerCheckBox.Size = New System.Drawing.Size(121, 17)
-        Me.AutorunServerCheckBox.TabIndex = 7
-        Me.AutorunServerCheckBox.Text = "Autorun TCP Server"
+        Me.AutorunServerCheckBox.Size = New System.Drawing.Size(97, 17)
+        Me.AutorunServerCheckBox.TabIndex = 8
+        Me.AutorunServerCheckBox.Text = "Autorun Server"
         Me.AutorunServerCheckBox.UseVisualStyleBackColor = True
         '
         'IpInput
@@ -194,7 +172,7 @@ Partial Class MainForm
         '
         Me.TabPanel.Controls.Add(Me.ServerTab)
         Me.TabPanel.Controls.Add(Me.AppsTab)
-        Me.TabPanel.Controls.Add(Me.DebugTab)
+        Me.TabPanel.Controls.Add(Me.LogTab)
         Me.TabPanel.Controls.Add(Me.AboutTab)
         Me.TabPanel.Location = New System.Drawing.Point(11, 6)
         Me.TabPanel.Name = "TabPanel"
@@ -232,7 +210,7 @@ Partial Class MainForm
         Me.RunMinimizedCheckBox.Location = New System.Drawing.Point(173, 168)
         Me.RunMinimizedCheckBox.Name = "RunMinimizedCheckBox"
         Me.RunMinimizedCheckBox.Size = New System.Drawing.Size(94, 17)
-        Me.RunMinimizedCheckBox.TabIndex = 23
+        Me.RunMinimizedCheckBox.TabIndex = 11
         Me.RunMinimizedCheckBox.Text = "Run minimized"
         Me.RunMinimizedCheckBox.UseVisualStyleBackColor = True
         '
@@ -241,17 +219,18 @@ Partial Class MainForm
         Me.ShowDebugCheckBox.AutoSize = True
         Me.ShowDebugCheckBox.Location = New System.Drawing.Point(6, 168)
         Me.ShowDebugCheckBox.Name = "ShowDebugCheckBox"
-        Me.ShowDebugCheckBox.Size = New System.Drawing.Size(88, 17)
-        Me.ShowDebugCheckBox.TabIndex = 22
-        Me.ShowDebugCheckBox.Text = "Show Debug"
+        Me.ShowDebugCheckBox.Size = New System.Drawing.Size(80, 17)
+        Me.ShowDebugCheckBox.TabIndex = 10
+        Me.ShowDebugCheckBox.Text = "Enable Log"
         Me.ShowDebugCheckBox.UseVisualStyleBackColor = True
         '
         'ServerStatusLabel
         '
+        Me.ServerStatusLabel.Cursor = System.Windows.Forms.Cursors.Hand
         Me.ServerStatusLabel.ForeColor = System.Drawing.Color.IndianRed
-        Me.ServerStatusLabel.Location = New System.Drawing.Point(6, 105)
+        Me.ServerStatusLabel.Location = New System.Drawing.Point(77, 100)
         Me.ServerStatusLabel.Name = "ServerStatusLabel"
-        Me.ServerStatusLabel.Size = New System.Drawing.Size(263, 13)
+        Me.ServerStatusLabel.Size = New System.Drawing.Size(116, 23)
         Me.ServerStatusLabel.TabIndex = 21
         Me.ServerStatusLabel.Text = "Server is stopped"
         Me.ServerStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -261,14 +240,14 @@ Partial Class MainForm
         Me.PortInput.Location = New System.Drawing.Point(77, 36)
         Me.PortInput.Name = "PortInput"
         Me.PortInput.Size = New System.Drawing.Size(116, 20)
-        Me.PortInput.TabIndex = 18
+        Me.PortInput.TabIndex = 3
         '
         'AuthTokenInput
         '
         Me.AuthTokenInput.Location = New System.Drawing.Point(77, 62)
         Me.AuthTokenInput.Name = "AuthTokenInput"
         Me.AuthTokenInput.Size = New System.Drawing.Size(116, 20)
-        Me.AuthTokenInput.TabIndex = 17
+        Me.AuthTokenInput.TabIndex = 5
         '
         'AutorunAppCheckbox
         '
@@ -276,7 +255,7 @@ Partial Class MainForm
         Me.AutorunAppCheckbox.Location = New System.Drawing.Point(173, 145)
         Me.AutorunAppCheckbox.Name = "AutorunAppCheckbox"
         Me.AutorunAppCheckbox.Size = New System.Drawing.Size(96, 17)
-        Me.AutorunAppCheckbox.TabIndex = 8
+        Me.AutorunAppCheckbox.TabIndex = 9
         Me.AutorunAppCheckbox.Text = "Run on startup"
         Me.AutorunAppCheckbox.UseVisualStyleBackColor = True
         '
@@ -362,19 +341,18 @@ Partial Class MainForm
         Me.AimpLabel.Text = "AIMP"
         Me.AimpLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'DebugTab
+        'LogTab
         '
-        Me.DebugTab.Controls.Add(Me.LogBox)
-        Me.DebugTab.Controls.Add(Me.ClearLogButton)
-        Me.DebugTab.Controls.Add(Me.RunServerButton)
-        Me.DebugTab.Location = New System.Drawing.Point(4, 22)
-        Me.DebugTab.Name = "DebugTab"
-        Me.DebugTab.Padding = New System.Windows.Forms.Padding(3)
-        Me.DebugTab.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.DebugTab.Size = New System.Drawing.Size(276, 191)
-        Me.DebugTab.TabIndex = 1
-        Me.DebugTab.Text = "Debug"
-        Me.DebugTab.UseVisualStyleBackColor = True
+        Me.LogTab.Controls.Add(Me.LogBox)
+        Me.LogTab.Controls.Add(Me.ClearLogButton)
+        Me.LogTab.Location = New System.Drawing.Point(4, 22)
+        Me.LogTab.Name = "LogTab"
+        Me.LogTab.Padding = New System.Windows.Forms.Padding(3)
+        Me.LogTab.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.LogTab.Size = New System.Drawing.Size(276, 191)
+        Me.LogTab.TabIndex = 1
+        Me.LogTab.Text = "Log"
+        Me.LogTab.UseVisualStyleBackColor = True
         '
         'LogBox
         '
@@ -411,9 +389,9 @@ Partial Class MainForm
         'FlowLayoutPanel1
         '
         Me.FlowLayoutPanel1.Controls.Add(Me.TabPanel)
-        Me.FlowLayoutPanel1.Controls.Add(Me.CloseButton)
-        Me.FlowLayoutPanel1.Controls.Add(Me.SaveButton)
-        Me.FlowLayoutPanel1.Controls.Add(Me.ResetButton)
+        Me.FlowLayoutPanel1.Controls.Add(Me.CancelSettingsButton)
+        Me.FlowLayoutPanel1.Controls.Add(Me.SaveSettingsButton)
+        Me.FlowLayoutPanel1.Controls.Add(Me.ResetSettingsButton)
         Me.FlowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.FlowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft
         Me.FlowLayoutPanel1.Location = New System.Drawing.Point(0, 0)
@@ -422,16 +400,26 @@ Partial Class MainForm
         Me.FlowLayoutPanel1.Size = New System.Drawing.Size(304, 265)
         Me.FlowLayoutPanel1.TabIndex = 16
         '
-        'ResetButton
+        'CancelSettingsButton
         '
-        Me.ResetButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer))
-        Me.ResetButton.Location = New System.Drawing.Point(10, 229)
-        Me.ResetButton.Margin = New System.Windows.Forms.Padding(3, 3, 50, 3)
-        Me.ResetButton.Name = "ResetButton"
-        Me.ResetButton.Size = New System.Drawing.Size(75, 23)
-        Me.ResetButton.TabIndex = 102
-        Me.ResetButton.Text = "Reset"
-        Me.ResetButton.UseVisualStyleBackColor = True
+        Me.CancelSettingsButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer))
+        Me.CancelSettingsButton.Location = New System.Drawing.Point(220, 229)
+        Me.CancelSettingsButton.Name = "CancelSettingsButton"
+        Me.CancelSettingsButton.Size = New System.Drawing.Size(75, 23)
+        Me.CancelSettingsButton.TabIndex = 103
+        Me.CancelSettingsButton.Text = "Cancel"
+        Me.CancelSettingsButton.UseVisualStyleBackColor = True
+        '
+        'ResetSettingsButton
+        '
+        Me.ResetSettingsButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer), CType(CType(91, Byte), Integer))
+        Me.ResetSettingsButton.Location = New System.Drawing.Point(11, 229)
+        Me.ResetSettingsButton.Margin = New System.Windows.Forms.Padding(3, 3, 50, 3)
+        Me.ResetSettingsButton.Name = "ResetSettingsButton"
+        Me.ResetSettingsButton.Size = New System.Drawing.Size(75, 23)
+        Me.ResetSettingsButton.TabIndex = 101
+        Me.ResetSettingsButton.Text = "Reset"
+        Me.ResetSettingsButton.UseVisualStyleBackColor = True
         '
         'MainForm
         '
@@ -454,18 +442,16 @@ Partial Class MainForm
         Me.ServerTab.PerformLayout()
         Me.AppsTab.ResumeLayout(False)
         Me.AppsTab.PerformLayout()
-        Me.DebugTab.ResumeLayout(False)
-        Me.DebugTab.PerformLayout()
+        Me.LogTab.ResumeLayout(False)
+        Me.LogTab.PerformLayout()
         Me.AboutTab.ResumeLayout(False)
         Me.AboutTab.PerformLayout()
         Me.FlowLayoutPanel1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents RunServerButton As System.Windows.Forms.Button
     Friend WithEvents ClearLogButton As System.Windows.Forms.Button
-    Friend WithEvents SaveButton As System.Windows.Forms.Button
-    Friend WithEvents CloseButton As System.Windows.Forms.Button
+    Friend WithEvents SaveSettingsButton As System.Windows.Forms.Button
     Friend WithEvents AutorunServerCheckBox As System.Windows.Forms.CheckBox
     Friend WithEvents IpInput As System.Windows.Forms.ComboBox
     Friend WithEvents IpLabel As System.Windows.Forms.Label
@@ -475,7 +461,7 @@ Partial Class MainForm
     Friend WithEvents ServerTab As System.Windows.Forms.TabPage
     Friend WithEvents AuthTokenButton As System.Windows.Forms.Button
     Friend WithEvents PortButton As System.Windows.Forms.Button
-    Friend WithEvents DebugTab As System.Windows.Forms.TabPage
+    Friend WithEvents LogTab As System.Windows.Forms.TabPage
     Friend WithEvents AppsTab As System.Windows.Forms.TabPage
     Friend WithEvents LogBox As System.Windows.Forms.TextBox
     Friend WithEvents FlowLayoutPanel1 As System.Windows.Forms.FlowLayoutPanel
@@ -493,10 +479,10 @@ Partial Class MainForm
     Friend WithEvents AuthTokenInput As System.Windows.Forms.TextBox
     Friend WithEvents PortInput As System.Windows.Forms.TextBox
     Friend WithEvents ServerStatusLabel As System.Windows.Forms.Label
-    Friend WithEvents ResetButton As System.Windows.Forms.Button
+    Friend WithEvents ResetSettingsButton As System.Windows.Forms.Button
     Friend WithEvents ShowDebugCheckBox As System.Windows.Forms.CheckBox
     Friend WithEvents RunMinimizedCheckBox As System.Windows.Forms.CheckBox
     Friend WithEvents AboutTab As System.Windows.Forms.TabPage
     Friend WithEvents GitHubLink As System.Windows.Forms.LinkLabel
-
+    Friend WithEvents CancelSettingsButton As Button
 End Class

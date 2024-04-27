@@ -39,10 +39,8 @@ Partial Public Class MainForm : Implements IServerListener
     Private Sub OpenConnectionAction()
         Server.IsRunning = True
         UpdateLogText("Server is running")
-        RunServerButton.Text = "Stop Server"
         ServerStatusLabel.Text = "Server is running"
         ServerStatusLabel.ForeColor = Color.Green
-        CloseButton.Text = My.Resources.s_Hide
         IconsReload()
     End Sub
 
@@ -53,10 +51,8 @@ Partial Public Class MainForm : Implements IServerListener
     Private Sub CloseConnectionAction()
         Server.IsRunning = False
         UpdateLogText("Server is stopped")
-        RunServerButton.Text = "Start Server"
         ServerStatusLabel.Text = "Server is stopped"
         ServerStatusLabel.ForeColor = Color.IndianRed
-        CloseButton.Text = My.Resources.s_Exit
         IconsReload()
     End Sub
 
@@ -138,12 +134,11 @@ Partial Public Class MainForm : Implements IServerListener
     ''' <remarks></remarks>
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Определяем начальное поведение
-        TabPanel.TabPages.Remove(DebugTab)
+        TabPanel.TabPages.Remove(LogTab)
         LoadSettings()
         CreateServer()
         If My.Settings.AutorunTcpServer = True Then
             Server.Start()
-            Me.CloseButton.Text = My.Resources.s_Hide
         End If
         If My.Settings.RunMinimized Then
             Me.Opacity = 0 ' Очень важный костыль - не трогай
@@ -186,14 +181,16 @@ Partial Public Class MainForm : Implements IServerListener
     End Sub
 
     ''' <summary>
-    ''' Нажатие на кнопку закрытия
+    ''' Нажатие на лейбл статуса сервера
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    ''' <remarks></remarks>
-    Private Sub CloseButton_Click(sender As Object, e As EventArgs) Handles CloseButton.Click
-        Settings.Save()
-        Me.Close()
+    Private Sub ServerStatusLabel_Click(sender As Object, e As EventArgs) Handles ServerStatusLabel.Click
+        If Not Server.IsRunning Then
+            Server.Start()
+        Else
+            Server.Close()
+        End If
     End Sub
 
     ''' <summary>
@@ -202,7 +199,7 @@ Partial Public Class MainForm : Implements IServerListener
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub SaveButton_Click(sender As Object, e As EventArgs) Handles SaveButton.Click
+    Private Sub SaveSettingsButton_Click(sender As Object, e As EventArgs) Handles SaveSettingsButton.Click
         Server.Close()
         Settings.Save()
         UpdateLogText("Settings is saved")
@@ -213,12 +210,21 @@ Partial Public Class MainForm : Implements IServerListener
     End Sub
 
     ''' <summary>
+    ''' Отмена внесенных настроек
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub CancelSettingsButton_Click(sender As Object, e As EventArgs) Handles CancelSettingsButton.Click
+        Settings.Load()
+    End Sub
+
+    ''' <summary>
     ''' Сброс настроек приложения
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub ResetButton_Click(sender As Object, e As EventArgs) Handles ResetButton.Click
+    Private Sub ResetSettingsButton_Click(sender As Object, e As EventArgs) Handles ResetSettingsButton.Click
         Dim result = MessageBox.Show("Are you sure you want to reset?", "Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning)
         If result = Windows.Forms.DialogResult.OK Then
             Server.Close()
