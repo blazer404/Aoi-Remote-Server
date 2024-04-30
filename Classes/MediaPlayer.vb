@@ -1,7 +1,10 @@
 ﻿Imports System.Runtime.InteropServices
+Imports System.IO
+Imports AoiRemoteServer.Interfaces
 
 
 Public Class MediaPlayer
+    Public Property Listener As IServerListener = Nothing
 
     Private Const MPC = "MPC"
     Private Const AIMP = "AIMP"
@@ -30,7 +33,6 @@ Public Class MediaPlayer
     ''' </summary>
     ''' <param name="name"></param>
     ''' <returns></returns>
-    ''' <remarks></remarks>
     Private Function GetPath(name As String)
         Dim path As String = Nothing
         Select Case name
@@ -41,39 +43,35 @@ Public Class MediaPlayer
             Case Else
                 path = Nothing
         End Select
-        If path Is Nothing Or path = "" Then
-            Return Nothing
-        End If
         Return path
     End Function
 
-    ''' <summary>
-    ''' Поиск дескриптора окна проигрывателя по его пути, который указан в настройках
-    ''' </summary>
-    ''' <param name="name"></param>
-    ''' <remarks></remarks>
-    Private Function FindProcessByName(name As String)
-        Dim path = GetPath(name)
-        If path Is Nothing Then
-            Return Nothing
+    '''' <summary>
+    '''' Поиск дескриптора окна проигрывателя по его пути, который указан в настройках
+    '''' </summary>
+    '''' <param name="name"></param>
+    Public Function GetProcessByTarget(targetName As String) As IntPtr
+        Dim targetFilePath As String = GetPath(targetName)
+        If String.IsNullOrEmpty(targetFilePath) Then
+            Return IntPtr.Zero
         End If
-        Dim processes As Process() = Process.GetProcesses()
+        Dim targetFileName = Path.GetFileNameWithoutExtension(targetFilePath)
+        Dim processes() As Process = Process.GetProcessesByName(targetFileName)
         For Each process As Process In processes
             Try
-                If Not String.IsNullOrEmpty(process.MainModule.FileName) AndAlso process.MainModule.FileName.ToLower() = path.ToLower() Then
-                    Dim playerWindowHandle As IntPtr = process.MainWindowHandle
-                    If playerWindowHandle <> IntPtr.Zero Then
-                        Return playerWindowHandle
+                If Not String.IsNullOrEmpty(process.MainModule.FileName) AndAlso process.MainModule.FileName.ToLower() = targetFilePath.ToLower() Then
+                    Dim windowHandle As IntPtr = process.MainWindowHandle
+                    If windowHandle <> IntPtr.Zero Then
+                        Return windowHandle
                     End If
                 End If
             Catch ex As Exception
-                'просто напоминалка
                 If Debugger.IsAttached Then
-                    Console.WriteLine("Это запланированое падение - забей. Метод не нашел провцесс или не смог получить к нему доступ")
+                    Console.WriteLine("Это запланированое падение - забей. Метод не нашел процесс или не смог получить к нему доступ")
                 End If
             End Try
         Next
-        Return Nothing
+        Return IntPtr.Zero
     End Function
 
     ''' <summary>
@@ -81,20 +79,20 @@ Public Class MediaPlayer
     ''' </summary>
     ''' <param name="target"></param>
     ''' <param name="commandKey"></param>
-    ''' <remarks></remarks>
     Public Sub SendCommand(target As String, commandKey As Integer)
 
         'todo разобрать тут команды по свитчу: системные в одну сторону, от проигрывателей в другую
 
         Try
-            Dim pid = FindProcessByName(target)
-            If pid Is Nothing Then
+            Dim targetHandle = GetProcessByTarget(target)
+            Listener.OnUpdateLog("Target process handle: " & targetHandle.ToString())
+            If targetHandle = IntPtr.Zero Then
                 Exit Sub
             End If
             Dim WmCommand = WM_COMMANDS(target)(0)
-            SendMessage(pid, WmCommand, commandKey, IntPtr.Zero)
+            SendMessage(targetHandle, WmCommand, commandKey, IntPtr.Zero)
         Catch ex As Exception
-            MainForm.OnUpdateLog(ex.Message)
+            Listener.OnUpdateLog("☻ Exception: " & ex.Message)
         End Try
     End Sub
 

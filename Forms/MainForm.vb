@@ -5,7 +5,7 @@ Partial Public Class MainForm : Implements IServerListener
 
     Private Property Server As SocketServer = Nothing
     Private Property Settings As Settings = Nothing
-    Private Property MediaPlayer As New MediaPlayer
+    Private Property MediaPlayer As MediaPlayer = Nothing
 
     '''''''''''' Rewrite Interface - START ''''''''''''
 
@@ -82,8 +82,8 @@ Partial Public Class MainForm : Implements IServerListener
     ''' <param name="target"></param>
     ''' <param name="commandKey"></param>
     ''' <remarks></remarks>
-    Private Async Sub SendCommand(target As String, commandKey As String)
-        Await Task.Run(Sub() MediaPlayer.SendCommand(target, commandKey))
+    Private Sub SendCommand(target As String, commandKey As String)
+        Task.Run(Sub() MediaPlayer.SendCommand(target, commandKey))
     End Sub
 
     '''''''''''' Rewrite Interface - END ''''''''''''
@@ -125,6 +125,14 @@ Partial Public Class MainForm : Implements IServerListener
          }
     End Sub
 
+    ''' <summary>
+    ''' Создание класса проигрывателя
+    ''' </summary>
+    Private Sub CreateMediaPlayer()
+        MediaPlayer = New MediaPlayer With {
+            .Listener = Me
+        }
+    End Sub
 
     ''' <summary>
     ''' Загрузка приложения
@@ -136,6 +144,7 @@ Partial Public Class MainForm : Implements IServerListener
         ' Определяем начальное поведение
         TabPanel.TabPages.Remove(LogTab)
         LoadSettings()
+        CreateMediaPlayer()
         CreateServer()
         If My.Settings.AutorunTcpServer = True Then
             Server.Start()

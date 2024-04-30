@@ -10,7 +10,8 @@
         If textBox.Lines.Length > 1000 Then
             textBox.Text = textBox.Text.Substring(textBox.Text.IndexOf(vbNewLine) + 1)
         End If
-        textBox.AppendText(text & vbNewLine)
+        Dim time = DateTime.Now.ToString("HH:mm:ss")
+        textBox.AppendText("[ " & time & " ] " & text & vbNewLine)
     End Sub
 
     ''' <summary>
@@ -47,7 +48,5 @@
     Public Shared Function GeneratePort()
         Return (New Random).Next(10000, 65535)
     End Function
-
-
 
 End Class

@@ -73,7 +73,7 @@ Public Class SocketServer
             Listener.OnOpenConnection()
             While IsRunning And Server IsNot Nothing
                 Dim client As Socket = Server.Accept()
-                Task.Run(Function() ProcessRequest(client))
+                Task.Run(Sub() ProcessRequest(client))
             End While
         Catch ex As SocketException
             If ex.ErrorCode <> 10004 Then
@@ -143,24 +143,24 @@ Public Class SocketServer
     ''' Обработка запроса от клиента
     ''' </summary>
     ''' <remarks></remarks>
-    Private Async Function ProcessRequest(client As Socket) As Task
+    Private Sub ProcessRequest(client As Socket)
         Try
             client.ReceiveTimeout = 5000
             Dim params As Dictionary(Of String, Object) = ParseRequest(client)
-            If Await IsValidClient(client, params) = False Then
+            If IsValidClient(client, params) = False Then
                 DestroyClient(client)
-                Exit Function
+                Exit Sub
             End If
             Dim target As String = params("T").ToString()
             Dim command As Integer = Convert.ToInt32(params("C"))
             Listener.OnCommandReceived(target, command)
-            Await SetResponse(client, Json.CreateResponse(True, 200, "OK"))
+            SetResponse(client, Json.CreateResponse(True, 200, "OK"))
         Catch ex As SocketException
-            Dim unused = SetResponse(client, Json.CreateResponse(True, 500, "Connection timeout"))
+            SetResponse(client, Json.CreateResponse(True, 500, "Connection timeout"))
         Catch ex As Exception
-            Dim unused = SetResponse(client, Json.CreateResponse(True, 500, "Internal server error"))
+            SetResponse(client, Json.CreateResponse(True, 500, "Internal server error"))
         End Try
-    End Function
+    End Sub
 
     ''' <summary>
     ''' Парсим запрос
@@ -189,14 +189,14 @@ Public Class SocketServer
     ''' </summary>
     ''' <param name="params"></param>
     ''' <returns></returns>
-    Private Async Function IsValidClient(client As Socket, params As Dictionary(Of String, Object)) As Task(Of Boolean)
+    Private Function IsValidClient(client As Socket, params As Dictionary(Of String, Object))
         Dim authToken As String = If(params.ContainsKey("P"), params("P"), Nothing)
         If authToken Is Nothing Then
-            Await SetResponse(client, Json.CreateResponse(False, 401, "Unauthorized"))
+            SetResponse(client, Json.CreateResponse(False, 401, "Unauthorized"))
             Return False
         End If
         If authToken <> Token Then
-            Await SetResponse(client, Json.CreateResponse(False, 401, "Unauthorized"))
+            SetResponse(client, Json.CreateResponse(False, 401, "Unauthorized"))
             Return False
         End If
         Return True
@@ -207,11 +207,13 @@ Public Class SocketServer
     ''' </summary>
     ''' <param name="client"></param>
     ''' <param name="message"></param>
-    Private Async Function SetResponse(client As Socket, message As String) As Task
-        Dim response As Byte() = Encoding.UTF8.GetBytes(message)
-        client.Send(response)
-        Await Task.Delay(2000)
-        DestroyClient(client)
-    End Function
+    Private Sub SetResponse(client As Socket, message As String)
+        Task.Run(Sub()
+                     Dim response As Byte() = Encoding.UTF8.GetBytes(message)
+                     client.Send(response)
+                     Task.Delay(2000)
+                     DestroyClient(client)
+                 End Sub)
+    End Sub
 
 End Class
