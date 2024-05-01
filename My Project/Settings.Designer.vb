@@ -170,12 +170,12 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property ShowDebug() As Boolean
+        Public Property LogEnabled() As Boolean
             Get
-                Return CType(Me("ShowDebug"),Boolean)
+                Return CType(Me("LogEnabled"),Boolean)
             End Get
             Set
-                Me("ShowDebug") = value
+                Me("LogEnabled") = value
             End Set
         End Property
         
@@ -195,9 +195,9 @@ Namespace My
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.WebServiceUrl),  _
          Global.System.Configuration.DefaultSettingValueAttribute("https://github.com/blazer404/Aoi-Remote-Server")>  _
-        Public ReadOnly Property GitHubUrl() As String
+        Public ReadOnly Property AuthorUrl() As String
             Get
-                Return CType(Me("GitHubUrl"),String)
+                Return CType(Me("AuthorUrl"),String)
             End Get
         End Property
     End Class

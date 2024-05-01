@@ -38,8 +38,8 @@ Partial Public Class MainForm : Implements IServerListener
     ''' <remarks></remarks>
     Private Sub OpenConnectionAction()
         Server.IsRunning = True
-        UpdateLogText("Server is running")
-        ServerStatusLabel.Text = "Server is running"
+        UpdateLogText(My.Resources.srv_Running)
+        ServerStatusLabel.Text = My.Resources.srv_Running
         ServerStatusLabel.ForeColor = Color.Green
         IconsReload()
     End Sub
@@ -50,8 +50,8 @@ Partial Public Class MainForm : Implements IServerListener
     ''' <remarks></remarks>
     Private Sub CloseConnectionAction()
         Server.IsRunning = False
-        UpdateLogText("Server is stopped")
-        ServerStatusLabel.Text = "Server is stopped"
+        UpdateLogText(My.Resources.srv_Stopped)
+        ServerStatusLabel.Text = My.Resources.srv_Stopped
         ServerStatusLabel.ForeColor = Color.IndianRed
         IconsReload()
     End Sub
@@ -62,7 +62,7 @@ Partial Public Class MainForm : Implements IServerListener
     ''' <param name="data"></param>
     ''' <remarks></remarks>
     Private Sub UpdateLogText(data As String)
-        If ShowDebugCheckBox.Checked = True Then
+        If My.Settings.LogEnabled = True Then
             Utils.UpdateTextBox(LogBox, data)
         End If
     End Sub
@@ -73,7 +73,7 @@ Partial Public Class MainForm : Implements IServerListener
     ''' <param name="data"></param>
     ''' <remarks></remarks>
     Private Sub ShowErrorBox(data As String)
-        MessageBox.Show(data, "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+        MessageBox.Show(data, My.Resources.msg_ErrorTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop)
     End Sub
 
     ''' <summary>
@@ -152,14 +152,14 @@ Partial Public Class MainForm : Implements IServerListener
         If My.Settings.RunMinimized Then
             Me.Opacity = 0 ' Очень важный костыль - не трогай
         Else
-            Me.TrayMenuShowApp.Text = My.Resources.s_Hide
+            Me.TrayMenuShowApp.Text = My.Resources.str_Hide
         End If
         IconsReload()
 
         'TODO delete this after add aimp api 
         AimpInput.Enabled = False
         AimpInput.Visible = False
-        AimpLabel.Text &= "        [ функция недоступна или отключена ]"
+        AimpLabel.Text &= "        " & My.Resources.str_FunctionNotAlailable
     End Sub
 
     ''' <summary>
@@ -182,9 +182,9 @@ Partial Public Class MainForm : Implements IServerListener
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub MainForm_Closing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        If e.CloseReason = CloseReason.UserClosing AndAlso Server.isRunning Then
+        If e.CloseReason = CloseReason.UserClosing AndAlso Server.IsRunning Then
             e.Cancel = True
-            Me.TrayMenuShowApp.Text = My.Resources.s_Show
+            Me.TrayMenuShowApp.Text = My.Resources.str_Show
             Me.Hide()
         End If
     End Sub
@@ -209,11 +209,22 @@ Partial Public Class MainForm : Implements IServerListener
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub SaveSettingsButton_Click(sender As Object, e As EventArgs) Handles SaveSettingsButton.Click
-        Server.Close()
+        If Settings.IsValideIp(IpInput.Text) = False Then
+            ShowErrorBox(My.Resources.err_WrongIp)
+            Exit Sub
+        End If
+        If Settings.IsValidePort(PortInput.Text) = False Then
+            ShowErrorBox(My.Resources.err_WrongPort)
+            Exit Sub
+        End If
+        If Server.IsRunning Then
+            Server.Close()
+        End If
         Settings.Save()
-        UpdateLogText("Settings is saved")
+        Settings.Load()
+        UpdateLogText(My.Resources.set_Saved)
         CreateServer()
-        If AutorunServerCheckBox.Checked = True Then
+        If My.Settings.AutorunTcpServer = True Then
             Server.Start()
         End If
     End Sub
@@ -234,9 +245,11 @@ Partial Public Class MainForm : Implements IServerListener
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub ResetSettingsButton_Click(sender As Object, e As EventArgs) Handles ResetSettingsButton.Click
-        Dim result = MessageBox.Show("Are you sure you want to reset?", "Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning)
+        Dim result = MessageBox.Show(My.Resources.msg_ResetSettingText, My.Resources.msg_ConfirmTitle, MessageBoxButtons.OKCancel, MessageBoxIcon.Warning)
         If result = Windows.Forms.DialogResult.OK Then
-            Server.Close()
+            If Server.IsRunning Then
+                Server.Close()
+            End If
             Settings.Reset()
             LoadSettings(False)
             CreateServer()

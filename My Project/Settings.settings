@@ -32,13 +32,13 @@
     <Setting Name="AuthToken" Type="System.String" Scope="User">
       <Value Profile="(Default)">12345678</Value>
     </Setting>
-    <Setting Name="ShowDebug" Type="System.Boolean" Scope="User">
+    <Setting Name="LogEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="RunMinimized" Type="System.String" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="GitHubUrl" Type="(Web Service URL)" Scope="Application">
+    <Setting Name="AuthorUrl" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)">https://github.com/blazer404/Aoi-Remote-Server</Value>
     </Setting>
   </Settings>

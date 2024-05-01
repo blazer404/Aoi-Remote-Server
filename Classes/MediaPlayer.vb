@@ -1,6 +1,6 @@
-﻿Imports System.Runtime.InteropServices
+﻿Imports AoiRemoteServer.Interfaces
+Imports System.Runtime.InteropServices
 Imports System.IO
-Imports AoiRemoteServer.Interfaces
 
 
 Public Class MediaPlayer
@@ -85,14 +85,13 @@ Public Class MediaPlayer
 
         Try
             Dim targetHandle = GetProcessByTarget(target)
-            Listener.OnUpdateLog("Target process handle: " & targetHandle.ToString())
             If targetHandle = IntPtr.Zero Then
                 Exit Sub
             End If
             Dim WmCommand = WM_COMMANDS(target)(0)
             SendMessage(targetHandle, WmCommand, commandKey, IntPtr.Zero)
         Catch ex As Exception
-            Listener.OnUpdateLog("☻ Exception: " & ex.Message)
+            Listener.OnUpdateLog(My.Resources.lbl_Exeption & ex.Message)
         End Try
     End Sub
 

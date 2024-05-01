@@ -14,7 +14,7 @@
             {"code", code},
             {"message", message}
         }
-        Return New Json().SerializeObject(params)
+        Return SerializeObject(params)
     End Function
 
     ''' <summary>
@@ -22,7 +22,7 @@
     ''' </summary>
     ''' <param name="params"></param>
     ''' <returns></returns>
-    Private Function SerializeObject(params As Dictionary(Of String, Object))
+    Private Shared Function SerializeObject(params As Dictionary(Of String, Object))
         Dim json As String = "{"
         For Each pair As KeyValuePair(Of String, Object) In params
             Dim key = pair.Key

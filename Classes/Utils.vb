@@ -11,7 +11,7 @@
             textBox.Text = textBox.Text.Substring(textBox.Text.IndexOf(vbNewLine) + 1)
         End If
         Dim time = DateTime.Now.ToString("HH:mm:ss")
-        textBox.AppendText("[ " & time & " ] " & text & vbNewLine)
+        textBox.AppendText("<" & time & "> " & text & vbNewLine)
     End Sub
 
     ''' <summary>
@@ -46,7 +46,7 @@
     ''' <returns></returns>
     ''' <remarks></remarks>
     Public Shared Function GeneratePort()
-        Return (New Random).Next(10000, 65535)
+        Return (New Random).Next(1024, 65535)
     End Function
 
 End Class

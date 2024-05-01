@@ -38,7 +38,7 @@ Partial Class MainForm
         Me.TabPanel = New System.Windows.Forms.TabControl()
         Me.ServerTab = New System.Windows.Forms.TabPage()
         Me.RunMinimizedCheckBox = New System.Windows.Forms.CheckBox()
-        Me.ShowDebugCheckBox = New System.Windows.Forms.CheckBox()
+        Me.EnableLogCheckBox = New System.Windows.Forms.CheckBox()
         Me.ServerStatusLabel = New System.Windows.Forms.Label()
         Me.PortInput = New System.Windows.Forms.TextBox()
         Me.AuthTokenInput = New System.Windows.Forms.TextBox()
@@ -183,7 +183,7 @@ Partial Class MainForm
         'ServerTab
         '
         Me.ServerTab.Controls.Add(Me.RunMinimizedCheckBox)
-        Me.ServerTab.Controls.Add(Me.ShowDebugCheckBox)
+        Me.ServerTab.Controls.Add(Me.EnableLogCheckBox)
         Me.ServerTab.Controls.Add(Me.ServerStatusLabel)
         Me.ServerTab.Controls.Add(Me.PortInput)
         Me.ServerTab.Controls.Add(Me.AuthTokenInput)
@@ -214,15 +214,15 @@ Partial Class MainForm
         Me.RunMinimizedCheckBox.Text = "Run minimized"
         Me.RunMinimizedCheckBox.UseVisualStyleBackColor = True
         '
-        'ShowDebugCheckBox
+        'EnableLogCheckBox
         '
-        Me.ShowDebugCheckBox.AutoSize = True
-        Me.ShowDebugCheckBox.Location = New System.Drawing.Point(6, 168)
-        Me.ShowDebugCheckBox.Name = "ShowDebugCheckBox"
-        Me.ShowDebugCheckBox.Size = New System.Drawing.Size(80, 17)
-        Me.ShowDebugCheckBox.TabIndex = 10
-        Me.ShowDebugCheckBox.Text = "Enable Log"
-        Me.ShowDebugCheckBox.UseVisualStyleBackColor = True
+        Me.EnableLogCheckBox.AutoSize = True
+        Me.EnableLogCheckBox.Location = New System.Drawing.Point(6, 168)
+        Me.EnableLogCheckBox.Name = "EnableLogCheckBox"
+        Me.EnableLogCheckBox.Size = New System.Drawing.Size(80, 17)
+        Me.EnableLogCheckBox.TabIndex = 10
+        Me.EnableLogCheckBox.Text = "Enable Log"
+        Me.EnableLogCheckBox.UseVisualStyleBackColor = True
         '
         'ServerStatusLabel
         '
@@ -238,6 +238,7 @@ Partial Class MainForm
         'PortInput
         '
         Me.PortInput.Location = New System.Drawing.Point(77, 36)
+        Me.PortInput.MaxLength = 5
         Me.PortInput.Name = "PortInput"
         Me.PortInput.Size = New System.Drawing.Size(116, 20)
         Me.PortInput.TabIndex = 3
@@ -480,7 +481,7 @@ Partial Class MainForm
     Friend WithEvents PortInput As System.Windows.Forms.TextBox
     Friend WithEvents ServerStatusLabel As System.Windows.Forms.Label
     Friend WithEvents ResetSettingsButton As System.Windows.Forms.Button
-    Friend WithEvents ShowDebugCheckBox As System.Windows.Forms.CheckBox
+    Friend WithEvents EnableLogCheckBox As System.Windows.Forms.CheckBox
     Friend WithEvents RunMinimizedCheckBox As System.Windows.Forms.CheckBox
     Friend WithEvents AboutTab As System.Windows.Forms.TabPage
     Friend WithEvents GitHubLink As System.Windows.Forms.LinkLabel

@@ -7,10 +7,10 @@
     Private Sub HideShowApp()
         If Me.Visible = False Then
             Me.Show()
-            TrayMenuShowApp.Text = My.Resources.s_Hide
+            TrayMenuShowApp.Text = My.Resources.str_Hide
         Else
             Me.Hide()
-            TrayMenuShowApp.Text = My.Resources.s_Show
+            TrayMenuShowApp.Text = My.Resources.str_Show
         End If
     End Sub
 

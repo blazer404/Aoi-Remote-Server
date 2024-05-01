@@ -47,10 +47,17 @@ Public Class Settings
         MainForm.AutorunServerCheckBox.Checked = My.Settings.AutorunTcpServer
         MainForm.AutorunAppCheckbox.Checked = WinStartupIsActive
         MainForm.RunMinimizedCheckBox.Checked = My.Settings.RunMinimized
-        MainForm.ShowDebugCheckBox.Checked = My.Settings.ShowDebug
+        MainForm.EnableLogCheckBox.Checked = My.Settings.LogEnabled
         ' Приложения
         MainForm.AimpInput.Text = My.Settings.AimpPath
         MainForm.MpcInput.Text = My.Settings.MpcPath
+        ' Таб лога
+        Dim index As Integer = MainForm.TabPanel.TabCount - 1
+        If My.Settings.LogEnabled AndAlso Not MainForm.TabPanel.TabPages.Contains(MainForm.LogTab) Then
+            MainForm.TabPanel.TabPages.Insert(index, MainForm.LogTab)
+        ElseIf Not My.Settings.LogEnabled AndAlso MainForm.TabPanel.TabPages.Contains(MainForm.LogTab) Then
+            MainForm.TabPanel.TabPages.Remove(MainForm.LogTab)
+        End If
     End Sub
 
     ''' <summary>
@@ -66,12 +73,12 @@ Public Class Settings
         End If
         ' Сервер
         My.Settings.UserIp = MainForm.IpInput.Text
-        My.Settings.UserPort = MainForm.PortInput.Text
+        My.Settings.UserPort = If(String.IsNullOrEmpty(MainForm.PortInput.Text), Nothing, Int32.Parse(MainForm.PortInput.Text))
         My.Settings.UseIPv6 = MainForm.Ipv6CheckBox.Checked
         My.Settings.AuthToken = MainForm.AuthTokenInput.Text
         My.Settings.AutorunTcpServer = MainForm.AutorunServerCheckBox.Checked
         My.Settings.RunMinimized = MainForm.RunMinimizedCheckBox.Checked
-        My.Settings.ShowDebug = MainForm.ShowDebugCheckBox.Checked
+        My.Settings.LogEnabled = MainForm.EnableLogCheckBox.Checked
         ' Приложения
         My.Settings.AimpPath = MainForm.AimpInput.Text
         My.Settings.MpcPath = MainForm.MpcInput.Text
@@ -85,7 +92,7 @@ Public Class Settings
     Public Sub Reset()
         My.Settings.Reset()
         WinStartupRemove()
-        Utils.UpdateTextBox(MainForm.LogBox, "Settings is reset")
+        Utils.UpdateTextBox(MainForm.LogBox, My.Resources.set_Reset)
     End Sub
 
     ''' <summary>
@@ -175,6 +182,28 @@ Public Class Settings
             regKey.Close()
         End If
         Return status
+    End Function
+
+
+    ''' <summary>
+    ''' Валидация используемого IP
+    ''' </summary>
+    ''' <param name="ip"></param>
+    ''' <returns></returns>
+    Public Shared Function IsValideIp(ip As String) As Boolean
+        Return ip <> ""
+    End Function
+
+    ''' <summary>
+    ''' Валидация используемого порта
+    ''' </summary>
+    ''' <param name="port"></param>
+    ''' <returns></returns>
+    Public Shared Function IsValidePort(port As String) As Boolean
+        If String.IsNullOrEmpty(port) OrElse Not (port >= 1024 And port <= 65535) Then
+            Return False
+        End If
+        Return True
     End Function
 
 End Class
