@@ -5,7 +5,7 @@ Partial Public Class MainForm : Implements IServerListener
 
     Private Property Server As SocketServer = Nothing
     Private Property Settings As Settings = Nothing
-    Private Property MediaPlayer As MediaPlayer = Nothing
+    Private Property CommandSender As CommandSender = Nothing
 
     '''''''''''' Rewrite Interface - START ''''''''''''
 
@@ -80,10 +80,10 @@ Partial Public Class MainForm : Implements IServerListener
     ''' Отправка полученной команды проигрывателю
     ''' </summary>
     ''' <param name="target"></param>
-    ''' <param name="commandKey"></param>
+    ''' <param name="command"></param>
     ''' <remarks></remarks>
-    Private Sub SendCommand(target As String, commandKey As String)
-        Task.Run(Sub() MediaPlayer.SendCommand(target, commandKey))
+    Private Sub SendCommand(target As String, command As String)
+        Task.Run(Sub() CommandSender.Send(target, command))
     End Sub
 
     '''''''''''' Rewrite Interface - END ''''''''''''
@@ -116,7 +116,7 @@ Partial Public Class MainForm : Implements IServerListener
     ''' <summary>
     ''' Создание сервера
     ''' </summary>
-    Private Sub CreateServer()
+    Private Sub InitServer()
         Server = New SocketServer With {
              .Ip = Settings.GetIp(),
              .Port = Settings.GetPort(),
@@ -128,8 +128,8 @@ Partial Public Class MainForm : Implements IServerListener
     ''' <summary>
     ''' Создание класса проигрывателя
     ''' </summary>
-    Private Sub CreateMediaPlayer()
-        MediaPlayer = New MediaPlayer With {
+    Private Sub InitCommandSender()
+        CommandSender = New CommandSender With {
             .Listener = Me
         }
     End Sub
@@ -144,8 +144,8 @@ Partial Public Class MainForm : Implements IServerListener
         ' Определяем начальное поведение
         TabPanel.TabPages.Remove(LogTab)
         LoadSettings()
-        CreateMediaPlayer()
-        CreateServer()
+        InitCommandSender()
+        InitServer()
         If My.Settings.AutorunTcpServer = True Then
             Server.Start()
         End If
@@ -223,7 +223,7 @@ Partial Public Class MainForm : Implements IServerListener
         Settings.Save()
         Settings.Load()
         UpdateLogText(My.Resources.set_Saved)
-        CreateServer()
+        InitServer()
         If My.Settings.AutorunTcpServer = True Then
             Server.Start()
         End If
@@ -252,7 +252,7 @@ Partial Public Class MainForm : Implements IServerListener
             End If
             Settings.Reset()
             LoadSettings(False)
-            CreateServer()
+            InitServer()
         End If
     End Sub
 

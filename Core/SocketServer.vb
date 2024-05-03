@@ -7,14 +7,13 @@ Imports System.Net.Sockets
 
 Public Class SocketServer
 
+    Public Property Listener As IServerListener = Nothing
     Private Property Server As Socket = Nothing
     Private Property ServerThread As Thread = Nothing
     Public Property IsRunning As Boolean = False
     Public Property Ip As String = Nothing
     Public Property Port As String = Nothing
     Public Property Token As String = Nothing
-    Public Property Listener As IServerListener = Nothing
-
 
     ''' <summary>
     ''' Запуск сервера

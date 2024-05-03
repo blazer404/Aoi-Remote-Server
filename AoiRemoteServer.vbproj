@@ -102,8 +102,10 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\Interfaces.vb" />
-    <Compile Include="Classes\SocketServer.vb" />
+    <Compile Include="Helpers\Constants.vb" />
+    <Compile Include="Core\Libs.vb" />
+    <Compile Include="Core\Interfaces.vb" />
+    <Compile Include="Core\SocketServer.vb" />
     <Compile Include="Forms\MainForm.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -123,10 +125,10 @@
     <Compile Include="Forms\_TrayMenu.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Classes\Settings.vb" />
-    <Compile Include="Classes\MediaPlayer.vb" />
-    <Compile Include="Classes\Json.vb" />
-    <Compile Include="Classes\Utils.vb" />
+    <Compile Include="Core\Settings.vb" />
+    <Compile Include="Core\CommandSender.vb" />
+    <Compile Include="Helpers\Json.vb" />
+    <Compile Include="Helpers\Utils.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
