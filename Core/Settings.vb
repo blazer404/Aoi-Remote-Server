@@ -37,8 +37,9 @@ Public Class Settings
     Public Sub Load()
         ' Основные
         GetIpList()
-        MainForm.Text = Application.ProductName + " v" + Application.ProductVersion
+        MainForm.Text = Application.ProductName
         MainForm.TrayIcon.Text = Application.ProductName
+        MainForm.VersionLabel.Text = Application.ProductName & vbNewLine & GetAppVersion(True)
         ' Сервер
         MainForm.IpInput.SelectedItem = GetIp()
         MainForm.PortInput.Text = GetPort()
@@ -204,6 +205,28 @@ Public Class Settings
             Return False
         End If
         Return True
+    End Function
+
+
+    ''' <summary>
+    ''' Получить версию приложения
+    ''' </summary>
+    ''' <param name="FullVersion"></param>
+    ''' <returns></returns>
+    Public Shared Function GetAppVersion(Optional FullVersion = False)
+        Dim versionRaw As String = Application.ProductVersion
+        Dim chunks As Array = versionRaw.Split(".")
+        If chunks.Length < 4 Then
+            Return "version " & versionRaw
+        End If
+        Dim major As String = chunks(0)
+        Dim minor As String = chunks(1)
+        Dim build As String = chunks(2)
+        Dim revision As String = chunks(3)
+        If FullVersion <> True Then
+            Return $"{major}.{minor}"
+        End If
+        Return $"version {major}.{minor} build {build}.{revision}"
     End Function
 
 End Class

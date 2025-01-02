@@ -12,13 +12,13 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Aoi Remote Server")>
 <Assembly: AssemblyCompany("BlazeR404")>
 <Assembly: AssemblyProduct("Aoi Remote Server")>
-<Assembly: AssemblyCopyright("Copyright ©  2024")> 
-<Assembly: AssemblyTrademark("")> 
+<Assembly: AssemblyCopyright("Copyright © 2024")>
+<Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>
 
 'Следующий GUID служит для идентификации библиотеки типов, если этот проект будет видимым для COM
-<Assembly: Guid("2bd8c949-aa12-4d05-818e-7a10946002b7")> 
+<Assembly: Guid("2bd8c949-aa12-4d05-818e-7a10946002b7")>
 
 ' Сведения о версии сборки состоят из следующих четырех значений:
 '
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' используя "*", как показано ниже:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.0.0.0")> 
-<Assembly: AssemblyFileVersion("1.0.0.0")> 
+<Assembly: AssemblyVersion("2501.3.339.51")>
+<Assembly: AssemblyFileVersion("2501.3.339.51")>

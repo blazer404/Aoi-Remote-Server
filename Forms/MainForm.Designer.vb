@@ -58,6 +58,7 @@ Partial Class MainForm
         Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
         Me.CancelSettingsButton = New System.Windows.Forms.Button()
         Me.ResetSettingsButton = New System.Windows.Forms.Button()
+        Me.VersionLabel = New System.Windows.Forms.Label()
         Me.TrayMenu.SuspendLayout()
         Me.TabPanel.SuspendLayout()
         Me.ServerTab.SuspendLayout()
@@ -369,6 +370,7 @@ Partial Class MainForm
         '
         'AboutTab
         '
+        Me.AboutTab.Controls.Add(Me.VersionLabel)
         Me.AboutTab.Controls.Add(Me.GitHubLink)
         Me.AboutTab.Location = New System.Drawing.Point(4, 22)
         Me.AboutTab.Name = "AboutTab"
@@ -421,6 +423,16 @@ Partial Class MainForm
         Me.ResetSettingsButton.TabIndex = 101
         Me.ResetSettingsButton.Text = "Reset"
         Me.ResetSettingsButton.UseVisualStyleBackColor = True
+        '
+        'VersionLabel
+        '
+        Me.VersionLabel.AutoSize = True
+        Me.VersionLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me.VersionLabel.Location = New System.Drawing.Point(3, 7)
+        Me.VersionLabel.Name = "VersionLabel"
+        Me.VersionLabel.Size = New System.Drawing.Size(91, 16)
+        Me.VersionLabel.TabIndex = 11
+        Me.VersionLabel.Text = "%VERSION%"
         '
         'MainForm
         '
@@ -486,4 +498,5 @@ Partial Class MainForm
     Friend WithEvents AboutTab As System.Windows.Forms.TabPage
     Friend WithEvents GitHubLink As System.Windows.Forms.LinkLabel
     Friend WithEvents CancelSettingsButton As Button
+    Friend WithEvents VersionLabel As Label
 End Class
