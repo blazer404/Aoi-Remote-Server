@@ -93,7 +93,7 @@ Public Class Settings
     Public Sub Reset()
         My.Settings.Reset()
         WinStartupRemove()
-        Utils.UpdateTextBox(MainForm.LogBox, My.Resources.set_Reset)
+        Utils.UpdateTextBox(MainForm.LogBox, My.Resources.STG_RESET)
     End Sub
 
     ''' <summary>

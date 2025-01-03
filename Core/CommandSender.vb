@@ -28,7 +28,7 @@ Public Class CommandSender
                     ' todo set listener log here and client response
             End Select
         Catch ex As Exception
-            Listener.OnUpdateLog(My.Resources.lbl_Exeption & ex.Message)
+            Listener.OnUpdateLog(My.Resources.LBL_EXCEPTION & ex.Message)
         End Try
     End Sub
 

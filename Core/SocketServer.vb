@@ -21,14 +21,14 @@ Public Class SocketServer
     ''' <remarks></remarks>
     Public Sub Start()
         Try
-            Listener.OnUpdateLog(My.Resources.srv_OpenConnection)
+            Listener.OnUpdateLog(My.Resources.SRV_OPEN_CONNECTION)
             If Not IsRunning Then
                 DestroyServerThread()
                 ServerThread = New Thread(AddressOf CreateServer)
                 ServerThread.Start()
             End If
         Catch ex As Exception
-            Listener.OnUpdateLog(My.Resources.lbl_Exeption & ex.Message)
+            Listener.OnUpdateLog(My.Resources.LBL_EXCEPTION & ex.Message)
             Listener.OnCloseConnection()
         End Try
     End Sub
@@ -39,13 +39,13 @@ Public Class SocketServer
     ''' <remarks></remarks>
     Public Sub Close()
         Try
-            Listener.OnUpdateLog(My.Resources.srv_CloseConnection)
+            Listener.OnUpdateLog(My.Resources.SRV_CLOSE_CONNECTION)
             If IsRunning Then
                 DestroyServer()
                 DestroyServerThread()
             End If
         Catch ex As Exception
-            Listener.OnUpdateLog(My.Resources.lbl_Exeption & ex.Message)
+            Listener.OnUpdateLog(My.Resources.LBL_EXCEPTION & ex.Message)
         Finally
             Listener.OnCloseConnection()
         End Try
@@ -57,11 +57,11 @@ Public Class SocketServer
     ''' <remarks></remarks>
     Private Sub CreateServer()
         Try
-            Listener.OnUpdateLog(My.Resources.srv_Create)
+            Listener.OnUpdateLog(My.Resources.SRV_CREATE)
             DestroyServer()
             Dim parsedIp As IPAddress = IPAddress.Parse(Ip)
             Dim endpoint As New IPEndPoint(parsedIp, Port)
-            Listener.OnUpdateLog(My.Resources.lbl_Endpoint & endpoint.ToString)
+            Listener.OnUpdateLog(My.Resources.LBL_ENDPOINT & endpoint.ToString)
             Server = New Socket(parsedIp.AddressFamily, SocketType.Stream, ProtocolType.Tcp)
             Server.Bind(endpoint)
             Server.Listen(10)
@@ -72,7 +72,7 @@ Public Class SocketServer
             End While
         Catch ex As SocketException
             If ex.ErrorCode <> 10004 Then
-                Listener.OnUpdateLog(My.Resources.lbl_Exeption & ex.Message)
+                Listener.OnUpdateLog(My.Resources.LBL_EXCEPTION & ex.Message)
                 Listener.OnCloseConnection()
             End If
         End Try
@@ -130,11 +130,11 @@ Public Class SocketServer
             Dim target As String = params("T").ToString()
             Dim command As Integer = Convert.ToInt32(params("C"))
             Listener.OnCommandReceived(target, command)
-            SendResponse(client, Json.CreateResponse(True, 200, My.Resources.req_Ok))
+            SendResponse(client, Json.CreateResponse(True, 200, My.Resources.REQ_200_OK))
         Catch ex As SocketException
-            SendResponse(client, Json.CreateResponse(False, 500, My.Resources.req_500Timeout))
+            SendResponse(client, Json.CreateResponse(False, 500, My.Resources.REQ_500_TIMEOUT))
         Catch ex As Exception
-            SendResponse(client, Json.CreateResponse(False, 500, My.Resources.req_500Internal))
+            SendResponse(client, Json.CreateResponse(False, 500, My.Resources.REQ_500_INTERNAL))
         End Try
     End Sub
 
@@ -147,9 +147,9 @@ Public Class SocketServer
         Dim bytes As Byte() = New Byte(1023) {}
         Dim bytesRec As Integer = client.Receive(bytes)
         Dim data As String = ExtractRequestBody(Encoding.UTF8.GetString(bytes, 0, bytesRec).ToString)
-        Listener.OnUpdateLog(My.Resources.lbl_Request & data)
+        Listener.OnUpdateLog(My.Resources.LBL_REQUEST & data)
         If String.IsNullOrWhiteSpace(data) Then
-            SendResponse(client, Json.CreateResponse(False, 422, My.Resources.req_422EmptyBody))
+            SendResponse(client, Json.CreateResponse(False, 422, My.Resources.REQ_422_EMPTY_BODY))
             Return Nothing
         End If
         Return ExtractRequestParams(data)
@@ -195,11 +195,11 @@ Public Class SocketServer
     Private Function IsValidClient(client As Socket, params As Dictionary(Of String, Object))
         Dim authToken As String = If(params.ContainsKey("P"), params("P"), Nothing)
         If authToken Is Nothing Then
-            SendResponse(client, Json.CreateResponse(False, 401, My.Resources.req_401Unauthorized))
+            SendResponse(client, Json.CreateResponse(False, 401, My.Resources.REQ_401_UNAUTHORIZEDd))
             Return False
         End If
         If authToken <> Token Then
-            SendResponse(client, Json.CreateResponse(False, 401, My.Resources.req_401Unauthorized))
+            SendResponse(client, Json.CreateResponse(False, 401, My.Resources.REQ_401_UNAUTHORIZEDd))
             Return False
         End If
         Return True
