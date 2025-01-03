@@ -36,14 +36,14 @@ Public Class Settings
     ''' <remarks></remarks>
     Public Sub Load()
         ' Основные
-        GetIpList()
         MainForm.Text = Application.ProductName
         MainForm.TrayIcon.Text = Application.ProductName
         MainForm.VersionLabel.Text = Application.ProductName & vbNewLine & GetAppVersion(True)
         ' Сервер
+        MainForm.Ipv6CheckBox.Checked = My.Settings.UseIPv6
+        GetIpList()
         MainForm.IpInput.SelectedItem = GetIp()
         MainForm.PortInput.Text = GetPort()
-        MainForm.Ipv6CheckBox.Checked = My.Settings.UseIPv6
         MainForm.AuthTokenInput.Text = My.Settings.AuthToken
         MainForm.AutorunServerCheckBox.Checked = My.Settings.AutorunTcpServer
         MainForm.AutorunAppCheckbox.Checked = WinStartupIsActive

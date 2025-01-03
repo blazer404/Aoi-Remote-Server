@@ -3,8 +3,8 @@
 
 Partial Public Class MainForm : Implements IServerListener
 
+    Private Property Settings As Settings = New Settings
     Private Property Server As SocketServer = Nothing
-    Private Property Settings As Settings = Nothing
     Private Property CommandSender As CommandSender = Nothing
 
     '''''''''''' Rewrite Interface - START ''''''''''''
@@ -103,17 +103,6 @@ Partial Public Class MainForm : Implements IServerListener
     End Sub
 
     ''' <summary>
-    ''' Загрузка настроек
-    ''' </summary>
-    Private Sub LoadSettings(Optional needUpgrade As Boolean = True)
-        If needUpgrade Then
-            My.Settings.Upgrade()
-        End If
-        Settings = New Settings
-        Settings.Load()
-    End Sub
-
-    ''' <summary>
     ''' Создание сервера
     ''' </summary>
     Private Sub InitServer()
@@ -141,9 +130,9 @@ Partial Public Class MainForm : Implements IServerListener
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        ' Определяем начальное поведение
         TabPanel.TabPages.Remove(LogTab)
-        LoadSettings()
+        Settings.Upgrade()
+        Settings.Load()
         InitCommandSender()
         InitServer()
         If My.Settings.AutorunTcpServer = True Then
@@ -251,7 +240,7 @@ Partial Public Class MainForm : Implements IServerListener
                 Server.Close()
             End If
             Settings.Reset()
-            LoadSettings(False)
+            Settings.Load()
             InitServer()
         End If
     End Sub

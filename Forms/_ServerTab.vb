@@ -7,14 +7,14 @@
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub Ipc6CheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles Ipv6CheckBox.CheckedChanged
-        Dim value_bak = IpInput.SelectedItem
         If Ipv6CheckBox.Checked = True Then
             Settings.UseIpv6 = True
         Else
             Settings.UseIpv6 = False
         End If
+        Dim selectedItem = IpInput.SelectedItem
         Settings.GetIpList()
-        IpInput.SelectedItem = value_bak
+        IpInput.SelectedItem = selectedItem
         If IpInput.SelectedItem Is Nothing Then
             IpInput.SelectedIndex = 0
         End If
