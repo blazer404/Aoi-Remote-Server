@@ -157,6 +157,9 @@
   <data name="req_401Unauthorized" xml:space="preserve">
     <value>Unauthorized</value>
   </data>
+  <data name="req_422EmptyBody" xml:space="preserve">
+    <value>Request body is empty</value>
+  </data>
   <data name="req_500Internal" xml:space="preserve">
     <value>Internal server error</value>
   </data>

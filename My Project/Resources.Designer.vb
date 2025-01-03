@@ -182,6 +182,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Ищет локализованную строку, похожую на Request body is empty.
+        '''</summary>
+        Friend ReadOnly Property req_422EmptyBody() As String
+            Get
+                Return ResourceManager.GetString("req_422EmptyBody", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Ищет локализованную строку, похожую на Internal server error.
         '''</summary>
         Friend ReadOnly Property req_500Internal() As String
