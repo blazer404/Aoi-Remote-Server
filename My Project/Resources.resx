@@ -133,8 +133,8 @@
   <data name="icon_orange_circle" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resourses\icon_orange_circle.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="icon_orange_squae" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resourses\icon_orange_squae.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="icon_orange_square" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resourses\icon_orange_square.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="LBL_ENDPOINT" xml:space="preserve">
     <value>Endpoint: </value>

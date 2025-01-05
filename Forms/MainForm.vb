@@ -97,7 +97,7 @@ Partial Public Class MainForm : Implements IServerListener
             Me.Icon = My.Resources.icon_green_square
             TrayIcon.Icon = My.Resources.icon_green_circle
         Else
-            Me.Icon = My.Resources.icon_orange_squae
+            Me.Icon = My.Resources.icon_orange_square
             TrayIcon.Icon = My.Resources.icon_orange_circle
         End If
     End Sub

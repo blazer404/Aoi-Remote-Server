@@ -111,9 +111,9 @@ Namespace My.Resources
         '''<summary>
         '''  Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
         '''</summary>
-        Friend ReadOnly Property icon_orange_squae() As System.Drawing.Icon
+        Friend ReadOnly Property icon_orange_square() As System.Drawing.Icon
             Get
-                Dim obj As Object = ResourceManager.GetObject("icon_orange_squae", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("icon_orange_square", resourceCulture)
                 Return CType(obj,System.Drawing.Icon)
             End Get
         End Property

@@ -71,10 +71,8 @@
   <PropertyGroup>
     <ApplicationIcon>Resourses\icon_green_circle.ico</ApplicationIcon>
   </PropertyGroup>
-  <PropertyGroup>
+  <PropertyGroup Condition="Exists('my_key.pfx')">
     <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
     <AssemblyOriginatorKeyFile>my_key.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
@@ -186,17 +184,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="my_key.pfx" />
+    <None Condition="Exists('my_key.pfx')" Include="my_key.pfx" />
     <None Include="Resourses\icon_green_circle.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resourses\icon_green_square.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resourses\icon_orange_circle.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resourses\icon_orange_squae.ico" />
+    <None Include="Resourses\icon_orange_square.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Target Name="UpdateVersion" BeforeTargets="BeforeBuild">
